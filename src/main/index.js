@@ -8,6 +8,7 @@ import {
   mkdirpObservable,
   readFileObservable,
   writeFileObservable,
+  statObservable,
   ncpObservable,
 } from '../utils/fs';
 
@@ -66,6 +67,7 @@ const fullAppReady$ = Rx.Observable.zip(
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'nteract.json');
 const telluriumConfigDir = path.join(app.getPath('home'), '.tellurium');
+const pythonEnvironmentDir = path.join(telluriumConfigDir, 'python-3.6.0');
 
 const prepJupyterObservable = prepareEnv
   .mergeMap(() =>
@@ -91,7 +93,16 @@ const prepJupyterObservable = prepareEnv
           }
           throw err;
         }),
-      ncpObservable('/Volumes/nteract 0.0.15/nteract.app/Contents/Resources/python-3.6.0', telluriumConfigDir)
+      statObservable(pythonEnvironmentDir)
+        .catch((err) => {
+          if (err.code === 'ENOENT') {
+            const srcPythonDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', 'python-3.6.0');
+            // log.info('srcPythonDir ', srcPythonDir);
+            return ncpObservable(
+              srcPythonDir,
+              pythonEnvironmentDir)
+          }
+        })
     )
   );
 

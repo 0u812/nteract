@@ -37,4 +37,6 @@ export const writeFileObservable =
 
 export const mkdirpObservable = Rx.Observable.bindNodeCallback(mkdirp);
 
+export const statObservable = Rx.Observable.bindNodeCallback(filesystem.stat);
+
 export const ncpObservable = Rx.Observable.bindNodeCallback(ncp);
