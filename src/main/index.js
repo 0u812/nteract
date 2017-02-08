@@ -8,6 +8,7 @@ import {
   mkdirpObservable,
   readFileObservable,
   writeFileObservable,
+  ncpObservable,
 } from '../utils/fs';
 
 import {
@@ -64,6 +65,7 @@ const fullAppReady$ = Rx.Observable.zip(
 
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'nteract.json');
+const telluriumConfigDir = path.join(app.getPath('home'), '.tellurium');
 
 const prepJupyterObservable = prepareEnv
   .mergeMap(() =>
@@ -72,22 +74,26 @@ const prepJupyterObservable = prepareEnv
       // Ensure the runtime Dir is setup for kernels
       mkdirpObservable(jupyterPaths.runtimeDir()),
       // Ensure the config directory is all set up
-      mkdirpObservable(jupyterConfigDir)
+      mkdirpObservable(jupyterConfigDir),
+      // Ensure tellurium directory is set up
+      mkdirpObservable(telluriumConfigDir)
     )
   )
   // Set up our configuration file
   .mergeMap(() =>
-    readFileObservable(nteractConfigFilename)
-      .catch((err) => {
-        if (err.code === 'ENOENT') {
-          return writeFileObservable(nteractConfigFilename, JSON.stringify({
-            theme: 'light',
-          }));
-        }
-        throw err;
-      })
+    Rx.Observable.forkJoin(
+      readFileObservable(nteractConfigFilename)
+        .catch((err) => {
+          if (err.code === 'ENOENT') {
+            return writeFileObservable(nteractConfigFilename, JSON.stringify({
+              theme: 'light',
+            }));
+          }
+          throw err;
+        }),
+      ncpObservable('/Volumes/nteract 0.0.15/nteract.app/Contents/Resources/python-3.6.0', telluriumConfigDir)
+    )
   );
-
 
 const kernelSpecsPromise = prepJupyterObservable
   .toPromise()

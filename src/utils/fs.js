@@ -3,6 +3,7 @@ import * as fs from 'fs';
 
 export const filesystem = fs;
 const mkdirp = require('mkdirp');
+import ncp from 'ncp'
 
 export const unlinkObservable = path =>
   Rx.Observable.create((observer) => {
@@ -35,3 +36,5 @@ export const writeFileObservable =
   Rx.Observable.bindNodeCallback(filesystem.writeFile);
 
 export const mkdirpObservable = Rx.Observable.bindNodeCallback(mkdirp);
+
+export const ncpObservable = Rx.Observable.bindNodeCallback(ncp);

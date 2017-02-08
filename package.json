@@ -108,7 +108,8 @@
     ],
     "extraResources": [
       "bin",
-      "example-notebooks"
+      "example-notebooks",
+      "python-3.6.0"
     ],
     "npmSkipBuildFromSource": true
   },
@@ -141,6 +142,7 @@
     "mathjax-electron": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.15.2",
+    "ncp": "^2.0.0",
     "normalize.css": "^5.0.0",
     "nteract-assets": "^2.1.0",
     "plotly.js": "^1.19.2",
