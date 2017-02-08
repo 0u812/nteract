@@ -37,3 +37,6 @@ dist/
 test/*.ipynb
 
 bin/nteract-env
+
+.DS_Store
+/python-3.6.0
