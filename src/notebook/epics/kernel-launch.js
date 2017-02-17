@@ -83,7 +83,7 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
   const spec = kernelSpec.spec;
 
   return Rx.Observable.create((observer) => {
-    launchSpec(spec, { cwd })
+    launchSpec(spec, { cwd: cwd, env: {IPYTHONDIR: '/Users/phantom/.tellurium/ipython'} })
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;
