@@ -109,7 +109,7 @@
     "extraResources": [
       "bin",
       "example-notebooks",
-      "python-3.6.0"
+      ".tellurium"
     ],
     "npmSkipBuildFromSource": true
   },

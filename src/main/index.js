@@ -75,9 +75,7 @@ const prepJupyterObservable = prepareEnv
       // Ensure the runtime Dir is setup for kernels
       mkdirpObservable(jupyterPaths.runtimeDir()),
       // Ensure the config directory is all set up
-      mkdirpObservable(jupyterConfigDir),
-      // Ensure tellurium directory is set up
-      mkdirpObservable(telluriumConfigDir)
+      mkdirpObservable(jupyterConfigDir)
     )
   )
   // Set up our configuration file
@@ -92,7 +90,7 @@ const prepJupyterObservable = prepareEnv
           }
           throw err;
         }),
-      statObservable(pythonEnvironmentDir)
+      statObservable(dstTelluriumConfigDir)
         .catch((err) => {
           if (err.code === 'ENOENT') {
             const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', '.tellurium');
