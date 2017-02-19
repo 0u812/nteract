@@ -18,11 +18,25 @@ const KERNEL_SPECS = {
         ELECTRON_RUN_AS_NODE: '1'
       }
     }
+  },
+  python3: {
+    name: 'python3',
+    spec: {
+      language: 'python',
+      display_name: 'Python 3',
+      argv: [
+        '/Users/phantom/.tellurium/python-3.6.0/bin/python3',
+        '-m',
+        'ipykernel',
+        '-f',
+        '{connection_file}'
+      ]
+    }
   }
 };
 
 export default function initializeKernelSpecs(kernelSpecs) {
-  Object.assign(KERNEL_SPECS, kernelSpecs);
+  // Object.assign(KERNEL_SPECS, kernelSpecs);
   return KERNEL_SPECS;
 }
 
