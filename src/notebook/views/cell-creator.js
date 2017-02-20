@@ -1,6 +1,8 @@
 // @flow
+import { remote } from 'electron';
 import React, { PureComponent } from 'react';
 import { throttle } from 'lodash';
+const log = require('electron-log');
 
 type Props = {
   above: boolean,
@@ -13,6 +15,27 @@ type State = {|
   show: boolean,
 |};
 
+// https://github.com/sindresorhus/electron-context-menu/blob/master/index.js
+// https://github.com/electron/electron/issues/5794#issuecomment-222687713
+const makeTelluriumMenuTemplate = () => [{
+    id: 'importsbml',
+    label: 'Import SBML...',
+    // accelerator: 'CmdOrCtrl+Z',
+    click: (item, win) => alert('sbml'),
+    enabled: true
+  },{
+    id: 'importomex',
+    label: 'Import OMEX...',
+    // accelerator: 'CmdOrCtrl+Z',
+    click: (item, win) => alert('omex'),
+    enabled: true
+  }];
+
+const telluriumPopup = () => {
+  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate());
+  menu.popup(remote.BrowserWindow.getFocusedWindow());
+}
+
 const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
   <div className="cell-creator">
     <button
@@ -24,6 +47,9 @@ const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
     </button>
     <button onClick={() => createCell('code')} title="create code cell" className="add-code-cell">
       <span className="octicon octicon-code" />
+    </button>
+    <button onClick={() => telluriumPopup()} title="tellurium" className="tellurium-helper">
+      <span className="octicon octicon-alert" />
     </button>
     { above ? null :
     <button onClick={() => mergeCell()} title="merge cells" className="merge-cell">

@@ -66,7 +66,8 @@ const fullAppReady$ = Rx.Observable.zip(
 
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'tellurium.json');
-const dstTelluriumConfigDir = path.join(app.getPath('home'), '.tellurium');
+const dstTelluriumConfigDir = process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(app.getPath('home'), '.tellurium');
+log.info('dstTelluriumConfigDir = ', dstTelluriumConfigDir)
 
 const prepJupyterObservable = prepareEnv
   .mergeMap(() =>
@@ -94,7 +95,6 @@ const prepJupyterObservable = prepareEnv
         .catch((err) => {
           if (err.code === 'ENOENT') {
             const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', '.tellurium');
-            // log.info('srcPythonDir ', srcPythonDir);
             return ncpObservable(
               srcTelluriumConfigDir,
               dstTelluriumConfigDir)
