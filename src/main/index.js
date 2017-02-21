@@ -67,6 +67,7 @@ const fullAppReady$ = Rx.Observable.zip(
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'tellurium.json');
 const dstTelluriumConfigDir = process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(app.getPath('home'), '.tellurium');
+// TODO: Write VERSION.txt to dstTelluriumConfigDir
 log.info('dstTelluriumConfigDir = ', dstTelluriumConfigDir)
 
 const prepJupyterObservable = prepareEnv
