@@ -145,10 +145,19 @@ export default class Toolbar extends React.PureComponent {
                   </li>
                   <li onClick={this.toggleOutputExpansion} className="outputExpanded" >
                     <a>Toggle Expanded Output</a>
-                  </li>
-                  <li onClick={() => this.changeCodeCellType('omex')} className="changeCodeType" >
-                    <a>Convert to OMEX Cell</a>
-                  </li>
+                  </li> {
+                    this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' || this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) ==='antimony' ?
+                    <li onClick={() => this.changeCodeCellType('python')} className="changeCodeType" >
+                      <a>Convert to Python Cell</a>
+                    </li>
+                    :
+                    [<li onClick={() => this.changeCodeCellType('omex')} className="changeCodeType" >
+                      <a>Convert to OMEX Cell</a>
+                    </li>,
+                    <li onClick={() => this.changeCodeCellType('antimony')} className="changeCodeType" >
+                      <a>Convert to Antimony Cell</a>
+                    </li>]
+                  }
                 </ul> : null
               }
               <ul>
