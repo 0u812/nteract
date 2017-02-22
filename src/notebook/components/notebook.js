@@ -6,6 +6,9 @@ import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { writeFileSync } from 'fs';
+const path = require('path');
+const os = require('os');
+const username = require('username');
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -72,8 +75,18 @@ export function checkVCardExists(): Boolean {
   return false;
 }
 
-export function writeDummyVCard(): Boolean {
-  writeFileSync('/Users/phantom/vcard', 'a vcard');
+export function writeDummyVCard(): void {
+  alert('dummp');
+  const tedir = (process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(os.homedir(), '.tellurium'));
+  const vcard_path = path.join(tedir,username.sync()+'.vcard');
+  alert(vcard_path);
+  writeFileSync(vcard_path, JSON.stringify({
+    version: '1.0.0',
+    first_name: username.sync(),
+    last: '',
+    email: username.sync()+'@dankmemes.com',
+    organization: ''
+  }));
 }
 
 export function executeCellInNotebook(store: Object, id: String, cell: Object): void {

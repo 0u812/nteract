@@ -163,6 +163,7 @@
     "shell-env": "^0.3.0",
     "spawn-rx": "^2.0.3",
     "spawnteract": "^2.2.0",
+    "username": "^2.3.0",
     "uuid": "^3.0.0",
     "vega": "^2.6.3",
     "vega-embed": "^2.2.0",
