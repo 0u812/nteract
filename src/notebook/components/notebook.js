@@ -5,6 +5,7 @@ import React from 'react';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
+import { writeFileSync } from 'fs';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -71,20 +72,41 @@ export function checkVCardExists(): Boolean {
   return false;
 }
 
+export function writeDummyVCard(): Boolean {
+  writeFileSync('/Users/phantom/vcard', 'a vcard');
+}
+
 export function executeCellInNotebook(store: Object, id: String, cell: Object): void {
   if (!checkVCardExists()) {
-    dialog.showMessageBox({
+    const response = dialog.showMessageBox({
       type: 'question',
       title: 'VCard Not Found',
       buttons: ['Yes', 'No'],
-      checkboxLabel: 'Do not show again',
-      checkboxChecked: false,
+      // TODO: Upgrade Electron
+      // checkboxLabel: 'Do not show again',
+      // checkboxChecked: false,
       message: 'Would you like to fill in your personal info now?',
       detail:  'Could not find you personal info. '+
       'Would you like to fill in your personal info now? '+
-      'This will automatically add your name to any COMBINE archives you create.',
-      callback: (response, checkboxChecked) => null
-    })
+      'This will automatically add your name to any COMBINE archives you create.'
+    }//,
+    // callback
+    // (response, checkboxChecked) => {
+    // (response) => {
+    //   alert(response);
+    //   if (response === 0) {
+    //     alert('yes');
+    //   }
+    // }
+    );
+    if (response === 0) {
+      // Create the VCard and do not execute the cell
+      var vcard_dialog = new BrowserWindow({width: 600, height: 400});
+      return;
+    } else {
+      // Create a dummy VCard and execute the cell
+      writeDummyVCard();
+    }
   }
   const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
   store.dispatch(executeCell(
