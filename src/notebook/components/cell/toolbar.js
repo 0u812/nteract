@@ -61,7 +61,7 @@ export default class Toolbar extends React.PureComponent {
   executeCell(): void {
     this.context.store.dispatch(executeCell(
                                       this.props.id,
-                                      this.props.cell.get('source')));
+                                      cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' ? '%%omex\n'+this.props.cell.get('source') : this.props.cell.get('source')));
   }
 
   clearOutputs(): void {

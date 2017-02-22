@@ -146,7 +146,7 @@ export class Notebook extends React.PureComponent {
       this.context.store.dispatch(
         executeCell(
           id,
-          cell.get('source')
+          cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' ? '%%omex\n'+cell.get('source') : cell.get('source')
         )
       );
     }
