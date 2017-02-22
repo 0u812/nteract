@@ -1,5 +1,6 @@
 /* eslint-disable no-return-assign */
 /* @flow */
+const {dialog} = require('electron').remote
 import React from 'react';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -66,7 +67,25 @@ const mapStateToProps = (state: Object) => ({
   models: state.comms.get('models'),
 });
 
+export function checkVCardExists(): Boolean {
+  return false;
+}
+
 export function executeCellInNotebook(store: Object, id: String, cell: Object): void {
+  if (!checkVCardExists()) {
+    dialog.showMessageBox({
+      type: 'question',
+      title: 'VCard Not Found',
+      buttons: ['Yes', 'No'],
+      checkboxLabel: 'Do not show again',
+      checkboxChecked: false,
+      message: 'Would you like to fill in your personal info now?',
+      detail:  'Could not find you personal info. '+
+      'Would you like to fill in your personal info now? '+
+      'This will automatically add your name to any COMBINE archives you create.',
+      callback: (response, checkboxChecked) => null
+    })
+  }
   const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
   store.dispatch(executeCell(
     id,
