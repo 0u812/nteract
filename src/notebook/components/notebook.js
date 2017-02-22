@@ -5,11 +5,7 @@ import React from 'react';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
-import { writeFileSync } from 'fs';
-const path = require('path');
-const os = require('os');
-import username from 'username';
-import { existsSync } from 'fs';
+import {checkVCardExists, writeDummyVCard} from '../vcard'
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -72,29 +68,7 @@ const mapStateToProps = (state: Object) => ({
   models: state.comms.get('models'),
 });
 
-export function getTelluriumDir() {
-  return (process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(os.homedir(), '.tellurium'));
-}
-
-export function getVCardPath() {
-  return path.join(getTelluriumDir(),username.sync()+'.vcard');
-}
-
-export function checkVCardExists(): Boolean {
-  return existsSync(getVCardPath());
-}
-
-export function writeDummyVCard(): void {
-  writeFileSync(getVCardPath(), JSON.stringify({
-    version: '1.0.0',
-    first_name: username.sync(),
-    last: '',
-    email: username.sync()+'@dankmemes.com',
-    organization: ''
-  }));
-}
-
-export function executeCellInNotebook(store: Object, id: String, cell: Object): void {
+export function preExecuteCellChecks(store: Object, id: String, cell: Object): Boolean {
   if (!checkVCardExists()) {
     const response = dialog.showMessageBox({
       type: 'question',
@@ -115,17 +89,21 @@ export function executeCellInNotebook(store: Object, id: String, cell: Object): 
     //   if (response === 0) {
     //     alert('yes');
     //   }
-    // }
+    // }}
     );
     if (response === 0) {
       // Create the VCard and do not execute the cell
       var vcard_dialog = new BrowserWindow({width: 600, height: 400});
-      return;
+      return false;
     } else {
       // Create a dummy VCard and execute the cell
       writeDummyVCard();
     }
   }
+  return true;
+}
+
+export function executeCellInNotebook(store: Object, id: String, cell: Object): void {
   const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
   store.dispatch(executeCell(
     id,
@@ -205,12 +183,13 @@ export class Notebook extends React.PureComponent {
     const id = this.props.cellFocused;
     const cell = cellMap.get(id);
 
-    if (e.shiftKey) {
+    const prechecks = preExecuteCellChecks(this.context.store, id, cell);
+    if (e.shiftKey && prechecks) {
       this.context.store.dispatch(focusNextCell(this.props.cellFocused, true));
       this.context.store.dispatch(focusNextCellEditor(id));
     }
 
-    if (cell.get('cell_type') === 'code') {
+    if (prechecks && cell.get('cell_type') === 'code') {
       executeCellInNotebook(this.context.store, id, cell);
     }
   }
