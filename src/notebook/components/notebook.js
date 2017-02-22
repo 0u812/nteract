@@ -66,6 +66,15 @@ const mapStateToProps = (state: Object) => ({
   models: state.comms.get('models'),
 });
 
+export function executeCellInNotebook(store: Object, id: String, cell: Object): void {
+  const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+  store.dispatch(executeCell(
+    id,
+    (codetype === 'omex' ? '%%omex\n' :
+     codetype === 'antimony' ? '%%crn\n' : '')+
+     cell.get('source')));
+}
+
 export class Notebook extends React.PureComponent {
   props: Props;
   createCellElement: (s: string) => ?React.Element<any>;
@@ -143,13 +152,7 @@ export class Notebook extends React.PureComponent {
     }
 
     if (cell.get('cell_type') === 'code') {
-      const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-      this.context.store.dispatch(
-        executeCell(
-          id,
-          (codetype === 'omex' ? '%%omex\n' : codetype === 'antimony' ? '%%crn\n' : '')+cell.get('source')
-        )
-      );
+      executeCellInNotebook(this.context.store, id, cell);
     }
   }
 

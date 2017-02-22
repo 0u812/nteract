@@ -2,6 +2,7 @@
 // @flow
 import React from 'react';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { executeCellInNotebook } from '../notebook';
 
 import {
   executeCell,
@@ -59,10 +60,7 @@ export default class Toolbar extends React.PureComponent {
   }
 
   executeCell(): void {
-    const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-    this.context.store.dispatch(executeCell(
-                                      this.props.id,
-                                      (codetype === 'omex' ? '%%omex\n' : codetype === 'antimony' ? '%%crn\n' : '')+this.props.cell.get('source')));
+    executeCellInNotebook(this.context.store, this.props.id, this.props.cell);
   }
 
   clearOutputs(): void {
