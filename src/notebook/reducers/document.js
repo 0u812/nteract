@@ -486,10 +486,22 @@ function changeCellType(state: DocumentState, action: ChangeCellTypeAction) {
       .setIn(['notebook', 'cellMap', id, 'outputs'], new Immutable.List());
   }
 
+  // convert from code cell to markdown cell
   return cleanCellTransient(state.setIn(['notebook', 'cellMap', id, 'cell_type'], to)
     .deleteIn(['notebook', 'cellMap', id, 'execution_count'])
-    .deleteIn(['notebook', 'cellMap', id, 'outputs']),
+    .deleteIn(['notebook', 'cellMap', id, 'outputs'])
+    // wipe out any special properties (e.g. omex cell etc.)
+    .deleteIn(['notebook', 'cellMap', id, 'metadata', 'tellurium', 'te_cell_type']),
     id);
+}
+
+type ChangeCodeCellTypeAction = { type: 'CHANGE_CODE_CELL_TYPE', id: CellID, to: string }
+function changeCodeCellType(state: DocumentState, action: ChangeCodeCellTypeAction) {
+  const { id, to } = action;
+  alert('change code cell type action');
+  return state.setIn(['notebook', 'cellMap', id, 'metadata', 'tellurium', 'te_cell_type'], to)
+    .setIn(['notebook', 'cellMap', id, 'execution_count'], null)
+    .setIn(['notebook', 'cellMap', id, 'outputs'], new Immutable.List());
 }
 
 type ToggleCellExpansionAction = { type: 'TOGGLE_OUTPUT_EXPANSION', id: CellID }
@@ -513,7 +525,7 @@ type DocumentAction =
   ChangeOutputVisibilityAction | ChangeInputVisibilityAction | UpdateCellPagersAction |
   UpdateCellStatusAction | SetLanguageInfoAction | SetKernelInfoAction |
   OverwriteMetadataFieldAction | DeleteMetadataFieldAction | CopyCellAction |
-  CutCellAction | PasteCellAction | ChangeCellTypeAction |
+  CutCellAction | PasteCellAction | ChangeCellTypeAction | ChangeCodeCellTypeAction |
   ToggleCellExpansionAction
 
 const defaultDocument: DocumentState = DocumentRecord();
@@ -582,6 +594,8 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return pasteCell(state, action);
     case constants.CHANGE_CELL_TYPE:
       return changeCellType(state, action);
+    case constants.CHANGE_CODE_CELL_TYPE:
+      return changeCodeCellType(state, action);
     case constants.TOGGLE_OUTPUT_EXPANSION:
       return toggleOutputExpansion(state, action);
     default:

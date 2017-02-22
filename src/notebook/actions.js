@@ -253,6 +253,14 @@ export function changeCellType(id, to) {
   };
 }
 
+export function changeCodeCellType(id, to) {
+  return {
+    type: constants.CHANGE_CODE_CELL_TYPE,
+    id,
+    to,
+  };
+}
+
 export function setGithubToken(githubToken) {
   return {
     type: constants.SET_GITHUB_TOKEN,

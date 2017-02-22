@@ -11,6 +11,7 @@ import {
   changeOutputVisibility,
   changeInputVisibility,
   changeCellType,
+  changeCodeCellType,
   toggleOutputExpansion,
 } from '../../actions';
 
@@ -28,6 +29,7 @@ export default class Toolbar extends React.PureComponent {
   changeInputVisibility: () => void;
   changeOutputVisibility: () => void;
   changeCellType: () => void;
+  changeCodeCellType: () => void;
   dropdown: Dropdown;
   toggleOutputExpansion: () => void;
 
@@ -44,6 +46,7 @@ export default class Toolbar extends React.PureComponent {
     this.changeInputVisibility = this.changeInputVisibility.bind(this);
     this.changeOutputVisibility = this.changeOutputVisibility.bind(this);
     this.changeCellType = this.changeCellType.bind(this);
+    this.changeCodeCellType = this.changeCodeCellType.bind(this);
     this.toggleOutputExpansion = this.toggleOutputExpansion.bind(this);
   }
 
@@ -80,6 +83,11 @@ export default class Toolbar extends React.PureComponent {
     this.dropdown.hide();
     const to = this.props.type === 'markdown' ? 'code' : 'markdown';
     this.context.store.dispatch(changeCellType(this.props.id, to));
+  }
+
+  changeCodeCellType(to): void {
+    this.dropdown.hide();
+    this.context.store.dispatch(changeCodeCellType(this.props.id, to));
   }
 
   toggleOutputExpansion(): void {
@@ -136,6 +144,9 @@ export default class Toolbar extends React.PureComponent {
                   </li>
                   <li onClick={this.toggleOutputExpansion} className="outputExpanded" >
                     <a>Toggle Expanded Output</a>
+                  </li>
+                  <li onClick={() => this.changeCodeCellType('omex')} className="changeCodeType" >
+                    <a>Convert to OMEX Cell</a>
                   </li>
                 </ul> : null
               }

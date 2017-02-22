@@ -78,6 +78,7 @@ export const CUT_CELL = 'CUT_CELL';
 export const PASTE_CELL = 'PASTE_CELL';
 
 export const CHANGE_CELL_TYPE = 'CHANGE_CELL_TYPE';
+export const CHANGE_CODE_CELL_TYPE = 'CHANGE_CODE_CELL_TYPE';
 
 export const SET_MODIFIED = 'SET_MODIFIED';
 
