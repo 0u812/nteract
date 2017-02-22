@@ -143,10 +143,11 @@ export class Notebook extends React.PureComponent {
     }
 
     if (cell.get('cell_type') === 'code') {
+      const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
       this.context.store.dispatch(
         executeCell(
           id,
-          cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' ? '%%omex\n'+cell.get('source') : cell.get('source')
+          (codetype === 'omex' ? '%%omex\n' : codetype === 'antimony' ? '%%crn\n' : '')+cell.get('source')
         )
       );
     }

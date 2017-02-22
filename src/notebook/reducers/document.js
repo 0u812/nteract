@@ -498,7 +498,7 @@ function changeCellType(state: DocumentState, action: ChangeCellTypeAction) {
 type ChangeCodeCellTypeAction = { type: 'CHANGE_CODE_CELL_TYPE', id: CellID, to: string }
 function changeCodeCellType(state: DocumentState, action: ChangeCodeCellTypeAction) {
   const { id, to } = action;
-  alert('change code cell type action');
+
   return state.setIn(['notebook', 'cellMap', id, 'metadata', 'tellurium', 'te_cell_type'], to)
     .setIn(['notebook', 'cellMap', id, 'execution_count'], null)
     .setIn(['notebook', 'cellMap', id, 'outputs'], new Immutable.List());

@@ -47,13 +47,19 @@ class CodeCell extends React.PureComponent {
     return this.props.cell.getIn(['metadata', 'outputExpanded']);
   }
 
+  getCodeCellType(): any {
+    return this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+  }
+
   render(): ?React.Element<any> {
     return (<div className={this.props && this.props.running ? 'cell-running' : ''} >
       {
         !this.isInputHidden() ?
           <div className="input-container"> {
-            this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' ?
+            this.getCodeCellType() === 'omex' ?
             <div className="prompt">OMEX</div> :
+            this.getCodeCellType() === 'antimony' ?
+            <div className="prompt">Sb</div> :
             <Inputs
               executionCount={this.props.cell.get('execution_count')}
               running={this.props.running}
