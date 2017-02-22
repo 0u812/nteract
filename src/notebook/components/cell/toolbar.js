@@ -155,7 +155,7 @@ export default class Toolbar extends React.PureComponent {
                       <a>Convert to OMEX Cell</a>
                     </li>,
                     <li onClick={() => this.changeCodeCellType('antimony')} className="changeCodeType" >
-                      <a>Convert to Antimony Cell</a>
+                      <a>Convert to Model Cell</a>
                     </li>]
                   }
                 </ul> : null
