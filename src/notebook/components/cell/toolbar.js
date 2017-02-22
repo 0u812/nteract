@@ -145,19 +145,29 @@ export default class Toolbar extends React.PureComponent {
                   </li>
                   <li onClick={this.toggleOutputExpansion} className="outputExpanded" >
                     <a>Toggle Expanded Output</a>
-                  </li> {
-                    this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' || this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) ==='antimony' ?
-                    <li onClick={() => this.changeCodeCellType('python')} className="changeCodeType" >
-                      <a>Convert to Python Cell</a>
-                    </li>
-                    :
-                    [<li onClick={() => this.changeCodeCellType('omex')} className="changeCodeType" >
-                      <a>Convert to OMEX Cell</a>
-                    </li>,
-                    <li onClick={() => this.changeCodeCellType('antimony')} className="changeCodeType" >
-                      <a>Convert to Model Cell</a>
-                    </li>]
-                  }
+                  </li>
+                    // enable certain conversion options depending on the type of cell
+                    {
+                      (this.props.cell.hasIn(['metadata', 'tellurium', 'te_cell_type']) && this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) !== 'python') ?
+                      <li onClick={() => this.changeCodeCellType('python')} className="changeCodeType" >
+                        <a>Convert to Python Cell</a>
+                      </li>
+                      : null
+                    }
+                    {
+                      this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) !== 'omex' ?
+                      <li onClick={() => this.changeCodeCellType('omex')} className="changeCodeType" >
+                        <a>Convert to OMEX Cell</a>
+                      </li>
+                      : null
+                    }
+                    {
+                      this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) !== 'antimony' ?
+                      <li onClick={() => this.changeCodeCellType('antimony')} className="changeCodeType" >
+                        <a>Convert to Model Cell</a>
+                      </li>
+                      : null
+                    }
                 </ul> : null
               }
               <ul>
