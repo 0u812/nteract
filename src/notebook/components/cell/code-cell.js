@@ -51,11 +51,14 @@ class CodeCell extends React.PureComponent {
     return (<div className={this.props && this.props.running ? 'cell-running' : ''} >
       {
         !this.isInputHidden() ?
-          <div className="input-container">
+          <div className="input-container"> {
+            this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex' ?
+            <div className="prompt">OMEX</div> :
             <Inputs
               executionCount={this.props.cell.get('execution_count')}
               running={this.props.running}
             />
+            }
             <Editor
               completion
               id={this.props.id}
