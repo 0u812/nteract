@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import { writeFileSync } from 'fs';
 const path = require('path');
 const os = require('os');
-const username = require('username');
+import username from 'username';
+import { existsSync } from 'fs';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -71,16 +72,20 @@ const mapStateToProps = (state: Object) => ({
   models: state.comms.get('models'),
 });
 
+export function getTelluriumDir() {
+  return (process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(os.homedir(), '.tellurium'));
+}
+
+export function getVCardPath() {
+  return path.join(getTelluriumDir(),username.sync()+'.vcard');
+}
+
 export function checkVCardExists(): Boolean {
-  return false;
+  return existsSync(getVCardPath());
 }
 
 export function writeDummyVCard(): void {
-  alert('dummp');
-  const tedir = (process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(os.homedir(), '.tellurium'));
-  const vcard_path = path.join(tedir,username.sync()+'.vcard');
-  alert(vcard_path);
-  writeFileSync(vcard_path, JSON.stringify({
+  writeFileSync(getVCardPath(), JSON.stringify({
     version: '1.0.0',
     first_name: username.sync(),
     last: '',
