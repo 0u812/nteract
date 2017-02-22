@@ -1,11 +1,12 @@
 /* eslint-disable no-return-assign */
 /* @flow */
-const {dialog, BrowserWindow} = require('electron').remote
+const {dialog, BrowserWindow, app} = require('electron').remote;
 import React from 'react';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import {checkVCardExists, writeDummyVCard} from '../vcard'
+const path = require('path');
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -93,10 +94,11 @@ export function preExecuteCellChecks(store: Object, id: String, cell: Object): B
     );
     if (response === 0) {
       // Create the VCard and do not execute the cell
-      var vcard_dialog = new BrowserWindow({width: 600, height: 400, useContentSize: true, title: 'VCard Info'});
-      vcard_dialog.loadURL('http://www.google.com');
-      win.once('ready-to-show', () => {
-        win.show();
+      var vcard_dialog = new BrowserWindow({width: 600, height: 400, useContentSize: true, title: 'VCard Info', show: false});
+      const vcard_page = path.join(app.getAppPath(), 'static', 'vcard.html');
+      vcard_dialog.loadURL('file://'+vcard_page);
+      vcard_dialog.once('ready-to-show', () => {
+        vcard_dialog.show();
       });
       return false;
     } else {
