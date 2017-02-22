@@ -93,9 +93,11 @@ export function preExecuteCellChecks(store: Object, id: String, cell: Object): B
     );
     if (response === 0) {
       // Create the VCard and do not execute the cell
-      var vcard_dialog = new BrowserWindow({width: 600, height: 400});
+      var vcard_dialog = new BrowserWindow({width: 600, height: 400, useContentSize: true, title: 'VCard Info'});
       vcard_dialog.loadURL('http://www.google.com');
-      vcard_dialog.show()
+      win.once('ready-to-show', () => {
+        win.show();
+      });
       return false;
     } else {
       // Create a dummy VCard and execute the cell
