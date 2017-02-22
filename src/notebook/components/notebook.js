@@ -1,6 +1,6 @@
 /* eslint-disable no-return-assign */
 /* @flow */
-const {dialog} = require('electron').remote
+const {dialog, BrowserWindow} = require('electron').remote
 import React from 'react';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -94,6 +94,8 @@ export function preExecuteCellChecks(store: Object, id: String, cell: Object): B
     if (response === 0) {
       // Create the VCard and do not execute the cell
       var vcard_dialog = new BrowserWindow({width: 600, height: 400});
+      vcard_dialog.loadURL('http://www.google.com');
+      vcard_dialog.show()
       return false;
     } else {
       // Create a dummy VCard and execute the cell
