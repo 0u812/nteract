@@ -58,14 +58,11 @@ export default class Toolbar extends React.PureComponent {
     this.context.store.dispatch(removeCell(this.props.id));
   }
 
-  getCodeCellType(): any {
-    cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-  }
-
   executeCell(): void {
+    const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
     this.context.store.dispatch(executeCell(
                                       this.props.id,
-                                      (this.getCodeCellType() === 'omex' ? '%%omex\n' : this.getCodeCellType() === 'antimony' ? '%%crn\n' : '')+this.props.cell.get('source')));
+                                      (codetype === 'omex' ? '%%omex\n' : codetype === 'antimony' ? '%%crn\n' : '')+this.props.cell.get('source')));
   }
 
   clearOutputs(): void {
