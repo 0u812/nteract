@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom';
 class VCardField extends React.Component {
    render() {
       return (
-         <div>
-            vcard field
+         <div className="input-container">
+           <div className="prompt">{this.props.fieldName}</div>
+           <input></input>
          </div>
       );
    }
@@ -15,7 +16,10 @@ class VCard extends React.Component {
    render() {
       return (
          <div>
-            vcard
+            <h1>VCard Info</h1>
+            <div className="cell">
+              {this.props.children}
+            </div>
          </div>
       );
    }
@@ -23,7 +27,12 @@ class VCard extends React.Component {
 
 class App extends React.Component {
    render() {
-      return <VCard/>;
+      return (
+        <VCard>
+          <VCardField fieldName='First Name'/>
+          <VCardField fieldName='Last Name' />
+        </VCard>
+      );
    }
 }
 
