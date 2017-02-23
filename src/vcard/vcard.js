@@ -28,10 +28,20 @@ class VCard extends React.Component {
 class App extends React.Component {
    render() {
       return (
-        <VCard>
-          <VCardField fieldName='First Name'/>
-          <VCardField fieldName='Last Name' />
-        </VCard>
+        <div>
+          <VCard>
+            <VCardField fieldName='First Name'  />
+            <VCardField fieldName='Last Name'   />
+            <VCardField fieldName='Email'       />
+            <VCardField fieldName='Organization'/>
+            <VCardField fieldName='ORCID'       />
+          </VCard>
+          <br/>
+          <div>
+            <button>Save</button>
+            <button>Cancel</button>
+          </div>
+        </div>
       );
    }
 }
