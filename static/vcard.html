@@ -66,13 +66,8 @@
             // Force production by default for the sake of packaging
             process.env.NODE_ENV = 'production';
         }
-        React = require('../node_modules/react');
-        const element = React.createElement(
-          'h1',
-          {className: 'greeting'},
-          'Hello, world!'
-        );
-        alert(element);
+        require('../lib/webpacked-vcard');
+        alert('hi');
       };
     </script>
   </body>
