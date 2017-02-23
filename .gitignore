@@ -39,4 +39,4 @@ test/*.ipynb
 bin/nteract-env
 
 .DS_Store
-/.tellurium/python-3.6.0
+/telocal/python-3.6.0

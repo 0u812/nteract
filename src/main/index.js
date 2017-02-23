@@ -67,8 +67,9 @@ const fullAppReady$ = Rx.Observable.zip(
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'tellurium.json');
 // TODO: use app.getPath('userData') instead
-const dstTelluriumConfigDir = process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(app.getPath('home'), '.tellurium');
-// TODO: Write VERSION.txt to dstTelluriumConfigDir
+const dstTelluriumDataDir = path.join(app.getPath('userData'), 'telocal');
+// TODO: Write VERSION.txt to dstTelluriumDataDir
+log.info(dstTelluriumDataDir);
 
 const prepJupyterObservable = prepareEnv
   .mergeMap(() =>
@@ -92,13 +93,14 @@ const prepJupyterObservable = prepareEnv
           }
           throw err;
         }),
-      statObservable(dstTelluriumConfigDir)
+      statObservable(dstTelluriumDataDir)
         .catch((err) => {
           if (err.code === 'ENOENT') {
-            const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', '.tellurium');
+            const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', 'telocal');
+            log.info(srcTelluriumConfigDir);
             return ncpObservable(
               srcTelluriumConfigDir,
-              dstTelluriumConfigDir)
+              dstTelluriumDataDir)
           }
         })
     )

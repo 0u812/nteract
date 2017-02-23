@@ -1,12 +1,11 @@
 const {dialog, BrowserWindow, app} = require('electron').remote;
 import { writeFileSync } from 'fs';
 const path = require('path');
-const os = require('os');
 import username from 'username';
 import { existsSync } from 'fs';
 
 export function getTelluriumDir() {
-  return (process.platform == 'win32' ? path.join(process.env.APPDATA, 'tellurium') : path.join(os.homedir(), '.tellurium'));
+  return path.join(app.getPath('userData'), 'telocal');
 }
 
 export function getVCardPath() {

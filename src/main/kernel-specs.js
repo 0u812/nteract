@@ -25,7 +25,7 @@ const KERNEL_SPECS = {
       language: 'python',
       display_name: 'Python 3',
       argv: [
-        join(app.getPath('home'),'.tellurium','python-3.6.0','bin','python3'),
+        join(app.getPath('userData'),'telocal','python-3.6.0','bin','python3'),
         '-m',
         'ipykernel',
         '-f',

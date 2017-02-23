@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+const path = require('path');
+import username from 'username';
 
 class VCardField extends React.Component {
    render() {
       return (
          <div className="input-container">
-           <div className="prompt">{this.props.fieldName}</div>
-           <input></input>
+           <div className="prompt">{this.props.fieldLabel}</div>
+           <input id={this.props.fieldName}></input>
          </div>
       );
    }
@@ -33,17 +35,37 @@ const input_fields = {
   orcid: 'ORCID'
 }
 
+function jsonifyVCard(): String {
+  let vcard = {};
+  Object.keys(input_fields).map((key) => {
+    vcard[key] = document.getElementById(key).value;
+  });
+  return JSON.stringify(vcard);
+}
+
+function getTelluriumDataDir(): String {
+  return path.join(app.getPath('userData'), 'telocal');
+}
+
+export function getVCardPath() {
+  return path.join(getTelluriumDataDir(),username.sync()+'.vcard');
+}
+
+function saveVCard(): void {
+  const vcard = jsonifyVCard();
+}
+
 class App extends React.Component {
    render() {
       return (
         <div>
           <VCard>
             {Object.keys(input_fields).map((key) =>
-              <VCardField fieldName={input_fields[key]}/>)}
+              <VCardField fieldName={key} fieldLabel={input_fields[key]}/>)}
           </VCard>
           <br/>
           <div className='buttonbar'>
-            <span className='diagbutton keep fadein octicon octicon-check'/>
+            <span onClick={saveVCard} className='diagbutton keep fadein octicon octicon-check'/>
             <span className='diagbutton discard fadein octicon octicon-x'/>
           </div>
         </div>

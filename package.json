@@ -1,5 +1,5 @@
 {
-  "name": "nteract",
+  "name": "Tellurium",
   "version": "0.0.15",
   "description": "Interactive literate coding notebook!",
   "main": "./lib/main/index.js",
@@ -109,7 +109,7 @@
     "extraResources": [
       "bin",
       "example-notebooks",
-      ".tellurium"
+      "telocal"
     ],
     "npmSkipBuildFromSource": true
   },
