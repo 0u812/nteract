@@ -38,8 +38,8 @@ class App extends React.Component {
           </VCard>
           <br/>
           <div className='buttonbar'>
-            <span className='diagbutton keep octicon octicon-check'/>
-            <span className='diagbutton discard octicon octicon-x'/>
+            <span className='diagbutton keep fadein octicon octicon-check'/>
+            <span className='diagbutton discard fadein octicon octicon-x'/>
           </div>
         </div>
       );

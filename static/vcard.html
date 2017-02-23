@@ -37,6 +37,12 @@
       .discard {
         color:#bc2323;
       }
+      .fadein {
+        animation: 1s ease-out fadein;
+      }
+      @keyframes fadein {
+        from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0px);}
+      }
     </style>
   </head>
   <body>
