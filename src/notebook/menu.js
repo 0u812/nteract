@@ -6,6 +6,8 @@ import {
   shell,
 } from 'electron';
 
+import { openVCardWindow } from './vcard';
+
 import * as path from 'path';
 
 import * as fs from 'fs';
@@ -302,6 +304,10 @@ export function dispatchNewNotebook(store, event, kernelSpec) {
   store.dispatch(newNotebook(kernelSpec, cwdKernelFallback()));
 }
 
+export function updateVCard(store) {
+  openVCardWindow();
+}
+
 export function exportPDF(filename, notificationSystem) {
   remote.getCurrentWindow().webContents.printToPDF({ printBackground: true }, (error, data) => {
     if (error) throw error;
@@ -390,6 +396,7 @@ export function initMenuHandlers(store) {
   ipc.on('menu:set-blink-rate', dispatchSetCursorBlink.bind(null, store));
   ipc.on('menu:github:auth', dispatchPublishUserGist.bind(null, store));
   ipc.on('menu:exportPDF', storeToPDF.bind(null, store));
+  ipc.on('menu:updateVCard', updateVCard.bind(null, store));
   // OCD: This is more like the registration of main -> renderer thread
   ipc.on('main:load', dispatchLoad.bind(null, store));
   ipc.on('main:load-config', dispatchLoadConfig.bind(null, store));

@@ -170,6 +170,10 @@ export const fileSubMenus = {
     label: 'Export &PDF',
     click: createSender('menu:exportPDF'),
   },
+  updateVCard: {
+    label: 'Update Personal Info...',
+    click: createSender('menu:updateVCard'),
+  },
 };
 export const file = {
   label: '&File',
@@ -181,6 +185,7 @@ export const file = {
     fileSubMenus.saveAs,
     fileSubMenus.publish,
     fileSubMenus.exportPDF,
+    fileSubMenus.updateVCard,
   ],
 };
 
@@ -561,6 +566,7 @@ export function loadFullMenu(kernelSpecs) {
       fileSubMenus.saveAs,
       fileSubMenus.publish,
       fileSubMenus.exportPDF,
+      fileSubMenus.updateVCard,
     ],
   };
 

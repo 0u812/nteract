@@ -37,6 +37,10 @@ function saveVCard(): void {
   remote.getCurrentWindow().close();
 }
 
+function closeAndDiscard(): void {
+  remote.getCurrentWindow().close();
+}
+
 function checkVCardExists(): Boolean {
   return existsSync(getVCardPath());
 }
@@ -92,7 +96,7 @@ class App extends React.Component {
           <br/>
           <div className='buttonbar'>
             <span onClick={saveVCard} className='diagbutton keep fadein octicon octicon-check'/>
-            <span className='diagbutton discard fadein octicon octicon-x'/>
+            <span onClick={closeAndDiscard} className='diagbutton discard fadein octicon octicon-x'/>
           </div>
         </div>
       );
