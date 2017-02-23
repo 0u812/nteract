@@ -1,16 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class MyComp extends React.Component {
-   render() {
-      return (
-         <div>
-            hi
-         </div>
-      );
-   }
-}
-
 class VCardField extends React.Component {
    render() {
       return (
@@ -33,11 +23,7 @@ class VCard extends React.Component {
 
 class App extends React.Component {
    render() {
-      return (
-         <div>
-            app
-         </div>
-      );
+      return <VCard/>;
    }
 }
 
