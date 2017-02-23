@@ -52,7 +52,7 @@ export function vcardChecks(store: Object, id: String, cell: Object): Boolean {
     );
     if (response === 0) {
       // Create the VCard and do not execute the cell
-      var vcard_dialog = new BrowserWindow({width: 600, height: 400, useContentSize: true, title: 'VCard Info', show: false});
+      var vcard_dialog = new BrowserWindow({width: 600, height: 340, useContentSize: true, title: 'VCard Info', show: false});
       const vcard_page = path.join(app.getAppPath(), 'static', 'vcard.html');
       vcard_dialog.loadURL('file://'+vcard_page);
       vcard_dialog.once('ready-to-show', () => {
