@@ -9,23 +9,44 @@
     <link rel="stylesheet" href="../static/styles/theme-light.css"/>
     <link rel="stylesheet" href="../static/styles/main.css"/>
     <style>
-    input {
-      width: 300px;
-      /*padding: 12px 20px;*/
-      /*margin: 8px 0;*/
-      /*display: inline-block;*/
-      /*border: 1px solid #ccc;*/
-      /*border-radius: 4px;*/
-      /*box-sizing: border-box;*/
-    }
+      input {
+        width: 300px;
+        /*padding: 12px 20px;*/
+        /*margin: 8px 0;*/
+        /*display: inline-block;*/
+        /*border: 1px solid #ccc;*/
+        /*border-radius: 4px;*/
+        /*box-sizing: border-box;*/
+      }
+      .cell .prompt {
+        padding: 4px 4px;
+        width: 100px;
+        text-align: right;
+      }
     </style>
   </head>
   <body>
     <div id="app">
-      VCard
+      <h1>VCard Info</h1>
       <div class="cell">
         <div class="input-container">
-          <div class="prompt">First</div>
+          <div class="prompt">First Name</div>
+          <input></input>
+        </div>
+        <div class="input-container">
+          <div class="prompt">Last Name</div>
+          <input></input>
+        </div>
+        <div class="input-container">
+          <div class="prompt">Email</div>
+          <input></input>
+        </div>
+        <div class="input-container">
+          <div class="prompt">Organization</div>
+          <input></input>
+        </div>
+        <div class="input-container">
+          <div class="prompt">ORCID</div>
           <input></input>
         </div>
       </div>
