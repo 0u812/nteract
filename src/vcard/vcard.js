@@ -37,9 +37,9 @@ class App extends React.Component {
             <VCardField fieldName='ORCID'       />
           </VCard>
           <br/>
-          <div>
-            <span className="octicon octicon-check"/>
-            <span className="octicon octicon-x"/>
+          <div className='buttonbar'>
+            <span className='diagbutton octicon octicon-check'/>
+            <span className='diagbutton octicon octicon-x'/>
           </div>
         </div>
       );
