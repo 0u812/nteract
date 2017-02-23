@@ -10,11 +10,14 @@ const nodeModules = {
 };
 
 module.exports = {
-  entry: './src/notebook/index.js',
+  entry: {
+    notebook: './src/notebook/index.js',
+    vcard: './src/vcard/vcard.js'
+  },
   target: 'electron-renderer',
   output: {
     path: path.join(__dirname, 'lib'),
-    filename: 'webpacked-notebook.js'
+    filename: 'webpacked-[name].js'
   },
   module: {
     loaders: [
