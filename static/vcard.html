@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -6,10 +6,29 @@
     <link rel="stylesheet" href="../node_modules/nteract-assets/fonts/source-sans-pro/source-sans-pro.css"/>
     <link rel="stylesheet" href="../node_modules/nteract-assets/fonts/source-code-pro/source-code-pro.css"/>
     <link rel="stylesheet" href="../node_modules/nteract-assets/fonts/octicons/octicons.css"/>
+    <link rel="stylesheet" href="../static/styles/theme-light.css"/>
+    <link rel="stylesheet" href="../static/styles/main.css"/>
+    <style>
+    input {
+      width: 300px;
+      /*padding: 12px 20px;*/
+      /*margin: 8px 0;*/
+      /*display: inline-block;*/
+      /*border: 1px solid #ccc;*/
+      /*border-radius: 4px;*/
+      /*box-sizing: border-box;*/
+    }
+    </style>
   </head>
   <body>
     <div id="app">
       VCard
+      <div class="cell">
+        <div class="input-container">
+          <div class="prompt">First</div>
+          <input></input>
+        </div>
+      </div>
     </div>
     <script>
       window.onload = function deferredLoad() {
