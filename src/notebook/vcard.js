@@ -21,9 +21,10 @@ export function writeDummyVCard(): void {
   writeFileSync(getVCardPath(), JSON.stringify({
     version: '1.0.0',
     first_name: username.sync(),
-    last: '',
+    last_name: '',
     email: username.sync()+'@dankmemes.com',
-    organization: ''
+    organization: '',
+    orcid: ''
   }));
 }
 

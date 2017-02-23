@@ -25,16 +25,21 @@ class VCard extends React.Component {
    }
 }
 
+const input_fields = {
+  first_name: 'First Name',
+  last_name: 'Last Name',
+  email: 'Email',
+  organization: 'Organization',
+  orcid: 'ORCID'
+}
+
 class App extends React.Component {
    render() {
       return (
         <div>
           <VCard>
-            <VCardField fieldName='First Name'  />
-            <VCardField fieldName='Last Name'   />
-            <VCardField fieldName='Email'       />
-            <VCardField fieldName='Organization'/>
-            <VCardField fieldName='ORCID'       />
+            {Object.keys(input_fields).map((key) =>
+              <VCardField fieldName={input_fields[key]}/>)}
           </VCard>
           <br/>
           <div className='buttonbar'>
