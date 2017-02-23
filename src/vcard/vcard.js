@@ -38,8 +38,8 @@ class App extends React.Component {
           </VCard>
           <br/>
           <div>
-            <button>Save</button>
-            <button>Cancel</button>
+            <span className="octicon octicon-check"/>
+            <span className="octicon octicon-x"/>
           </div>
         </div>
       );
