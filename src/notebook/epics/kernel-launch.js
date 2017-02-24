@@ -1,5 +1,9 @@
 /* @flow */
 
+const { app } = require('electron').remote;
+
+const path = require('path');
+
 import Rx from 'rxjs/Rx';
 
 import { launchSpec } from 'spawnteract';
@@ -83,7 +87,7 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
   const spec = kernelSpec.spec;
 
   return Rx.Observable.create((observer) => {
-    launchSpec(spec, { cwd: cwd, env: {IPYTHONDIR: '/Users/phantom/.tellurium/ipython'} })
+    launchSpec(spec, { cwd: cwd, env: {IPYTHONDIR: path.join(app.getPath('userData'), 'telocal', 'ipython')} })
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;
