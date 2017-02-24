@@ -146,7 +146,6 @@ export default class Toolbar extends React.PureComponent {
                   <li onClick={this.toggleOutputExpansion} className="outputExpanded" >
                     <a>Toggle Expanded Output</a>
                   </li>
-                    // enable certain conversion options depending on the cell type
                     {
                       (this.props.cell.hasIn(['metadata', 'tellurium', 'te_cell_type']) && this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) !== 'python') ?
                       <li onClick={() => this.changeCodeCellType('python')} className="changeCodeType" >
