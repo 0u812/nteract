@@ -2,7 +2,9 @@
 // @flow
 import React from 'react';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
-import { executeCellInNotebook } from '../notebook';
+import { executeCellInNotebook, preExecuteCellChecks } from '../notebook';
+import { remote } from 'electron';
+const dialog = remote.dialog;
 
 import {
   executeCell,
@@ -16,6 +18,10 @@ import {
   toggleOutputExpansion,
 } from '../../actions';
 
+import {
+  defaultPathFallback,
+} from '../../path';
+
 type Props = {
   cell: any,
   id: string,
@@ -25,6 +31,7 @@ type Props = {
 export default class Toolbar extends React.PureComponent {
   removeCell: () => void;
   executeCell: () => void;
+  saveOmex: () => void;
   clearOutputs: () => void;
   toggleStickyCell: () => void;
   changeInputVisibility: () => void;
@@ -42,6 +49,7 @@ export default class Toolbar extends React.PureComponent {
     super(props);
     this.removeCell = this.removeCell.bind(this);
     this.executeCell = this.executeCell.bind(this);
+    this.saveOmex = this.saveOmex.bind(this);
     this.clearOutputs = this.clearOutputs.bind(this);
     this.toggleStickyCell = this.toggleStickyCell.bind(this);
     this.changeInputVisibility = this.changeInputVisibility.bind(this);
@@ -62,6 +70,24 @@ export default class Toolbar extends React.PureComponent {
   executeCell(): void {
     if (preExecuteCellChecks(this.context.store, id, cell)) {
       executeCellInNotebook(this.context.store, this.props.id, this.props.cell);
+    }
+  }
+
+  saveOmex(): void {
+    if (preExecuteCellChecks(this.context.store, this.props.id, this.props.cell)) {
+      const opts = Object.assign({
+        title: 'Save Combine archive / OMEX',
+        filters: [{ name: 'Combine archive', extensions: ['omex'] }],
+      }, defaultPathFallback());
+
+      const filename = dialog.showSaveDialog(opts);
+
+const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+      this.context.store.dispatch(executeCell(
+        this.props.id,
+        (codetype === 'omex' ? '%%omex save(' + filename + ')\n' :
+         codetype === 'antimony' ? '%%crn\n' : '') +
+         this.props.cell.get('source')));
     }
   }
 
@@ -97,6 +123,7 @@ export default class Toolbar extends React.PureComponent {
 
   render(): ?React.Element<any> {
     const showPlay = this.props.type !== 'markdown';
+    const showSave = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex'
     return (
       <div className="cell-toolbar-mask">
         <div className="cell-toolbar">
@@ -108,6 +135,15 @@ export default class Toolbar extends React.PureComponent {
               className="executeButton"
             >
               <span className="octicon octicon-triangle-right" />
+            </button>
+          </span>}
+          {showSave &&
+          <span>
+            <button
+              onClick={this.saveOmex}
+              title="save omex"
+            >
+              <span className="octicon octicon-desktop-download" />
             </button>
           </span>}
           <button
