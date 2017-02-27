@@ -75,7 +75,7 @@ export function executeCellInNotebook(store: Object, id: String, cell: Object): 
   const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
   store.dispatch(executeCell(
     id,
-    (codetype === 'omex' ? '%%omex\n' :
+    (codetype === 'omex' ? '%%omex save(/tmp/saved.omex)\n' :
      codetype === 'antimony' ? '%%crn\n' : '')+
      cell.get('source')));
 }
