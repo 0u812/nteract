@@ -49,7 +49,11 @@ const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
       <span className="octicon octicon-code" />
     </button>
     <button onClick={() => telluriumPopup()} title="tellurium" className="tellurium-helper">
-      <span className="octicon octicon-alert" />
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>
+        </svg>
+      </span>
     </button>
     { above ? null :
     <button onClick={() => mergeCell()} title="merge cells" className="merge-cell">

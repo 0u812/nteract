@@ -199,7 +199,6 @@ blockquote p {
     font-size: 15px;
     line-height: 1;
     color: var(--toolbar-button);
-
 }
 
 .cell-toolbar button span:hover
@@ -343,6 +342,38 @@ blockquote p {
 .cell-creator button span:hover
 {
   color: var(--toolbar-button-hover);
+}
+
+/*.octicon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  background-color: blue;
+}*/
+
+.teicon {
+  padding: 0;
+  margin: 0;
+}
+
+.teicon > svg {
+  display: inline-block;
+  vertical-align:text-bottom;
+  padding: 0;
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  stroke-width: 0;
+  stroke: var(--toolbar-button);
+  fill: var(--toolbar-button);
+}
+
+.teicon:hover > svg
+{
+    stroke: var(--toolbar-button-hover);
+    fill:   var(--toolbar-button-hover);
 }
 
 code {
