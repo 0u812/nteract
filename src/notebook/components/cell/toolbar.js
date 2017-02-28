@@ -5,6 +5,7 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import { executeCellInNotebook, preExecuteCellChecks } from '../notebook';
 import { remote } from 'electron';
 const dialog = remote.dialog;
+import * as path from 'path';
 
 import {
   executeCell,
@@ -80,14 +81,19 @@ export default class Toolbar extends React.PureComponent {
         filters: [{ name: 'Combine archive', extensions: ['omex'] }],
       }, defaultPathFallback());
 
-      const filename = dialog.showSaveDialog(opts);
+      let filename = dialog.showSaveDialog(opts);
+      if (filename) {
+        if (path.extname(filename) === '') {
+          filename = `${filename}.omex`;
+        }
 
-const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-      this.context.store.dispatch(executeCell(
-        this.props.id,
-        (codetype === 'omex' ? '%%omex save(' + filename + ')\n' :
-         codetype === 'antimony' ? '%%crn\n' : '') +
-         this.props.cell.get('source')));
+        const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+        this.context.store.dispatch(executeCell(
+          this.props.id,
+          (codetype === 'omex' ? '%%omex save(' + filename + ')\n' :
+           codetype === 'antimony' ? '%%crn\n' : '') +
+           this.props.cell.get('source')));
+      }
     }
   }
 
