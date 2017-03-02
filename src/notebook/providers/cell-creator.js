@@ -24,10 +24,22 @@ class CellCreator extends Component {
   constructor(): void {
     super();
     this.createCell = this.createCell.bind(this);
+    this.importFile = this.importFile.bind(this);
     this.mergeCell = this.mergeCell.bind(this);
   }
 
   createCell(type: string): void {
+    const { dispatch, above, id } = this.props;
+
+    if (!id) {
+      dispatch(createCellAppend(type));
+      return;
+    }
+
+    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id));
+  }
+
+  importFile(type: string): void {
     const { dispatch, above, id } = this.props;
 
     if (!id) {

@@ -45,10 +45,24 @@ const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
     >
       <span className="octicon octicon-markdown" />
     </button>
-    <button onClick={() => createCell('code')} title="create code cell" className="add-code-cell">
+    <button onClick={() => createCell('code')} title="Create code cell" className="add-code-cell">
       <span className="octicon octicon-code" />
     </button>
-    <button onClick={() => telluriumPopup()} title="tellurium" className="tellurium-helper">
+    <button onClick={() => createCell('antimony')} title="Create model cell" className="sbml-helper">
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-sbml"></use>
+        </svg>
+      </span>
+    </button>
+    <button onClick={() => createCell('omex')} title="Create OMEX cell" className="omex-helper">
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-combine"></use>
+        </svg>
+      </span>
+    </button>
+    <button onClick={() => telluriumPopup()} title="Tellurium actions" className="tellurium-helper">
       <span className="teicon">
         <svg>
           <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>

@@ -320,10 +320,14 @@ function newCellAfter(state: DocumentState, action: NewCellAfterAction) {
   const { cellType, id, source } = action;
   const cell = cellType === 'markdown' ? emptyMarkdownCell :
                                          emptyCodeCell;
+  const applySubtypeToCell = (cell) => { return cellType === 'omex' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'omex') :
+    cellType === 'antimony' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'antimony') : cell; };
   const cellID = uuid.v4();
   return state.update('notebook', (notebook: ImmutableNotebook) => {
     const index = notebook.get('cellOrder').indexOf(id) + 1;
-    return insertCellAt(notebook, cell.set('source', source), cellID, index);
+    return insertCellAt(notebook, applySubtypeToCell(cell.set('source', source)), cellID, index);
   });
 }
 
