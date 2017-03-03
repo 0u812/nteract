@@ -56,13 +56,10 @@ class CodeCell extends React.PureComponent {
       {
         !this.isInputHidden() ?
           <div className="input-container"> {
-            this.getCodeCellType() === 'omex' ?
-            <div className="prompt">OMEX</div> :
-            this.getCodeCellType() === 'antimony' ?
-            <div className="prompt">Sb</div> :
             <Inputs
               executionCount={this.props.cell.get('execution_count')}
               running={this.props.running}
+              type={this.getCodeCellType()}
             />
             }
             <Editor

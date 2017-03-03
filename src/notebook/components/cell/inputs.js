@@ -4,6 +4,7 @@ import React from 'react';
 type Props = {
   executionCount: any,
   running: boolean,
+  type: String,
 };
 
 export default function Inputs(props: Props): ?React.Element<any> {
@@ -12,6 +13,17 @@ export default function Inputs(props: Props): ?React.Element<any> {
   const input = running ? '*' : count;
 
   return (
+    props.type === 'omex' ?
+    <div className="prompt">
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-combine"></use>
+        </svg>
+      </span>
+      [{input}]
+    </div> :
+    props.type === 'antimony' ?
+    <div className="prompt">Sb</div> :
     <div className="prompt">
       [{input}]
     </div>
