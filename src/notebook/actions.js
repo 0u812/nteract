@@ -306,6 +306,24 @@ export function executeCell(id, source) {
   };
 }
 
+/**
+ * Import file action.
+ *
+ * @param {String} id - Universally Unique Identifier of cell to create new cell next to.
+ * @param {Object} source - Source code to executed.
+ * @param {Object} filetype - File type to import.
+ * @return {Object} executeCellAction - Action to be dispatched to reducer.
+ */
+export function importFileIntoNotebook(id, source, filetype, above) {
+  return {
+    type: constants.IMPORT_FILE_INTO_NOTEBOOK,
+    id,
+    source,
+    filetype,
+    above
+  };
+}
+
 
 export function changeFilename(filename) {
   return {

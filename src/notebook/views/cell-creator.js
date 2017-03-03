@@ -9,6 +9,8 @@ type Props = {
   id: string|null,
   createCell: (type: string) => void,
   mergeCell: () => void,
+  importSBML: () => void,
+  importOMEX: () => void,
 };
 
 type State = {|
@@ -17,26 +19,26 @@ type State = {|
 
 // https://github.com/sindresorhus/electron-context-menu/blob/master/index.js
 // https://github.com/electron/electron/issues/5794#issuecomment-222687713
-const makeTelluriumMenuTemplate = () => [{
+const makeTelluriumMenuTemplate = (importSbmlAct, importOmexAct) => [{
     id: 'importsbml',
     label: 'Import SBML...',
     // accelerator: 'CmdOrCtrl+Z',
-    click: (item, win) => alert('sbml'),
+    click: (item, win) => importSbmlAct(),
     enabled: true
   },{
     id: 'importomex',
     label: 'Import OMEX...',
     // accelerator: 'CmdOrCtrl+Z',
-    click: (item, win) => alert('omex'),
+    click: (item, win) => importOmexAct(),
     enabled: true
   }];
 
-const telluriumPopup = () => {
-  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate());
+const telluriumPopup = (importSbmlAct, importOmexAct) => {
+  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importSbmlAct, importOmexAct));
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
 
-const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
+const renderActionButtons = ({ above, createCell, mergeCell, importSBML, importOMEX }: Props) => (
   <div className="cell-creator">
     <button
       onClick={() => createCell('markdown')}
@@ -62,7 +64,7 @@ const renderActionButtons = ({ above, createCell, mergeCell }: Props) => (
         </svg>
       </span>
     </button>
-    <button onClick={() => telluriumPopup()} title="Tellurium actions" className="tellurium-helper">
+    <button onClick={() => telluriumPopup(() => importSBML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
       <span className="teicon">
         <svg>
           <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>

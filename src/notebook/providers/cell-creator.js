@@ -26,6 +26,9 @@ class CellCreator extends Component {
     this.createCell = this.createCell.bind(this);
     this.importFile = this.importFile.bind(this);
     this.mergeCell = this.mergeCell.bind(this);
+    this.importFile = this.importFile.bind(this); // not sure if this is necessary
+    this.importSBML = this.importSBML.bind(this);
+    this.importOMEX = this.importOMEX.bind(this);
   }
 
   createCell(type: string): void {
@@ -50,6 +53,30 @@ class CellCreator extends Component {
     above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id));
   }
 
+  importSBML(): void {
+    const type = 'antimony';
+    const { dispatch, above, id } = this.props;
+
+    if (!id) {
+      dispatch(createCellAppend(type));
+      return;
+    }
+
+    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'SBML'));
+  }
+
+  importOMEX(): void {
+    const type = 'omex';
+    const { dispatch, above, id } = this.props;
+
+    if (!id) {
+      dispatch(createCellAppend(type));
+      return;
+    }
+
+    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'SBML'));
+  }
+
   mergeCell(): void {
     const { dispatch, id } = this.props;
 
@@ -61,6 +88,8 @@ class CellCreator extends Component {
       ...this.props,
       createCell: this.createCell,
       mergeCell: this.mergeCell,
+      importSBML: this.importSBML,
+      importOMEX: this.importOMEX,
     };
 
     return (
