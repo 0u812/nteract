@@ -53,7 +53,7 @@ const renderActionButtons = ({ above, createCell, mergeCell, importSBML, importO
     <button onClick={() => createCell('antimony')} title="Create model cell" className="sbml-helper">
       <span className="teicon">
         <svg>
-          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-sbml"></use>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-antimony"></use>
         </svg>
       </span>
     </button>

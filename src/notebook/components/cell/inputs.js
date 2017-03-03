@@ -23,7 +23,14 @@ export default function Inputs(props: Props): ?React.Element<any> {
       [{input}]
     </div> :
     props.type === 'antimony' ?
-    <div className="prompt">Sb</div> :
+    <div className="prompt">
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-antimony"></use>
+        </svg>
+      </span>
+      [{input}]
+    </div> :
     <div className="prompt">
       [{input}]
     </div>
