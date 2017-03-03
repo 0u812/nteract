@@ -48,7 +48,11 @@ const renderActionButtons = ({ above, createCell, mergeCell, importSBML, importO
       <span className="octicon octicon-markdown" />
     </button>
     <button onClick={() => createCell('code')} title="Create code cell" className="add-code-cell">
-      <span className="octicon octicon-code" />
+      <span className="teicon">
+        <svg>
+          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-python"></use>
+        </svg>
+      </span>
     </button>
     <button onClick={() => createCell('antimony')} title="Create model cell" className="sbml-helper">
       <span className="teicon">
