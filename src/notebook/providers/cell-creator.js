@@ -7,6 +7,7 @@ import {
   createCellAppend,
   createCellBefore,
   mergeCellAfter,
+  importFileIntoNotebook,
 } from '../actions';
 import CellCreatorView from '../views/cell-creator';
 
@@ -58,11 +59,11 @@ class CellCreator extends Component {
     const { dispatch, above, id } = this.props;
 
     if (!id) {
-      dispatch(createCellAppend(type));
+      dispatch(importFileIntoNotebook('', 'SBML', 'sbml', above));
       return;
     }
 
-    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'SBML'));
+    dispatch(importFileIntoNotebook(id, 'SBML', 'sbml', above));
   }
 
   importOMEX(): void {
@@ -74,7 +75,7 @@ class CellCreator extends Component {
       return;
     }
 
-    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'SBML'));
+    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'OMEX'));
   }
 
   mergeCell(): void {

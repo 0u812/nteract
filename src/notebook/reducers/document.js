@@ -516,6 +516,18 @@ function toggleOutputExpansion(state: DocumentState, action: ToggleCellExpansion
       !cells.getIn([id, 'metadata', 'outputExpanded'])));
 }
 
+type importFileIntoNotebookAction = { type: 'IMPORT_FILE_INTO_NOTEBOOK', id: CellID, source: string, filetype: string }
+function importFileIntoNotebook(state: DocumentState, action: importFileIntoNotebookAction) {
+  const { id } = action;
+  const cell = emptyCodeCell;
+  const cellID = uuid.v4();
+  return state.update('notebook', (notebook: ImmutableNotebook) => {
+    const cellOrder : ImmutableCellOrder = notebook.get('cellOrder');
+    const index = cellOrder.indexOf(id);
+    return insertCellAt(notebook, cell, cellID, index);
+  });
+}
+
 type FocusCellActionType = FocusPreviousCellEditorAction | FocusPreviousCellAction |
                            FocusNextCellEditorAction | FocusNextCellAction |
                            FocusCellEditorAction | FocusCellAction;
@@ -530,7 +542,7 @@ type DocumentAction =
   UpdateCellStatusAction | SetLanguageInfoAction | SetKernelInfoAction |
   OverwriteMetadataFieldAction | DeleteMetadataFieldAction | CopyCellAction |
   CutCellAction | PasteCellAction | ChangeCellTypeAction | ChangeCodeCellTypeAction |
-  ToggleCellExpansionAction
+  ToggleCellExpansionAction | importFileIntoNotebookAction;
 
 const defaultDocument: DocumentState = DocumentRecord();
 
@@ -602,6 +614,8 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return changeCodeCellType(state, action);
     case constants.TOGGLE_OUTPUT_EXPANSION:
       return toggleOutputExpansion(state, action);
+    case constants.IMPORT_FILE_INTO_NOTEBOOK:
+      return importFileIntoNotebook(state, action);
     default:
       return state;
   }

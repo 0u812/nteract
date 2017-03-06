@@ -11,6 +11,8 @@ import {
   NEW_KERNEL,
 } from '../constants';
 
+import * as uuid from 'uuid';
+
 /**
  * creates a comm open message
  * @param  {string} comm_id       uuid
@@ -131,3 +133,16 @@ export const commListenEpic = action$ =>
   action$.ofType(NEW_KERNEL)
     // We have a new channel
     .switchMap(commActionObservable);
+
+export function importFileEpic(action$, store) {
+  return action$.ofType('IMPORT_FILE_INTO_NOTEBOOK')
+    .map((action) => {
+      const identity = uuid.v4();
+      const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
+      Rx.Observable.create((observer) => {
+        const subscription = cellAction$.subscribe(observer);
+        channels.shell.next(createCommOpenMessage);
+        return subscription;
+      })
+    });
+}

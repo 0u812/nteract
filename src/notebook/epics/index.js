@@ -26,6 +26,7 @@ import {
 
 import {
   commListenEpic,
+  importFileEpic,
 } from './comm';
 
 import {
@@ -43,6 +44,7 @@ export const wrapEpic = epic => (...args) =>
 
 const epics = [
   commListenEpic,
+  importFileEpic,
   publishEpic,
   saveEpic,
   saveAsEpic,
