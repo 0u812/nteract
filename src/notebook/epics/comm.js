@@ -135,14 +135,22 @@ export const commListenEpic = action$ =>
     .switchMap(commActionObservable);
 
 export function importFileEpic(action$, store) {
+  console.log('importFileEpic');
   return action$.ofType('IMPORT_FILE_INTO_NOTEBOOK')
     .map((action) => {
+      const state = store.getState();
+      const channels = state.app.channels;
+      if (!channels || !channels.iopub || !channels.shell) {
+        throw new Error('kernel not connected');
+      }
+
+      console.log('importFileEpic map');
       const identity = uuid.v4();
       const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
-      Rx.Observable.create((observer) => {
-        const subscription = cellAction$.subscribe(observer);
-        channels.shell.next(createCommOpenMessage);
-        return subscription;
-      })
+      console.log('commOpen = ');
+      console.log(`commOpen`);
+      channels.shell.next(commOpen);
+      console.log('after send commOpen');
+      return null;
     });
 }

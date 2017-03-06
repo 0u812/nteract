@@ -63,6 +63,7 @@ class CellCreator extends Component {
       return;
     }
 
+    console.log('importSBML dispatch')
     dispatch(importFileIntoNotebook(id, 'SBML', 'sbml', above));
   }
 
