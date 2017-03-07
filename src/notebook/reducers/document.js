@@ -516,7 +516,7 @@ function toggleOutputExpansion(state: DocumentState, action: ToggleCellExpansion
       !cells.getIn([id, 'metadata', 'outputExpanded'])));
 }
 
-type importFileIntoNotebookAction = { type: 'IMPORT_FILE_INTO_NOTEBOOK', id: CellID, source: string, filetype: string }
+type importFileIntoNotebookAction = { type: 'CONVERT_FILE', id: CellID, source: string, filetype: string }
 function importFileIntoNotebook(state: DocumentState, action: importFileIntoNotebookAction) {
   const { id } = action;
   const cell = emptyCodeCell;
@@ -614,7 +614,7 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return changeCodeCellType(state, action);
     case constants.TOGGLE_OUTPUT_EXPANSION:
       return toggleOutputExpansion(state, action);
-    case constants.IMPORT_FILE_INTO_NOTEBOOK:
+    case constants.CONVERT_FILE:
       return importFileIntoNotebook(state, action);
     default:
       return state;

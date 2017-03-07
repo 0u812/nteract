@@ -316,7 +316,7 @@ export function executeCell(id, source) {
  */
 export function importFileIntoNotebook(id, source, filetype, above) {
   return {
-    type: constants.IMPORT_FILE_INTO_NOTEBOOK,
+    type: constants.CONVERT_FILE,
     id,
     source,
     filetype,

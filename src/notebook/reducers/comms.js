@@ -48,6 +48,8 @@ function processCommMessage(state: CommState, action: CommMessageAction): CommSt
     data,
     comm_id,
   } = action;
+  console.log(`${comm_id}`)
+  console.log(`${JSON.stringify(data)}`)
 
   const commInfo = state.getIn(['info', comm_id]);
   if (commInfo && commInfo.get('target_module') === 'reducers' &&
