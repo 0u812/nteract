@@ -143,28 +143,29 @@ export const commListenEpic = action$ =>
 export function importFileEpic(action$, store) {
   console.log('importFileEpic');
   return action$.ofType('CONVERT_FILE')
-    .map((action) => Rx.Observable.timer(0, 500).do(() => { console.log('timer'); }))
-    .mergeAll()
-    .filter(() => false);
+    // .map((action) => Rx.Observable.timer(0, 500).do(() => { console.log('timer'); }))
+    // .mergeAll()
+    // .filter(() => false);
     // .do((action) => { console.log('x'); })
     // .filter(() => false);
-    // .map((action) => {
-    //   const state = store.getState();
-    //   const channels = state.app.channels;
-    //   if (!channels || !channels.iopub || !channels.shell) {
-    //     throw new Error('kernel not connected');
-    //   }
-    //
-    //   console.log('importFileEpic map');
-    //   const identity = uuid.v4();
-    //   const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
-    //   const childMessages = channels.iopub.childOf(commOpen);
-    //   console.log('commOpen');
-    //   channels.shell.next(commOpen);
-    //   console.log('after send commOpen');
-    //   // return childMessages.do(() => { console.log('child msg'); });
-    //   return Rx.Observable.timer(0, 1000).do(() => { console.log('timer'); }).map(() => focusCellEditor(action.id));
-    //   // return Rx.Observable.empty();
-    // });
-    //.filter(() => true);
+    .map((action) => {
+      const state = store.getState();
+      const channels = state.app.channels;
+      if (!channels || !channels.iopub || !channels.shell) {
+        throw new Error('kernel not connected');
+      }
+
+      console.log('importFileEpic map');
+      const identity = uuid.v4();
+      const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
+      const childMessages = channels.iopub.childOf(commOpen);
+      console.log('commOpen');
+      channels.shell.next(commOpen);
+      console.log('after send commOpen');
+      // return childMessages.do(() => { console.log('child msg'); });
+      return Rx.Observable.timer(0, 500).do(() => { console.log('le timer'); });
+      // return Rx.Observable.empty();
+    })
+    .mergeAll()
+    .filter(() => false);
 }
