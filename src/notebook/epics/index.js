@@ -26,8 +26,11 @@ import {
 
 import {
   commListenEpic,
-  importFileEpic,
 } from './comm';
+
+import {
+  importFileEpic,
+} from './tellurium';
 
 import {
   loadConfigEpic,

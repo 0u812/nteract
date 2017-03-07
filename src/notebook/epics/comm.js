@@ -5,17 +5,11 @@ import {
 } from '../kernel/messaging';
 
 import {
-  focusCellEditor,
-} from '../actions'
-
-import {
   COMM_OPEN,
   COMM_MESSAGE,
   COMM_ERROR,
   NEW_KERNEL,
 } from '../constants';
-
-import * as uuid from 'uuid';
 
 /**
  * creates a comm open message
@@ -139,33 +133,3 @@ export const commListenEpic = action$ =>
   action$.ofType(NEW_KERNEL)
     // We have a new channel
     .switchMap(commActionObservable);
-
-export function importFileEpic(action$, store) {
-  console.log('importFileEpic');
-  return action$.ofType('CONVERT_FILE')
-    // .map((action) => Rx.Observable.timer(0, 500).do(() => { console.log('timer'); }))
-    // .mergeAll()
-    // .filter(() => false);
-    // .do((action) => { console.log('x'); })
-    // .filter(() => false);
-    .map((action) => {
-      const state = store.getState();
-      const channels = state.app.channels;
-      if (!channels || !channels.iopub || !channels.shell) {
-        throw new Error('kernel not connected');
-      }
-
-      console.log('importFileEpic map');
-      const identity = uuid.v4();
-      const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
-      const childMessages = channels.iopub.childOf(commOpen);
-      console.log('commOpen');
-      channels.shell.next(commOpen);
-      console.log('after send commOpen');
-      return childMessages.ofMessageType(['comm_msg']).do((message) => { console.log(`child msg: ${JSON.stringify(message)}`); });
-      // return Rx.Observable.timer(0, 500).do(() => { console.log('le timer'); });
-      // return Rx.Observable.empty();
-    })
-    .mergeAll()
-    .filter(() => false);
-}
