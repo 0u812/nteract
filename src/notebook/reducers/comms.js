@@ -11,6 +11,7 @@ const defaultCommState : CommState = Immutable.Map({
 
 type RegisterCommTargetAction = { type: 'REGISTER_COMM_TARGET', name: string, handler: string };
 function registerCommTarget(state: CommState, action: RegisterCommTargetAction): CommState {
+  console.log('registerCommTarget');
   return state.setIn(['targets', action.name], action.handler);
 }
 
@@ -23,6 +24,7 @@ type CommOpenAction = {
 };
 
 function processCommOpen(state: CommState, action: CommOpenAction): CommState {
+  console.log('processCommOpen');
   const {
     target_name,
     target_module,
@@ -41,6 +43,7 @@ function processCommOpen(state: CommState, action: CommOpenAction): CommState {
 
 type CommMessageAction = { type: 'COMM_MESSAGE', data: any, comm_id: string };
 function processCommMessage(state: CommState, action: CommMessageAction): CommState {
+  console.log('processCommMessage');
   const {
     data,
     comm_id,

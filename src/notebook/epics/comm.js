@@ -69,6 +69,7 @@ export const createCommErrorAction = error =>
  * @return {Object}      COMM_OPEN action
  */
 export function commOpenAction(message) {
+  console.log('commOpenAction');
   // invariant: expects a comm_open message
   return {
     type: COMM_OPEN,
@@ -91,6 +92,7 @@ export function commOpenAction(message) {
  * @return {Object}      COMM_MESSAGE action
  */
 export function commMessageAction(message) {
+  console.log('commMessageAction');
   return {
     type: COMM_MESSAGE,
     comm_id: message.content.comm_id,
@@ -147,10 +149,10 @@ export function importFileEpic(action$, store) {
       console.log('importFileEpic map');
       const identity = uuid.v4();
       const commOpen = createCommOpenMessage(identity, 'import_file_comm', {some_data: 'abc'});
-      console.log('commOpen = ');
-      console.log(`commOpen`);
+      const childMessages = channels.iopub.childOf(commOpen);
+      console.log('commOpen');
       channels.shell.next(commOpen);
       console.log('after send commOpen');
-      return null;
-    });
+      return Rx.Observable.empty();
+    }).filter(() => false);
 }
