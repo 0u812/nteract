@@ -162,8 +162,8 @@ export function importFileEpic(action$, store) {
       console.log('commOpen');
       channels.shell.next(commOpen);
       console.log('after send commOpen');
-      // return childMessages.do(() => { console.log('child msg'); });
-      return Rx.Observable.timer(0, 500).do(() => { console.log('le timer'); });
+      return childMessages.do(() => { console.log('child msg'); });
+      // return Rx.Observable.timer(0, 500).do(() => { console.log('le timer'); });
       // return Rx.Observable.empty();
     })
     .mergeAll()
