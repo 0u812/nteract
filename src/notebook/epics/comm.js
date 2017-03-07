@@ -162,7 +162,7 @@ export function importFileEpic(action$, store) {
       console.log('commOpen');
       channels.shell.next(commOpen);
       console.log('after send commOpen');
-      return childMessages.do(() => { console.log('child msg'); });
+      return childMessages.ofMessageType(['comm_msg']).do((message) => { console.log(`child msg: ${JSON.stringify(message)}`); });
       // return Rx.Observable.timer(0, 500).do(() => { console.log('le timer'); });
       // return Rx.Observable.empty();
     })
