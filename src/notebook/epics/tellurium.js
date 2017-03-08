@@ -12,7 +12,6 @@ import {
 import * as uuid from 'uuid';
 
 export function convertFileEpic(action$, store) {
-  // console.log('convertFileEpic');
   return action$.ofType('CONVERT_FILE')
     .map((action) => {
       const state = store.getState();
@@ -23,16 +22,15 @@ export function convertFileEpic(action$, store) {
 
       // console.log('importFileEpic map');
       const identity = uuid.v4();
-      const target_format = action.filetype === 'sbml' ? 'antimony' : 'omex';
+      const target_format = action.filetype === 'sbml' ? 'antimony' :
+        action.filetype === 'omex' ? 'omex' :
+        () => {throw new Error('Source filetype not recognized')};
       const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: target_format, path: action.path});
       const childMessages = channels.iopub.childOf(commOpen);
-      // console.log('commOpen');
       channels.shell.next(commOpen);
-      // console.log('after send commOpen');
       return childMessages
         .ofMessageType(['comm_msg'])
         .map((message) => {
-          console.log(`child msg: ${JSON.stringify(message)}`);
           // TODO: throw here on error
           if (action.id) {
             // we have a cell id

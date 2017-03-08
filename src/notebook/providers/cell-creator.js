@@ -63,7 +63,6 @@ class CellCreator extends Component {
       return;
     }
 
-    console.log('importSBML dispatch')
     dispatch(importFileIntoNotebook(id, '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above ? 'above' : 'below'));
   }
 
