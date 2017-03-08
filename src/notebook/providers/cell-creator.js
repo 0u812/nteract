@@ -59,12 +59,12 @@ class CellCreator extends Component {
     const { dispatch, above, id } = this.props;
 
     if (!id) {
-      dispatch(importFileIntoNotebook('', 'SBML', 'sbml', above));
+      dispatch(importFileIntoNotebook('', '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above));
       return;
     }
 
     console.log('importSBML dispatch')
-    dispatch(importFileIntoNotebook(id, 'SBML', 'sbml', above));
+    dispatch(importFileIntoNotebook(id, '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above));
   }
 
   importOMEX(): void {

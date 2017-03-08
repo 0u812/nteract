@@ -4,6 +4,10 @@ import {
   createCommOpenMessage,
 } from './comm';
 
+import {
+  createCellAfter,
+} from '../actions';
+
 import * as uuid from 'uuid';
 
 export function convertFileEpic(action$, store) {
@@ -18,15 +22,20 @@ export function convertFileEpic(action$, store) {
 
       // console.log('importFileEpic map');
       const identity = uuid.v4();
-      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: 'antimony', path: '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml'});
+      const target_format = action.filetype === 'sbml' ? 'antimony' : 'omex';
+      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: target_format, path: action.path});
       const childMessages = channels.iopub.childOf(commOpen);
       // console.log('commOpen');
       channels.shell.next(commOpen);
       // console.log('after send commOpen');
       return childMessages
         .ofMessageType(['comm_msg'])
-        .do((message) => { console.log(`child msg: ${JSON.stringify(message)}`); });
+        .map((message) => {
+          console.log(`child msg: ${JSON.stringify(message)}`);
+          // TODO: throw here on error
+          return createCellAfter(target_format, action.id, message.content.data.content)
+        });
     })
     .mergeAll()
-    .filter(() => false);
+    .filter(() => true);
 }

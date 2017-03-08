@@ -314,11 +314,12 @@ export function executeCell(id, source) {
  * @param {Object} filetype - File type to import.
  * @return {Object} executeCellAction - Action to be dispatched to reducer.
  */
-export function importFileIntoNotebook(id, source, filetype, above) {
+export function importFileIntoNotebook(id, path, content, filetype, above) {
   return {
     type: constants.CONVERT_FILE,
     id,
-    source,
+    path,
+    content,
     filetype,
     above
   };
