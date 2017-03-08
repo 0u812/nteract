@@ -1,3 +1,6 @@
+import { remote } from 'electron';
+const dialog = remote.dialog;
+
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -58,12 +61,20 @@ class CellCreator extends Component {
     const type = 'antimony';
     const { dispatch, above, id } = this.props;
 
-    if (!id) {
-      dispatch(importFileIntoNotebook('', '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above ? 'above' : 'below'));
-      return;
-    }
-
-    dispatch(importFileIntoNotebook(id, '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above ? 'above' : 'below'));
+    const dialog_opts = {
+      title: 'Import an SBML file',
+      filters: [{ name: 'SBML files', extensions: ['xml', 'sbml'] }],
+      properties: ['openFile'],
+    };
+    dialog.showOpenDialog(dialog_opts, (fname) => {
+      if (fname) {
+        const f = fname[0];
+        if (!id)
+          dispatch(importFileIntoNotebook('', f, '', 'sbml', above ? 'above' : 'below'));
+        else
+          dispatch(importFileIntoNotebook(id, f, '', 'sbml', above ? 'above' : 'below'));
+      }
+    });
   }
 
   importOMEX(): void {
