@@ -3,11 +3,12 @@ import React from 'react';
 import CodeMirrorWrapper from '../components/cell/codemirror';
 
 type Props = {
-  children?: React.Element<*>
+  children?: React.Element<*>,
+  description?: string,
 };
 
 const EditorView = (props: Props): React.Element<*> => (
-  <div className="input">
+  <div className="input" title={props.description}>
     {props.children}
   </div>
 );

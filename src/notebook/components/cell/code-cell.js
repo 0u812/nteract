@@ -72,6 +72,7 @@ class CodeCell extends React.PureComponent {
               theme={this.props.theme}
               focusAbove={this.props.focusAbove}
               focusBelow={this.props.focusBelow}
+              description={this.getCodeCellType() === 'antimony' ? 'Antimony cell' : this.getCodeCellType() === 'omex' ? 'Combine archive' : 'Python cell'}
             />
           </div> : <div className="input-container invisible" />
       }

@@ -31,7 +31,7 @@ export default function Inputs(props: Props): ?React.Element<any> {
       </span>
       [{input}]
     </div> :
-    <div className="prompt">
+    <div className="prompt" title="Python">
       <span className="teicon">
         <svg>
           <use xlinkHref="../static/assets/symbol-defs.svg#teicon-python"></use>
