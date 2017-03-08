@@ -6,8 +6,8 @@ import {
 
 import * as uuid from 'uuid';
 
-export function importFileEpic(action$, store) {
-  console.log('importFileEpic');
+export function convertFileEpic(action$, store) {
+  // console.log('convertFileEpic');
   return action$.ofType('CONVERT_FILE')
     .map((action) => {
       const state = store.getState();
@@ -18,7 +18,7 @@ export function importFileEpic(action$, store) {
 
       // console.log('importFileEpic map');
       const identity = uuid.v4();
-      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {path: '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml'});
+      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: 'antimony', path: '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml'});
       const childMessages = channels.iopub.childOf(commOpen);
       // console.log('commOpen');
       channels.shell.next(commOpen);

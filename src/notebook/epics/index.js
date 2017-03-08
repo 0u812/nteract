@@ -29,7 +29,7 @@ import {
 } from './comm';
 
 import {
-  importFileEpic,
+  convertFileEpic,
 } from './tellurium';
 
 import {
@@ -47,7 +47,7 @@ export const wrapEpic = epic => (...args) =>
 
 const epics = [
   commListenEpic,
-  importFileEpic,
+  convertFileEpic,
   publishEpic,
   saveEpic,
   saveAsEpic,
