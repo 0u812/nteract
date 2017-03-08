@@ -6,6 +6,7 @@ import {
 
 import {
   createCellAfter,
+  createCellBefore,
 } from '../actions';
 
 import * as uuid from 'uuid';
@@ -33,7 +34,17 @@ export function convertFileEpic(action$, store) {
         .map((message) => {
           console.log(`child msg: ${JSON.stringify(message)}`);
           // TODO: throw here on error
-          return createCellAfter(target_format, action.id, message.content.data.content)
+          if (action.id) {
+            // we have a cell id
+            if (action.position === 'below') {
+              return createCellAfter(target_format, action.id, message.content.data.content)
+            } else if (action.position === 'above') {
+              return createCellBefore(target_format, action.id, message.content.data.content)
+            }
+          } else {
+            // we don't have a cell id - just append to end
+            return createCellAppend(target_format, message.content.data.content)
+          }
         });
     })
     .mergeAll()

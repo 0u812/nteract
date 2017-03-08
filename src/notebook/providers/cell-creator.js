@@ -44,14 +44,14 @@ class CellCreator extends Component {
   }
 
   importFile(type: string): void {
-    const { dispatch, above, id } = this.props;
-
-    if (!id) {
-      dispatch(createCellAppend(type));
-      return;
-    }
-
-    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id));
+    // const { dispatch, above, id } = this.props;
+    //
+    // if (!id) {
+    //   dispatch(createCellAppend(type));
+    //   return;
+    // }
+    //
+    // above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id));
   }
 
   importSBML(): void {
@@ -59,12 +59,12 @@ class CellCreator extends Component {
     const { dispatch, above, id } = this.props;
 
     if (!id) {
-      dispatch(importFileIntoNotebook('', '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above));
+      dispatch(importFileIntoNotebook('', '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above ? 'above' : 'below'));
       return;
     }
 
     console.log('importSBML dispatch')
-    dispatch(importFileIntoNotebook(id, '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above));
+    dispatch(importFileIntoNotebook(id, '/Users/phantom/devel/models/elowitz/BIOMD0000000012.xml', '', 'sbml', above ? 'above' : 'below'));
   }
 
   importOMEX(): void {

@@ -70,17 +70,19 @@ export function createCellAfter(cellType, id, source) {
   };
 }
 
-export function createCellBefore(cellType, id) {
+export function createCellBefore(cellType, id, source) {
   return {
     type: constants.NEW_CELL_BEFORE,
+    source: source || '',
     cellType,
     id,
   };
 }
 
-export function createCellAppend(cellType) {
+export function createCellAppend(cellType, source) {
   return {
     type: constants.NEW_CELL_APPEND,
+    source: source || '',
     cellType,
   };
 }
@@ -310,18 +312,20 @@ export function executeCell(id, source) {
  * Import file action.
  *
  * @param {String} id - Universally Unique Identifier of cell to create new cell next to (empty for append).
- * @param {Object} source - Source code to executed.
- * @param {Object} filetype - File type to import.
- * @return {Object} executeCellAction - Action to be dispatched to reducer.
+ * @param {String} path - The path to the file to import.
+ * @param {String} content - The raw content of the file (exclusive with path).
+ * @param {String} filetype - Source file type to import.
+ * @param {String} position - Position relative to cell: can be 'above', 'inside', or 'below'
+ * @return {Object} importFileIntoNotebookAction - Action to be dispatched to convertFileEpic.
  */
-export function importFileIntoNotebook(id, path, content, filetype, above) {
+export function importFileIntoNotebook(id, path, content, filetype, position) {
   return {
     type: constants.CONVERT_FILE,
     id,
     path,
     content,
     filetype,
-    above
+    position
   };
 }
 

@@ -320,10 +320,12 @@ function newCellAfter(state: DocumentState, action: NewCellAfterAction) {
   const { cellType, id, source } = action;
   const cell = cellType === 'markdown' ? emptyMarkdownCell :
                                          emptyCodeCell;
+
   const applySubtypeToCell = (cell) => { return cellType === 'omex' ?
     cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'omex') :
     cellType === 'antimony' ?
     cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'antimony') : cell; };
+
   const cellID = uuid.v4();
   return state.update('notebook', (notebook: ImmutableNotebook) => {
     const index = notebook.get('cellOrder').indexOf(id) + 1;
@@ -333,13 +335,19 @@ function newCellAfter(state: DocumentState, action: NewCellAfterAction) {
 
 type NewCellBeforeAction = { type: 'NEW_CELL_BEFORE', cellType: CellType, id: CellID };
 function newCellBefore(state: DocumentState, action: NewCellBeforeAction) {
-  const { cellType, id } = action;
+  const { cellType, id, source } = action;
   const cell = cellType === 'markdown' ? emptyMarkdownCell : emptyCodeCell;
+
+  const applySubtypeToCell = (cell) => { return cellType === 'omex' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'omex') :
+    cellType === 'antimony' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'antimony') : cell; };
+
   const cellID = uuid.v4();
   return state.update('notebook', (notebook: ImmutableNotebook) => {
     const cellOrder : ImmutableCellOrder = notebook.get('cellOrder');
     const index = cellOrder.indexOf(id);
-    return insertCellAt(notebook, cell, cellID, index);
+    return insertCellAt(notebook, applySubtypeToCell(cell.set('source', source)), cellID, index);
   });
 }
 
