@@ -69,7 +69,7 @@ export default class Toolbar extends React.PureComponent {
   }
 
   executeCell(): void {
-    if (preExecuteCellChecks(this.context.store, id, cell)) {
+    if (preExecuteCellChecks(this.context.store, this.props.id, this.props.cell)) {
       executeCellInNotebook(this.context.store, this.props.id, this.props.cell);
     }
   }
