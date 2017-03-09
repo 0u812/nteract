@@ -27,7 +27,7 @@ const makeTelluriumMenuTemplate = (importSbmlAct, importOmexAct) => [{
     enabled: true
   },{
     id: 'importomex',
-    label: 'Import OMEX...',
+    label: 'Import COMBINE archive (OMEX)...',
     // accelerator: 'CmdOrCtrl+Z',
     click: (item, win) => importOmexAct(),
     enabled: true

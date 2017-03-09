@@ -81,6 +81,8 @@ class CellCreator extends Component {
     const type = 'omex';
     const { dispatch, above, id } = this.props;
 
+    // filetypes .omex, .sedx, .sbex, .cmex, .sbox, .neux, .phex
+
     if (!id) {
       dispatch(createCellAppend(type));
       return;
