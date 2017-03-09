@@ -149,7 +149,11 @@ export default class Toolbar extends React.PureComponent {
               onClick={this.saveOmex}
               title="save omex"
             >
-              <span className="octicon octicon-desktop-download" />
+              <span className="teicon">
+                <svg>
+                  <use xlinkHref="../static/assets/symbol-defs.svg#teicon-floppy"></use>
+                </svg>
+              </span>
             </button>
           </span>}
           <button
