@@ -32,6 +32,7 @@ type Props = {
 export default class Toolbar extends React.PureComponent {
   removeCell: () => void;
   executeCell: () => void;
+  saveSBML: () => void;
   saveOmex: () => void;
   clearOutputs: () => void;
   toggleStickyCell: () => void;
@@ -50,6 +51,7 @@ export default class Toolbar extends React.PureComponent {
     super(props);
     this.removeCell = this.removeCell.bind(this);
     this.executeCell = this.executeCell.bind(this);
+    this.saveSBML = this.saveSBML.bind(this);
     this.saveOmex = this.saveOmex.bind(this);
     this.clearOutputs = this.clearOutputs.bind(this);
     this.toggleStickyCell = this.toggleStickyCell.bind(this);
@@ -71,6 +73,25 @@ export default class Toolbar extends React.PureComponent {
   executeCell(): void {
     if (preExecuteCellChecks(this.context.store, this.props.id, this.props.cell)) {
       executeCellInNotebook(this.context.store, this.props.id, this.props.cell);
+    }
+  }
+
+  saveSBML(): void {
+    if (preExecuteCellChecks(this.context.store, this.props.id, this.props.cell)) {
+      const opts = Object.assign({
+        title: 'Save SBML file',
+        filters: [{ name: 'SBML', extensions: ['xml'] }],
+      }, defaultPathFallback());
+
+      let filename = dialog.showSaveDialog(opts);
+      if (filename) {
+        if (path.extname(filename) === '') {
+          filename = `${filename}.xml`;
+        }
+
+        const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+        alert(`Save SBML ${filename}`);
+      }
     }
   }
 
@@ -129,7 +150,9 @@ export default class Toolbar extends React.PureComponent {
 
   render(): ?React.Element<any> {
     const showPlay = this.props.type !== 'markdown';
-    const showSave = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex'
+    const isAntimony = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'antimony';
+    const isOmex     = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']) === 'omex';
+    const showSave = isAntimony || isOmex;
     return (
       <div className="cell-toolbar-mask">
         <div className="cell-toolbar">
@@ -146,8 +169,8 @@ export default class Toolbar extends React.PureComponent {
           {showSave &&
           <span>
             <button
-              onClick={this.saveOmex}
-              title="save omex"
+              onClick={isAntimony ? this.saveSBML : this.saveOmex}
+              title={isAntimony ? "Save SBML" : "Save Combine archive"}
             >
               <span className="teicon">
                 <svg>
