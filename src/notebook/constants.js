@@ -104,3 +104,4 @@ export const TOGGLE_OUTPUT_EXPANSION = 'TOGGLE_OUTPUT_EXPANSION';
 
 export const SAVE = 'SAVE';
 export const SAVE_AS = 'SAVE_AS';
+export const SAVE_FILE_FROM_STRING = 'SAVE_FILE_FROM_STRING';

@@ -30,6 +30,7 @@ import {
 
 import {
   convertFileEpic,
+  saveFileEpic,
 } from './tellurium';
 
 import {
@@ -47,7 +48,6 @@ export const wrapEpic = epic => (...args) =>
 
 const epics = [
   commListenEpic,
-  convertFileEpic,
   publishEpic,
   saveEpic,
   saveAsEpic,
@@ -62,6 +62,8 @@ const epics = [
   loadConfigEpic,
   saveConfigEpic,
   saveConfigOnChangeEpic,
+  convertFileEpic,
+  saveFileEpic,
 ].map(wrapEpic);
 
 export default epics;

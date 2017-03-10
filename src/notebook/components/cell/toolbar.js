@@ -17,6 +17,7 @@ import {
   changeCellType,
   changeCodeCellType,
   toggleOutputExpansion,
+  saveFileFromString,
 } from '../../actions';
 
 import {
@@ -109,11 +110,12 @@ export default class Toolbar extends React.PureComponent {
         }
 
         const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-        this.context.store.dispatch(executeCell(
-          this.props.id,
-          (codetype === 'omex' ? '%%omex save(' + filename + ')\n' :
-           codetype === 'antimony' ? '%%crn\n' : '') +
-           this.props.cell.get('source')));
+        this.context.store.dispatch(saveFileFromString(
+          'omex', // source_format
+          'omex', // target_format
+          this.props.cell.get('source'), // source content
+          filename // path of file to write
+        ));
       }
     }
   }

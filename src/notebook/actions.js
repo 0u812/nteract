@@ -352,6 +352,16 @@ export function saveAs(filename, notebook) {
     notebook };
 }
 
+export function saveFileFromString(source_format, target_format, source_str, path) {
+  return {
+    type: constants.SAVE_FILE_FROM_STRING,
+    source_format,
+    target_format,
+    source_str,
+    path
+  };
+}
+
 export function doneSaving() {
   return {
     type: constants.DONE_SAVING
