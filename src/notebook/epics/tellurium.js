@@ -84,7 +84,7 @@ export function saveFileEpic(action$, store) {
             console.log('done saving');
             const notificationSystem = state.app.get('notificationSystem');
             notificationSystem.addNotification({
-              title: 'Save successful!',
+              title: `Saved ${message.content.data.file}`,
               autoDismiss: 2,
               level: 'success',
             });
