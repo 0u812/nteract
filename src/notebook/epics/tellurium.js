@@ -22,16 +22,32 @@ export function convertFileEpic(action$, store) {
 
       // console.log('importFileEpic map');
       const identity = uuid.v4();
+
       const target_format = action.filetype === 'sbml' ? 'antimony' :
         action.filetype === 'omex' ? 'omex' :
         () => {throw new Error('Source filetype not recognized')};
+
       const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: target_format, path: action.path});
       const childMessages = channels.iopub.childOf(commOpen);
+
       channels.shell.next(commOpen);
       return childMessages
         .ofMessageType(['comm_msg'])
         .map((message) => {
-          // TODO: throw here on error
+          if (message.content.status === 'error') {
+            console.log('throwing error');
+            return Rx.Observable.throw(new Error('Unable to import archive.'));
+            notificationSystem.addNotification({
+              title: message.content.error,
+              autoDismiss: 2,
+              level: 'error',
+            });
+            // return Rx.Observable.of({
+            //   type: ERROR_EXECUTING,
+            //   payload: message.error,
+            //   error: true,
+            // });
+          }
           if (action.id) {
             // we have a cell id
             if (action.position === 'below') {

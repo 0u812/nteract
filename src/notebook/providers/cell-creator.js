@@ -83,12 +83,20 @@ class CellCreator extends Component {
 
     // filetypes .omex, .sedx, .sbex, .cmex, .sbox, .neux, .phex
 
-    if (!id) {
-      dispatch(createCellAppend(type));
-      return;
-    }
-
-    above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id, 'OMEX'));
+    const dialog_opts = {
+      title: 'Import a COMBINE archive',
+      filters: [{ name: 'COMBINE archives', extensions: ['omex', 'sedx', 'sbex', 'cmex', 'sbox', 'neux', 'phex'] }],
+      properties: ['openFile'],
+    };
+    dialog.showOpenDialog(dialog_opts, (fname) => {
+      if (fname) {
+        const f = fname[0];
+        if (!id)
+          dispatch(importFileIntoNotebook('', f, '', 'omex', above ? 'above' : 'below'));
+        else
+          dispatch(importFileIntoNotebook(id, f, '', 'omex', above ? 'above' : 'below'));
+      }
+    });
   }
 
   mergeCell(): void {
