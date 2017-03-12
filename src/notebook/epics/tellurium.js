@@ -34,14 +34,14 @@ export function convertFileEpic(action$, store) {
       return childMessages
         .ofMessageType(['comm_msg'])
         .map((message) => {
-          if (message.content.status === 'error') {
-            console.log('throwing error');
-            return Rx.Observable.throw(new Error('Unable to import archive.'));
+          if (message.content.data.status === 'error') {
+            const notificationSystem = state.app.get('notificationSystem');
             notificationSystem.addNotification({
-              title: message.content.error,
-              autoDismiss: 2,
+              title: message.content.data.error,
+              autoDismiss: 4,
               level: 'error',
             });
+            return Rx.Observable.throw(new Error('Unable to import archive.'));
             // return Rx.Observable.of({
             //   type: ERROR_EXECUTING,
             //   payload: message.error,
