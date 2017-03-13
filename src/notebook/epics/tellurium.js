@@ -29,7 +29,7 @@ export function convertFileEpic(action$, store) {
 
       const target_format = action.filetype === 'sbml' ? 'antimony' :
         action.filetype === 'omex' ? 'omex' :
-        () => {throw new Error('Source filetype not recognized')};
+        () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
 
       const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: target_format, path: action.path});
       const childMessages = channels.iopub.childOf(commOpen);
@@ -45,7 +45,7 @@ export function convertFileEpic(action$, store) {
             //   autoDismiss: 4,
             //   level: 'error',
             // });
-            throw new TelluriumError('Unable to import archive.', 'ERROR IMPORTING ARCHIVE');
+            throw new TelluriumError(message.content.data.error, 'ERROR IMPORTING ARCHIVE');
             // return Rx.Observable.throw(new Error('Unable to import archive.'));
             // return Rx.Observable.of({
             //   type: ERROR_GENERAL,
