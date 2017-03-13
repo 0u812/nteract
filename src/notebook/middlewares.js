@@ -4,14 +4,25 @@ import epics from './epics';
 
 const rootEpic = combineEpics(...epics);
 
+export class TelluriumError extends Error {
+  constructor(message, banner) {
+    super(message);
+    this.name = 'MyError';
+    this.banner = banner;
+  }
+}
+
 export const errorMiddleware = store => next => (action) => {
   if (!action.type.includes('ERROR')) {
     return next(action);
   }
   // console.error(action);
   let errorText;
+  let bannerText = action.type;
   if (action.payload) {
     errorText = action.payload.message;
+    if(action.payload.banner)
+      bannerText = action.payload.banner;
     // errorText = JSON.stringify(action.payload, 2, 2);
   } else {
     errorText = JSON.stringify(action, 2, 2);
@@ -20,7 +31,7 @@ export const errorMiddleware = store => next => (action) => {
   const notificationSystem = state.app.get('notificationSystem');
   if (notificationSystem) {
     notificationSystem.addNotification({
-      title: action.type,
+      title: bannerText,
       message: errorText,
       dismissible: true,
       position: 'tr',

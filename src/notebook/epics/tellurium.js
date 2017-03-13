@@ -9,6 +9,10 @@ import {
   createCellBefore,
 } from '../actions';
 
+import {
+  TelluriumError,
+} from '../middlewares';
+
 import * as uuid from 'uuid';
 
 export function convertFileEpic(action$, store) {
@@ -41,7 +45,7 @@ export function convertFileEpic(action$, store) {
             //   autoDismiss: 4,
             //   level: 'error',
             // });
-            throw new Error('Unable to import archive.')
+            throw new TelluriumError('Unable to import archive.', 'ERROR IMPORTING ARCHIVE');
             // return Rx.Observable.throw(new Error('Unable to import archive.'));
             // return Rx.Observable.of({
             //   type: ERROR_GENERAL,
