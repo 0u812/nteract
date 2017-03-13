@@ -8,10 +8,11 @@ export const errorMiddleware = store => next => (action) => {
   if (!action.type.includes('ERROR')) {
     return next(action);
   }
-  console.error(action);
+  // console.error(action);
   let errorText;
   if (action.payload) {
-    errorText = JSON.stringify(action.payload, 2, 2);
+    errorText = action.payload.message;
+    // errorText = JSON.stringify(action.payload, 2, 2);
   } else {
     errorText = JSON.stringify(action, 2, 2);
   }

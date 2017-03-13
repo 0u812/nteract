@@ -36,15 +36,16 @@ export function convertFileEpic(action$, store) {
         .map((message) => {
           if (message.content.data.status === 'error') {
             const notificationSystem = state.app.get('notificationSystem');
-            notificationSystem.addNotification({
-              title: message.content.data.error,
-              autoDismiss: 4,
-              level: 'error',
-            });
-            return Rx.Observable.throw(new Error('Unable to import archive.'));
+            // notificationSystem.addNotification({
+            //   title: message.content.data.error,
+            //   autoDismiss: 4,
+            //   level: 'error',
+            // });
+            throw new Error('Unable to import archive.')
+            // return Rx.Observable.throw(new Error('Unable to import archive.'));
             // return Rx.Observable.of({
-            //   type: ERROR_EXECUTING,
-            //   payload: message.error,
+            //   type: ERROR_GENERAL,
+            //   payload: message.content.data.error,
             //   error: true,
             // });
           }

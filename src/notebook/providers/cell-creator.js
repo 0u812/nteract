@@ -85,7 +85,7 @@ class CellCreator extends Component {
 
     const dialog_opts = {
       title: 'Import a COMBINE archive',
-      filters: [{ name: 'COMBINE archives', extensions: ['omex', 'sedx', 'sbex', 'cmex', 'sbox', 'neux', 'phex'] }],
+      filters: [{ name: 'COMBINE archives', extensions: ['omex', 'sedx', 'sbex', 'cmex', 'sbox', 'neux', 'phex', 'zip'] }],
       properties: ['openFile'],
     };
     dialog.showOpenDialog(dialog_opts, (fname) => {
