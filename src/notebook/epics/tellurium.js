@@ -111,15 +111,11 @@ export function saveFileEpic(action$, store) {
             });
             return Rx.Observable.of({
               type: 'ERROR_SAVING',
-              payload: 'hi',
+              payload: 'error saving',
               error: true,
             });
           } else {
-            return Rx.Observable.of({
-              type: 'ERROR_SAVING',
-              payload: message.content.data.error,
-              error: true,
-            });
+            throw new TelluriumError(message.content.data.error, 'ERROR SAVING');
           }
         });
     })
