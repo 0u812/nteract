@@ -27,7 +27,7 @@ export function convertFileEpic(action$, store) {
       // console.log('importFileEpic map');
       const identity = uuid.v4();
 
-      const target_format = action.filetype === 'sbml' ? 'antimony' :
+      const target_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
         action.filetype === 'omex' ? 'omex' :
         () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
 

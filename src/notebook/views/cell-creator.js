@@ -9,6 +9,7 @@ type Props = {
   id: string|null,
   createCell: (type: string) => void,
   mergeCell: () => void,
+  importPython: () => void,
   importSBML: () => void,
   importOMEX: () => void,
 };
@@ -19,13 +20,22 @@ type State = {|
 
 // https://github.com/sindresorhus/electron-context-menu/blob/master/index.js
 // https://github.com/electron/electron/issues/5794#issuecomment-222687713
-const makeTelluriumMenuTemplate = (importSbmlAct, importOmexAct) => [{
+const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importOmexAct) => [
+  {
+    id: 'importpython',
+    label: 'Import Pyhton script...',
+    // accelerator: 'CmdOrCtrl+Z',
+    click: (item, win) => importPythonAct(),
+    enabled: true
+  },
+  {
     id: 'importsbml',
     label: 'Import SBML...',
     // accelerator: 'CmdOrCtrl+Z',
     click: (item, win) => importSbmlAct(),
     enabled: true
-  },{
+  },
+  {
     id: 'importomex',
     label: 'Import COMBINE archive (OMEX)...',
     // accelerator: 'CmdOrCtrl+Z',
@@ -33,8 +43,8 @@ const makeTelluriumMenuTemplate = (importSbmlAct, importOmexAct) => [{
     enabled: true
   }];
 
-const telluriumPopup = (importSbmlAct, importOmexAct) => {
-  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importSbmlAct, importOmexAct));
+const telluriumPopup = (importPythonAct, importSbmlAct, importOmexAct) => {
+  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importPythonAct, importSbmlAct, importOmexAct));
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
 
@@ -68,7 +78,7 @@ const renderActionButtons = ({ above, createCell, mergeCell, importSBML, importO
         </svg>
       </span>
     </button>
-    <button onClick={() => telluriumPopup(() => importSBML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
+    <button onClick={() => telluriumPopup(() => importPython(), () => importSBML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
       <span className="teicon">
         <svg>
           <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>

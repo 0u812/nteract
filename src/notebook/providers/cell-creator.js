@@ -31,6 +31,7 @@ class CellCreator extends Component {
     this.importFile = this.importFile.bind(this);
     this.mergeCell = this.mergeCell.bind(this);
     this.importFile = this.importFile.bind(this); // not sure if this is necessary
+    this.importPython = this.importPython.bind(this);
     this.importSBML = this.importSBML.bind(this);
     this.importOMEX = this.importOMEX.bind(this);
   }
@@ -55,6 +56,26 @@ class CellCreator extends Component {
     // }
     //
     // above ? dispatch(createCellBefore(type, id)) : dispatch(createCellAfter(type, id));
+  }
+
+  importPython(): void {
+    const type = 'antimony';
+    const { dispatch, above, id } = this.props;
+
+    const dialog_opts = {
+      title: 'Import a Python script',
+      filters: [{ name: 'Python files', extensions: ['py'] }],
+      properties: ['openFile'],
+    };
+    dialog.showOpenDialog(dialog_opts, (fname) => {
+      if (fname) {
+        const f = fname[0];
+        if (!id)
+          dispatch(importFileIntoNotebook('', f, '', 'python', above ? 'above' : 'below'));
+        else
+          dispatch(importFileIntoNotebook(id, f, '', 'python', above ? 'above' : 'below'));
+      }
+    });
   }
 
   importSBML(): void {
