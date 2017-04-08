@@ -59,7 +59,6 @@ class CellCreator extends Component {
   }
 
   importPython(): void {
-    const type = 'antimony';
     const { dispatch, above, id } = this.props;
 
     const dialog_opts = {
@@ -79,7 +78,6 @@ class CellCreator extends Component {
   }
 
   importSBML(): void {
-    const type = 'antimony';
     const { dispatch, above, id } = this.props;
 
     const dialog_opts = {
@@ -99,7 +97,6 @@ class CellCreator extends Component {
   }
 
   importOMEX(): void {
-    const type = 'omex';
     const { dispatch, above, id } = this.props;
 
     // filetypes .omex, .sedx, .sbex, .cmex, .sbox, .neux, .phex
@@ -131,6 +128,7 @@ class CellCreator extends Component {
       ...this.props,
       createCell: this.createCell,
       mergeCell: this.mergeCell,
+      importPython: this.importPython,
       importSBML: this.importSBML,
       importOMEX: this.importOMEX,
     };

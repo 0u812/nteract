@@ -48,7 +48,7 @@ const telluriumPopup = (importPythonAct, importSbmlAct, importOmexAct) => {
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
 
-const renderActionButtons = ({ above, createCell, mergeCell, importSBML, importOMEX }: Props) => (
+const renderActionButtons = ({ above, createCell, mergeCell, importPython, importSBML, importOMEX }: Props) => (
   <div className="cell-creator">
     <button
       onClick={() => createCell('markdown')}
