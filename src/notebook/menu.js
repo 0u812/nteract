@@ -8,6 +8,8 @@ import {
 
 import { openVCardWindow } from './vcard';
 
+import {executeCellInNotebook} from './components/notebook'
+
 import * as path from 'path';
 
 import * as fs from 'fs';
@@ -188,12 +190,7 @@ export function dispatchRunAllBelow(store) {
 
   cellsBelowFocusedId.filter(cellID =>
     cells.getIn([cellID, 'cell_type']) === 'code')
-      .map(cellID => store.dispatch(
-        executeCell(
-          cellID,
-          cells.getIn([cellID, 'source'])
-        )
-  ));
+      .map(cellID => executeCellInNotebook(store, cellID, cells.get(cellID)));
 }
 
 export function dispatchRunAll(store) {
@@ -202,12 +199,7 @@ export function dispatchRunAll(store) {
   const cells = notebook.get('cellMap');
   notebook.get('cellOrder').filter(cellID =>
     cells.getIn([cellID, 'cell_type']) === 'code')
-      .map(cellID => store.dispatch(
-        executeCell(
-          cellID,
-          cells.getIn([cellID, 'source'])
-        )
-  ));
+      .map(cellID => executeCellInNotebook(store, cellID, cells.get(cellID)));
 }
 
 export function dispatchClearAll(store) {
