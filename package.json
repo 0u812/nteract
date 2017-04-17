@@ -74,14 +74,12 @@
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": [
-        "dmg",
-        "zip"
+        "dmg"
       ]
     },
     "win": {
       "target": [
-        "nsis",
-        "zip"
+        "nsis"
       ]
     },
     "linux": {
