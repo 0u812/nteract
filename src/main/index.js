@@ -28,6 +28,11 @@ const kernelspecs = require('kernelspecs');
 const jupyterPaths = require('jupyter-paths');
 const path = require('path');
 
+const electron = require('electron');
+const protocol = electron.protocol;
+
+const teProtocolPrefix = 'org.analogmachine.tellurium';
+
 const argv = require('yargs')
   .version()
   .usage('Usage: nteract <notebooks> [options]')
@@ -118,6 +123,17 @@ const kernelSpecsPromise = prepJupyterObservable
  */
 export function createSplashSubscriber() {
   let win;
+  console.log('createSplashSubscriber');
+
+  // register protocol
+  // https://glebbahmutov.com/blog/electron-app-with-custom-protocol/
+  protocol.registerFileProtocol(teProtocolPrefix, (request, callback) => {
+    // const url = request.url.substr(7)
+    // callback({path: path.normalize(`${__dirname}/${url}`)})
+    console.log(`scheme ${request.url}`);
+  }, (error) => {
+    if (error) console.error('Failed to register protocol');
+  });
 
   return Rx.Subscriber.create(() => {
     win = new BrowserWindow({
@@ -222,6 +238,7 @@ fullAppReady$
   .subscribe(() => {
     kernelSpecsPromise.then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
+        console.log('load app menu');
         const menu = loadFullMenu(kernelSpecs);
         Menu.setApplicationMenu(menu);
       } else {

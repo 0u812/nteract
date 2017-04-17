@@ -1,11 +1,11 @@
 {
   "name": "Tellurium",
-  "version": "0.0.15",
-  "description": "Interactive literate coding notebook!",
+  "version": "2.0.0",
+  "description": "Biological Network Modeling Environment",
   "main": "./lib/main/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nteract/nteract.git"
+    "url": "https://github.com/sys-bio/tellurium"
   },
   "keywords": [
     "jupyter",
@@ -14,12 +14,12 @@
     "nteract",
     "data"
   ],
-  "author": "nteract contributors",
-  "license": "BSD-3-Clause",
+  "author": "J Kyle Medley, Kiri Choi, Matthias Koenig, Herbert M Sauro",
+  "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/nteract/nteract/issues"
+    "url": "https://github.com/sys-bio/tellurium/issues"
   },
-  "homepage": "https://github.com/nteract/nteract",
+  "homepage": "http://tellurium.analogmachine.org",
   "scripts": {
     "postinstall": "install-app-deps",
     "reinstall": "npm run clean && rimraf node_modules && npm install",
@@ -61,11 +61,16 @@
   },
   "build": {
     "electronVersion": "1.4.15",
-    "appId": "io.nteract.nteract",
+    "appId": "org.analogmachine.tellurium",
     "fileAssociations": {
       "ext": "ipynb",
       "name": "ipynb"
     },
+    "protocols": [{
+      "name": "tellurium",
+      "role": "Viewer",
+      "schemes": ["org.analogmachine.tellurium"]
+    }],
     "mac": {
       "category": "public.app-category.developer-tools",
       "target": [
