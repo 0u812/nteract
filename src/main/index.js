@@ -123,17 +123,6 @@ const kernelSpecsPromise = prepJupyterObservable
  */
 export function createSplashSubscriber() {
   let win;
-  console.log('createSplashSubscriber');
-
-  // register protocol
-  // https://glebbahmutov.com/blog/electron-app-with-custom-protocol/
-  protocol.registerFileProtocol(teProtocolPrefix, (request, callback) => {
-    // const url = request.url.substr(7)
-    // callback({path: path.normalize(`${__dirname}/${url}`)})
-    console.log(`scheme ${request.url}`);
-  }, (error) => {
-    if (error) console.error('Failed to register protocol');
-  });
 
   return Rx.Subscriber.create(() => {
     win = new BrowserWindow({
@@ -143,6 +132,17 @@ export function createSplashSubscriber() {
       title: 'loading',
       frame: false,
       show: false
+    });
+    console.log('register protocol');
+
+    // register protocol
+    // https://glebbahmutov.com/blog/electron-app-with-custom-protocol/
+    protocol.registerHttpProtocol(teProtocolPrefix, (request, callback) => {
+      // const url = request.url.substr(7)
+      // callback({path: path.normalize(`${__dirname}/${url}`)})
+      console.log(`scheme ${request.url}`);
+    }, (error) => {
+      if (error) console.error('Failed to register protocol');
     });
 
     const index = join(__dirname, '..', '..', 'static', 'splash.html');
@@ -181,6 +181,11 @@ const openFile$ = Rx.Observable.fromEvent(
   app,
   'open-file', (event, filename) => ({ event, filename })
 );
+
+// const openUrl$ = Rx.Observable.fromEvent(
+//   app,
+//   'open-url', (event, filename) => ({ event, filename })
+// );
 
 function openFileFromEvent({ event, filename }) {
   event.preventDefault();
@@ -233,6 +238,10 @@ openFile$
 openFile$
   .skipUntil(fullAppReady$)
   .subscribe(openFileFromEvent);
+
+app.on('open-url', (e, url) => {
+  console.log('open-url ', url);
+});
 
 fullAppReady$
   .subscribe(() => {
