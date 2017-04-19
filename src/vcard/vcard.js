@@ -89,6 +89,11 @@ class App extends React.Component {
       const vcard = checkVCardExists() ? readVCard() : null;
       return (
         <div>
+          <div>
+            <svg>
+              <use xlinkHref="./assets/symbol-defs.svg#teicon-orcid"></use>
+            </svg>
+          </div>
           <VCard>
             {Object.keys(input_fields).map((key) =>
               <VCardField fieldName={key} fieldLabel={input_fields[key]} initialValue={vcard ? vcard[key] : ''}/>)}
