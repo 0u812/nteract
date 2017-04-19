@@ -90,9 +90,12 @@ class App extends React.Component {
       return (
         <div>
           <div>
-            <svg>
-              <use xlinkHref="./assets/symbol-defs.svg#teicon-orcid"></use>
-            </svg>
+            <span className='connect-orcid-button'>
+              <svg className='orcid-id-logo'>
+                <use xlinkHref="./assets/symbol-defs.svg#teicon-orcid"></use>
+              </svg>
+              Create or Connect your ORCID iD
+            </span>
           </div>
           <VCard>
             {Object.keys(input_fields).map((key) =>
