@@ -28,7 +28,7 @@ export function writeDummyVCard(): void {
 }
 
 export function openVCardWindow() {
-  var vcard_dialog = new BrowserWindow({width: 740, height: 400, useContentSize: true, title: 'VCard Info', show: false});
+  var vcard_dialog = new BrowserWindow({width: 740, height: 440, useContentSize: true, title: 'VCard Info', show: false});
   const vcard_page = path.join(app.getAppPath(), 'static', 'vcard.html');
   vcard_dialog.loadURL('file://'+vcard_page);
   vcard_dialog.once('ready-to-show', () => {
