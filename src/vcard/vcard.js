@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 const path = require('path');
 import username from 'username';
 import { openSync, readFileSync, writeFileSync, closeSync, existsSync } from 'fs';
-import { remote } from 'electron';
+import { remote, shell } from 'electron';
 
 const input_fields = {
   first_name: 'First Name',
@@ -35,6 +35,14 @@ function saveVCard(): void {
   writeFileSync(fd, vcard);
   closeSync(fd);
   remote.getCurrentWindow().close();
+}
+
+function connectOrcid(): void {
+  shell.openExternal(
+    'https://sandbox.orcid.org/oauth/authorize?'+
+    'client_id=APP-CR12WZ6DPNP0NO8B&'+
+    'response_type=code&scope=/authenticate&'+
+    'redirect_uri=http://128.208.17.254/');
 }
 
 function closeAndDiscard(): void {
@@ -90,7 +98,7 @@ class App extends React.Component {
         <div>
           <h3>Tellurium can retrieve your info from ORCID, or you can enter it manually</h3>
           <div className='buttonbar'>
-            <span className='connect-orcid-button'>
+            <span onClick={connectOrcid} className='connect-orcid-button'>
               <svg className='orcid-id-logo'>
                 <use xlinkHref="./assets/symbol-defs.svg#teicon-orcid"></use>
               </svg>
