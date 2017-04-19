@@ -13,6 +13,8 @@ const input_fields = {
   orcid: 'ORCID'
 }
 
+let validated_orcid = '';
+
 function jsonifyVCard(): String {
   let vcard = {version: '1.0.0'};
   Object.keys(input_fields).map((key) => {
@@ -79,6 +81,29 @@ class VCardField extends React.Component {
   }
 }
 
+class VCardORCID extends VCardField {
+  constructor(props) {
+    super(props);
+    this.state = {value: this.props.initialValue};
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  render() {
+    console.log('vcard orcid ' + this.state.value);
+    return (
+       <div className="input-container">
+         <div className="prompt">{this.props.fieldLabel+(validated_orcid.length > 0 && this.state.value === validated_orcid ? ' (verified)' : '')}</div>
+         <input id={this.props.fieldName} type='text' value={this.state.value} onChange={this.handleChange}/>
+       </div>
+    );
+  }
+}
+
 class VCard extends React.Component {
    render() {
       return (
@@ -108,6 +133,9 @@ class App extends React.Component {
           <h3>Personal Info</h3>
           <VCard>
             {Object.keys(input_fields).map((key) =>
+              key === 'orcid' ?
+              <VCardORCID fieldName={key} fieldLabel={input_fields[key]} initialValue={vcard ? vcard[key] : ''}/>
+              :
               <VCardField fieldName={key} fieldLabel={input_fields[key]} initialValue={vcard ? vcard[key] : ''}/>)}
           </VCard>
           <br/>
