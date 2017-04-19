@@ -32,8 +32,10 @@
         font-size: 20pt;
       }
       .diagbutton:hover {
-        margin: 20px 20px;
-        font-size: 20pt;
+        filter: drop-shadow( 1px 1px 3px #999 );
+      }
+      .diagbutton:active {
+        background-color: red;
       }
       .keep {
         color:#30bc23;
@@ -47,9 +49,9 @@
       @keyframes fadein {
         from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0px);}
       }
-      .connect-orcid-button{
+      .connect-orcid-button {
       	border: 1px solid #D3D3D3;
-      	padding: .3em;
+      	padding: 4px;
       	background-color: #fff;
       	border-radius: 8px;
       	box-shadow: 1px 1px 3px #999;
@@ -63,12 +65,12 @@
       	vertical-align: middle;
       }
 
-      .connect-orcid-button:hover{
+      .connect-orcid-button:hover {
       	border: 1px solid #338caf;
       	color: #338caf;
       }
 
-      .orcid-id-logo{
+      .orcid-id-logo {
         stroke-width: 0;
         stroke: #a6ce39;
         fill: #a6ce39;

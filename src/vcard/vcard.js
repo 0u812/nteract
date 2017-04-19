@@ -75,7 +75,6 @@ class VCard extends React.Component {
    render() {
       return (
          <div>
-            <h1>VCard Info</h1>
             <div className="cell">
               {this.props.children}
             </div>
@@ -89,7 +88,9 @@ class App extends React.Component {
       const vcard = checkVCardExists() ? readVCard() : null;
       return (
         <div>
-          <div>
+          <h1>Personal Info</h1>
+          <h3>Tellurium can retrieve your info from ORCID, or you can enter it manually</h3>
+          <div className='buttonbar'>
             <span className='connect-orcid-button'>
               <svg className='orcid-id-logo'>
                 <use xlinkHref="./assets/symbol-defs.svg#teicon-orcid"></use>
@@ -97,6 +98,7 @@ class App extends React.Component {
               Create or Connect your ORCID iD
             </span>
           </div>
+          <br/>
           <VCard>
             {Object.keys(input_fields).map((key) =>
               <VCardField fieldName={key} fieldLabel={input_fields[key]} initialValue={vcard ? vcard[key] : ''}/>)}
