@@ -83,19 +83,19 @@
       ]
     },
     "linux": {
-      "maintainer": "nteract contributors <jupyter@googlegroups.com>",
+      "maintainer": "J Kyle Medley <medjk@comcast.net>",
       "target": [
         "deb",
         "AppImage",
         "tar.gz"
       ],
       "desktop": {
-        "Comment": "Interactive literate coding notebook",
-        "Exec": "/opt/nteract/nteract %U",
+        "Comment": "Biological Modeling Environment for Python",
+        "Exec": "/opt/tellurium/tellurium %U",
         "Icon": "nteract",
         "MimeType": "application/x-ipynb+json",
-        "Name": "nteract",
-        "Path": "/opt/nteract/",
+        "Name": "Tellurium",
+        "Path": "/opt/tellurium/",
         "StartupNotify": "true",
         "Terminal": "false",
         "Type": "Application",

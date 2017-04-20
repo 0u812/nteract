@@ -22,6 +22,8 @@ import { loadFullMenu } from './menu';
 import prepareEnv from './prepare-env';
 import initializeKernelSpecs from './kernel-specs';
 
+import { handleProtocolRequest } from './protocol-handlers';
+
 const log = require('electron-log');
 
 const kernelspecs = require('kernelspecs');
@@ -141,6 +143,7 @@ export function createSplashSubscriber() {
       // const url = request.url.substr(7)
       // callback({path: path.normalize(`${__dirname}/${url}`)})
       console.log(`scheme ${request.url}`);
+      handleProtocolRequest(request.url);
     }, (error) => {
       if (error) console.error('Failed to register protocol');
     });
@@ -241,6 +244,7 @@ openFile$
 
 app.on('open-url', (e, url) => {
   console.log('open-url ', url);
+  handleProtocolRequest(url);
 });
 
 fullAppReady$
