@@ -3,6 +3,7 @@
 import type { Store } from 'redux';
 import type { AppState } from './records';
 import { ipcRenderer } from 'electron';
+import { getVCardWindow } from './vcard';
 
 import {
   forceShutdownKernel,
@@ -24,5 +25,9 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
   ipcRenderer.on('update-personal-info', (e, keys) => {
     console.log('update-personal-info');
     console.log(keys);
+    const vcard = getVCardWindow();
+    if (vcard) {
+      vcard.webContents.send('update-personal-info', keys);
+    }
   });
 }

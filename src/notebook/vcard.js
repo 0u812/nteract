@@ -4,6 +4,8 @@ const path = require('path');
 import username from 'username';
 import { existsSync } from 'fs';
 
+let globalVCardWindow;
+
 export function getTelluriumDir() {
   return path.join(app.getPath('userData'), 'telocal');
 }
@@ -34,6 +36,12 @@ export function openVCardWindow() {
   vcard_dialog.once('ready-to-show', () => {
     vcard_dialog.show();
   });
+  globalVCardWindow = vcard_dialog;
+  return vcard_dialog;
+}
+
+export function getVCardWindow() {
+  return globalVCardWindow;
 }
 
 export function vcardChecks(store: Object, id: String, cell: Object): Boolean {

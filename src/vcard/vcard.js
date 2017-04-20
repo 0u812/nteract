@@ -4,6 +4,7 @@ const path = require('path');
 import username from 'username';
 import { openSync, readFileSync, writeFileSync, closeSync, existsSync } from 'fs';
 import { remote, shell } from 'electron';
+import { ipcRenderer } from 'electron';
 
 const input_fields = {
   first_name: 'First Name',
@@ -14,6 +15,11 @@ const input_fields = {
 }
 
 let validated_orcid = '';
+
+ipcRenderer.on('update-personal-info', (e, keys) => {
+  console.log('update-personal-info in vcard');
+  console.log(keys);
+});
 
 function jsonifyVCard(): String {
   let vcard = {version: '1.0.0'};
