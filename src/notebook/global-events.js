@@ -2,6 +2,7 @@
 
 import type { Store } from 'redux';
 import type { AppState } from './records';
+import { ipcRenderer } from 'electron';
 
 import {
   forceShutdownKernel,
@@ -19,4 +20,9 @@ export function unload(store: Store<AppState, Action>) {
 
 export function initGlobalHandlers(store: Store<AppState, Action>) {
   global.window.onunload = unload.bind(null, store);
+  // via org.analogmachine.tellurium protocol
+  ipcRenderer.on('update-personal-info', (e, keys) => {
+    console.log('update-personal-info');
+    console.log(keys);
+  });
 }

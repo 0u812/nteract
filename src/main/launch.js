@@ -4,6 +4,12 @@ import { shell, BrowserWindow } from 'electron';
 
 let launchIpynb;
 
+let notebookWindow;
+
+export function getNotebookWindow() {
+  return notebookWindow;
+}
+
 export function getPath(url) {
   const nUrl = url.substring(url.indexOf('static'), path.length);
   return path.join(__dirname, '..', '..', nUrl.replace('static/', ''));
@@ -32,6 +38,8 @@ export function launch(filename) {
     icon: iconPath,
     title: 'nteract',
   });
+
+  notebookWindow = win;
 
   const index = path.join(__dirname, '..', '..', 'static', 'index.html');
   win.loadURL(`file://${index}`);
