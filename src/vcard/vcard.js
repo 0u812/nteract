@@ -19,6 +19,12 @@ let validated_orcid = '';
 ipcRenderer.on('update-personal-info', (e, keys) => {
   console.log('update-personal-info in vcard');
   console.log(keys);
+  Object.keys(keys).map((key) => {
+    const field = document.getElementById(key);
+    field.value = keys[key];
+    var event = new Event( 'change', {target: field, bubbles: true} );
+    field.dispatchEvent(event);
+  });
 });
 
 function jsonifyVCard(): String {
