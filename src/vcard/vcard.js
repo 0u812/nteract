@@ -20,19 +20,11 @@ const components = {};
 let validated_orcid = '';
 
 ipcRenderer.on('update-personal-info', (e, keys) => {
-  console.log('update-personal-info in vcard');
-  console.log(keys);
   Object.keys(keys).map((key) => {
     if (key === 'orcid') {
       validated_orcid = keys[key];
     }
     components[key].setState({value: keys[key]});
-    // // update value
-    // const field = document.getElementById(key);
-    // field.value = keys[key];
-    // // fire change event
-    // var event = new Event( 'change', {target: field, bubbles: true} );
-    // field.dispatchEvent(event);
   });
 });
 
@@ -123,7 +115,6 @@ class VCardORCID extends VCardField {
   }
 
   render() {
-    console.log('vcard orcid ' + this.state.value);
     return (
        <div className="input-container">
          <div className="prompt">{this.props.fieldLabel+(validated_orcid.length > 0 && this.state.value === validated_orcid ? ' (verified)' : '')}</div>

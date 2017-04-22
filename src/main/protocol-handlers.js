@@ -2,7 +2,6 @@ import URI from 'urijs';
 import { getNotebookWindow } from './launch';
 
 export function handleProtocolRequest(uristr) {
-  console.log('handleProtocolRequest');
   const uri = new URI(uristr);
   const tld = uri.tld();
   if (tld === 'tellurium2') {

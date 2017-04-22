@@ -135,14 +135,10 @@ export function createSplashSubscriber() {
       frame: false,
       show: false
     });
-    console.log('register protocol');
 
     // register protocol
     // https://glebbahmutov.com/blog/electron-app-with-custom-protocol/
     protocol.registerHttpProtocol(teProtocolPrefix, (request, callback) => {
-      // const url = request.url.substr(7)
-      // callback({path: path.normalize(`${__dirname}/${url}`)})
-      console.log(`scheme ${request.url}`);
       handleProtocolRequest(request.url);
     }, (error) => {
       if (error) console.error('Failed to register protocol');
@@ -243,7 +239,6 @@ openFile$
   .subscribe(openFileFromEvent);
 
 app.on('open-url', (e, url) => {
-  console.log('open-url ', url);
   handleProtocolRequest(url);
 });
 
@@ -251,7 +246,6 @@ fullAppReady$
   .subscribe(() => {
     kernelSpecsPromise.then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
-        console.log('load app menu');
         const menu = loadFullMenu(kernelSpecs);
         Menu.setApplicationMenu(menu);
       } else {
