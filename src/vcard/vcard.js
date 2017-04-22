@@ -14,16 +14,25 @@ const input_fields = {
   orcid: 'ORCID'
 }
 
+// http://stackoverflow.com/questions/31856712/update-component-state-from-outside-react-on-server-response
+const components = {};
+
 let validated_orcid = '';
 
 ipcRenderer.on('update-personal-info', (e, keys) => {
   console.log('update-personal-info in vcard');
   console.log(keys);
   Object.keys(keys).map((key) => {
-    const field = document.getElementById(key);
-    field.value = keys[key];
-    var event = new Event( 'change', {target: field, bubbles: true} );
-    field.dispatchEvent(event);
+    if (key === 'orcid') {
+      validated_orcid = keys[key];
+    }
+    components[key].setState({value: keys[key]});
+    // // update value
+    // const field = document.getElementById(key);
+    // field.value = keys[key];
+    // // fire change event
+    // var event = new Event( 'change', {target: field, bubbles: true} );
+    // field.dispatchEvent(event);
   });
 });
 
@@ -75,9 +84,13 @@ function readVCard(): String {
 class VCardField extends React.Component {
   constructor(props) {
     super(props);
+    // FIXME: setState?
     this.state = {value: this.props.initialValue};
-
+    // bind functions
     this.handleChange = this.handleChange.bind(this);
+
+    // add to components
+    components[this.props.fieldName] = this;
   }
 
   handleChange(event) {
@@ -100,6 +113,9 @@ class VCardORCID extends VCardField {
     this.state = {value: this.props.initialValue};
 
     this.handleChange = this.handleChange.bind(this);
+
+    // add to components
+    components[this.props.fieldName] = this;
   }
 
   handleChange(event) {
