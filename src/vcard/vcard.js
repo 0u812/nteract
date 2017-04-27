@@ -53,12 +53,12 @@ function saveVCard(): void {
 }
 
 function connectOrcid(): void {
-  shell.openExternal('org.analogmachine.tellurium://abc');
-  // shell.openExternal(
-  //   'https://sandbox.orcid.org/oauth/authorize?'+
-  //   'client_id=APP-CR12WZ6DPNP0NO8B&'+
-  //   'response_type=code&scope=/authenticate&'+
-  //   'redirect_uri=http://128.208.17.254/');
+  // shell.openExternal('org.analogmachine.tellurium://abc');
+  shell.openExternal(
+    'https://sandbox.orcid.org/oauth/authorize?'+
+    'client_id=APP-CR12WZ6DPNP0NO8B&'+
+    'response_type=code&scope=/authenticate&'+
+    'redirect_uri=http://128.208.17.254/');
 }
 
 function closeAndDiscard(): void {
