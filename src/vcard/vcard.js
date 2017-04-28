@@ -24,7 +24,11 @@ ipcRenderer.on('update-personal-info', (e, keys) => {
     if (key === 'orcid') {
       validated_orcid = keys[key];
     }
-    components[key].setState({value: keys[key]});
+    if (key in components) {
+      components[key].setState({value: keys[key]});
+    } else {
+      console.error('No such field: ', key);
+    }
   });
 });
 
@@ -55,8 +59,8 @@ function saveVCard(): void {
 function connectOrcid(): void {
   // shell.openExternal('org.analogmachine.tellurium://abc');
   shell.openExternal(
-    'https://sandbox.orcid.org/oauth/authorize?'+
-    'client_id=APP-CR12WZ6DPNP0NO8B&'+
+    'https://orcid.org/oauth/authorize?'+
+    'client_id=APP-VPVYI4C8LVACISNZ&'+
     'response_type=code&scope=/authenticate&'+
     'redirect_uri=http://128.208.17.254/');
 }
