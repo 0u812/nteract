@@ -8,7 +8,10 @@ export function handleProtocolRequest(uristr) {
     const segment = uri.segmentCoded(0);
     if (segment === 'update-personal-info') {
       const keys = uri.search(true);
-      getNotebookWindow().webContents.send('update-personal-info', keys);
+      const notebookWindow = getNotebookWindow();
+      if (notebookWindow) {
+        notebookWindow.webContents.send('update-personal-info', keys);
+      }
     }
   }
 }
