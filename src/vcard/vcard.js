@@ -154,7 +154,7 @@ class App extends React.Component {
               Create or Connect your ORCID iD
             </span>
           </div>
-          <h3>Personal Info</h3>
+          <h3>Personal Info (Used in Combine Archives)</h3>
           <VCard>
             {Object.keys(input_fields).map((key) =>
               key === 'orcid' ?
