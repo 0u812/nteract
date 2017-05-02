@@ -40,3 +40,4 @@ bin/nteract-env
 
 .DS_Store
 /telocal/python-3.6.0
+/telocal/python-3.6.1
