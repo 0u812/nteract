@@ -18,14 +18,19 @@ CodeMirror.defineMIME('text/x-ipython', 'ipython');
 // omex
 
 function wordRegexp(words) {
-  return new RegExp("^((" + words.join(")|(") + "))\\b");
+  return new RegExp('^((' + words.join(')|(') + '))\\b');
 }
 
-const wordOperators = wordRegexp(["a", "is"]);
-const commonKeywords = ["model", "end", "species", "var", "const"];
+const wordOperators = wordRegexp(['a', 'is']);
+const commonKeywords = [
+  // antimony
+  'model', 'end', 'species', 'var', 'const',
+  // phrasedml
+  'simulate', 'run', 'repeat', 'plot', 'for', 'in'
+  ];
 const commonBuiltins = [];
 
-CodeMirror.defineMode("omex", function() {
+CodeMirror.defineMode('omex', function() {
   const myKeywords = commonKeywords, myBuiltins = commonBuiltins;
 
   const keywords = wordRegexp(myKeywords);
@@ -39,7 +44,7 @@ CodeMirror.defineMode("omex", function() {
       // Handle comments
       if (!state.inString && (stream.peek() == '#' || stream.match('//'))) {
         stream.skipToEnd();
-        return "comment";
+        return 'comment';
       }
 
       // Handle strings
@@ -56,9 +61,9 @@ CodeMirror.defineMode("omex", function() {
         if (stream.match(/^[\d_]+\.\d*/)) { floatLiteral = true; }
         if (stream.match(/^\.\d+/)) { floatLiteral = true; }
         if (floatLiteral) {
-          // Float literals may be "imaginary"
+          // Float literals may be 'imaginary'
           stream.eat(/J/i);
-          return "number";
+          return 'number';
         }
         // Integers
         let intLiteral = false;
@@ -70,7 +75,7 @@ CodeMirror.defineMode("omex", function() {
         if (stream.match(/^0o[0-7_]+/i)) intLiteral = true;
         // Decimal
         if (stream.match(/^[1-9][\d_]*(e[\+\-]?[\d_]+)?/)) {
-          // Decimal literals may be "imaginary"
+          // Decimal literals may be 'imaginary'
           stream.eat(/J/i);
           // TODO - Can you have imaginary longs?
           intLiteral = true;
@@ -78,38 +83,38 @@ CodeMirror.defineMode("omex", function() {
         // Zero by itself with no other piece of number.
         if (stream.match(/^0(?![\dx])/i)) intLiteral = true;
         if (intLiteral) {
-          // Integer literals may be "long"
+          // Integer literals may be 'long'
           stream.eat(/L/i);
-          return "number";
+          return 'number';
         }
       }
 
       // Handle keywords
       if (stream.match(keywords)) {
-        return "keyword";
+        return 'keyword';
       }
 
       // Handle identifiers
       if (stream.match(identifiers)) {
         stream.eatSpace()
-        if (stream.peek() == ":") {
+        if (stream.peek() == ':') {
           // reaction
-          return "def"
+          return 'def'
         }
-        return "variable";
+        return 'variable';
       }
       if (stream.match(boundary_species)) {
-        return "variable-2";
+        return 'variable-2';
       }
 
       // Handle reaction arrows
-      if (stream.match("->") || stream.match("=>")) {
-        return "operator";
+      if (stream.match('->') || stream.match('=>')) {
+        return 'operator';
       }
 
       // Handle operators
       if (stream.match(/[*/+-]/)) {
-        return "operator";
+        return 'operator';
       }
 
       if (state.inString) {
@@ -119,7 +124,7 @@ CodeMirror.defineMode("omex", function() {
         } else {
           stream.skipToEnd();    // Rest of line is string
         }
-        return "string";          // Token style
+        return 'string';          // Token style
       }
 
       stream.next();
@@ -128,4 +133,4 @@ CodeMirror.defineMode("omex", function() {
   };
 });
 
-CodeMirror.registerHelper("hintWords", "antimony", commonKeywords.concat(commonBuiltins));
+CodeMirror.registerHelper('hintWords', 'antimony', commonKeywords.concat(commonBuiltins));
