@@ -16,7 +16,7 @@
         height: 10px;
         position: absolute;
         left: -10px;
-        top: 200px;
+        top: 170px;
         background-color: var(--tecolor);
         border-radius: 50%;
         animation: move 4s infinite cubic-bezier(.2,.64,.81,.23);
@@ -43,9 +43,10 @@
       	display: block;
         height: var(--tesize);
       	margin: auto;
-        margin-top: 50px;
+        margin-top: 25px;
       	padding: 0;
         width: var(--tesize);
+        /*filter: drop-shadow( 0px 5px 3px #999 );*/
       }
       .center {
         width: 100%;
@@ -56,6 +57,10 @@
         font-family: Tellurium;
         src: url(assets/cnr.otf);
       }
+      @font-face {
+        font-family: TelluriumLight;
+        src: url(assets/FuturaRenner-Light.otf);
+      }
       #tetext {
         width: 100%;
         text-align: center;
@@ -63,6 +68,17 @@
         font-family: Tellurium;
         font-size: 28pt;
         color: var(--tecolor);
+        /*filter: drop-shadow( 0px 5px 3px #999 );*/
+      }
+      #status {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        font-size: 16pt;
+        font-family: TelluriumLight;
+        color: white;
+        background-color: var(--tecolor);
       }
     </style>
   </head>
@@ -80,6 +96,9 @@
       <div></div>
       <div></div>
       <div></div>
+    </div>
+    <div id="status">
+      Loading...
     </div>
     <!-- <video autoplay="autoplay" loop="loop" width="565" height="233">
       <source src="loading.mp4" type="video/mp4" />
