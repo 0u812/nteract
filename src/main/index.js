@@ -76,7 +76,10 @@ const nteractConfigFilename = path.join(jupyterConfigDir, 'tellurium.json');
 // TODO: use app.getPath('userData') instead
 const dstTelluriumDataDir = path.join(app.getPath('userData'), 'telocal');
 // TODO: Write VERSION.txt to dstTelluriumDataDir
-log.info(dstTelluriumDataDir);
+// log.info(dstTelluriumDataDir);
+
+let splashWebContents;
+let firstTimeInit = false;
 
 const prepJupyterObservable = prepareEnv
   .mergeMap(() =>
@@ -104,7 +107,12 @@ const prepJupyterObservable = prepareEnv
         .catch((err) => {
           if (err.code === 'ENOENT') {
             const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', 'telocal');
-            log.info(srcTelluriumConfigDir);
+            // log.info(srcTelluriumConfigDir);
+            if (splashWebContents) {
+              splashWebContents.send('first-time-init');
+            } else {
+              firstTimeInit = true;
+            }
             return ncpObservable(
               srcTelluriumConfigDir,
               dstTelluriumDataDir)
@@ -148,6 +156,13 @@ export function createSplashSubscriber() {
     win.loadURL(`file://${index}`);
     win.once('ready-to-show', () => {
       win.show();
+    });
+
+    win.webContents.on('did-finish-load', () => {
+      log.info('first time init');
+      if (firstTimeInit) {
+        win.webContents.send('first-time-init');
+      }
     });
   }, null,
   () => {

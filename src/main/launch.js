@@ -36,7 +36,7 @@ export function launch(filename) {
     width: 800,
     height: 1000,
     icon: iconPath,
-    title: 'nteract',
+    title: 'Tellurium',
   });
 
   notebookWindow = win;
