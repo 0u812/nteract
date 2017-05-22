@@ -66,7 +66,7 @@ class CodeCell extends React.PureComponent {
               completion
               id={this.props.id}
               input={this.props.cell.get('source')}
-              language={this.props.language}
+              language={this.getCodeCellType() === 'omex' || this.getCodeCellType() === 'antimony' ? 'omex' : this.props.language}
               cellFocused={this.props.cellFocused}
               editorFocused={this.props.editorFocused}
               theme={this.props.theme}
