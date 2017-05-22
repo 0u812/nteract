@@ -3,7 +3,8 @@ import * as fs from 'fs';
 
 export const filesystem = fs;
 const mkdirp = require('mkdirp');
-import ncp from 'ncp'
+import ncp from 'ncp';
+const request = require('request');
 
 export const unlinkObservable = path =>
   Rx.Observable.create((observer) => {
@@ -31,6 +32,9 @@ export const createSymlinkObservable = (target, path) =>
 
 export const readFileObservable =
   Rx.Observable.bindNodeCallback(filesystem.readFile);
+
+export const readURLObservable =
+Rx.Observable.bindNodeCallback(request);
 
 export const writeFileObservable =
   Rx.Observable.bindNodeCallback(filesystem.writeFile);

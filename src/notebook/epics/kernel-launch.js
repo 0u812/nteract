@@ -172,7 +172,10 @@ export const newKernelByNameEpic = (action$: ActionsObservable) =>
     .mergeMap(action =>
       kernelSpecsObservable
         .mergeMap(specs =>
-          Rx.Observable.of(newKernel(specs[action.kernelSpecName], action.cwd))
+          {
+            console.log('newKernelByNameEpic, cwd', action.cwd);
+            return Rx.Observable.of(newKernel(specs[action.kernelSpecName], action.cwd));
+          }
         )
   );
 

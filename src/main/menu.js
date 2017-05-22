@@ -78,7 +78,7 @@ export const fileSubMenus = {
 
       dialog.showOpenDialog(opts, (fname) => {
         if (fname) {
-          launch(fname[0]);
+          launch('file://'+fname[0]);
         }
       });
     },
