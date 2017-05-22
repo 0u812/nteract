@@ -2,10 +2,91 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <style>
+      /*http://codepen.io/brunjo/pen/VYebBq*/
+      :root {
+        --tecolor: #f47c50;
+        --tesize: 64px;
+      }
+      body {
+        overflow: hidden;
+      }
+      .spinner div {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        left: -10px;
+        top: 200px;
+        background-color: var(--tecolor);
+        border-radius: 50%;
+        animation: move 4s infinite cubic-bezier(.2,.64,.81,.23);
+      }
+      .spinner div:nth-child(2) {
+        animation-delay: 150ms;
+      }
+      .spinner div:nth-child(3) {
+        animation-delay: 300ms;
+      }
+      .spinner div:nth-child(4) {
+        animation-delay: 450ms;
+      }
+      @keyframes move {
+        0% {left: 0%;}
+        75% {left:100%;}
+        100% {left:110%;}
+      }
+
+      .telogo {
+        stroke-width: 0;
+        stroke: var(--tecolor);
+        fill: var(--tecolor);
+      	display: block;
+        height: var(--tesize);
+      	margin: auto;
+        margin-top: 50px;
+      	padding: 0;
+        width: var(--tesize);
+      }
+      .center {
+        width: 100%;
+        /*margin: auto;*/
+        background-color: red;
+      }
+      @font-face {
+        font-family: Tellurium;
+        src: url(assets/cnr.otf);
+      }
+      #tetext {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        font-family: Tellurium;
+        font-size: 28pt;
+        color: var(--tecolor);
+      }
+    </style>
   </head>
   <body style="margin: 0px; overflow: hidden;">
-    <video autoplay="autoplay" loop="loop" width="565" height="233">
+    <!-- <div class="center"> -->
+      <svg class='telogo'>
+        <use xlink:href="./assets/symbol-defs.svg#teicon-telogo"></use>
+      </svg>
+    <!-- </div> -->
+    <div id='tetext'>
+      Tellurium
+    </div>
+    <div class="spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <!-- <video autoplay="autoplay" loop="loop" width="565" height="233">
       <source src="loading.mp4" type="video/mp4" />
-    </video>
+    </video> -->
+    <script>
+      var appVersion = require('electron').remote.app.getVersion();
+      document.getElementById('tetext').innerHTML += ' ' + appVersion.toString();
+    </script>
   </body>
 </html>
