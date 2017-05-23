@@ -200,24 +200,26 @@ function openFileFromEvent({ event, filename }) {
   if (event) {
     event.preventDefault();
   }
-  alert('openFileFromEvent ' + filename.toString());
+  // alert('openFileFromEvent ' + filename.toString());
+  const fnstr = filename ? filename.toString() : 'no filename';
+  dialog.showMessageBox({
+    title: 'openFileFromEvent',
+    message: 'openFileFromEvent ' + fnstr,
+  });
   console.log('openFileFromEvent', resolve(filename));
   launch(resolve(filename));
 }
 
 
-// app.on('open-url', (e, url) => {
-//   handleProtocolRequest(url);
-// });
 const openUrl$ = Rx.Observable.fromEvent(
   app,
-  'open-url', (e, url) => ({ e, url })
+  'open-url', (e, url) => ({ event: e, filename: url })
 );
 
 // Since we can't launch until app is ready
 // and macOS will send the open-file events early,
 // buffer those that come early.
-openUrl$
+openFile$.merge(openUrl$)
   .buffer(fullAppReady$) // Form an array of open-file events from before app-ready
   .first() // Should only be the first
   .subscribe((buffer) => {
@@ -253,13 +255,23 @@ openUrl$
           }
         });
     }
-    buffer.forEach(openFileFromEvent);
+    buffer.forEach(({ event, filename }) => {
+      if (filename.startsWith(teProtocolPrefix)) {
+        handleProtocolRequest(filename);
+      } else {
+        openFileFromEvent({ event, filename });
+      }
+    });
   });
 
 // All open file events after app is ready
 openFile$
   .skipUntil(fullAppReady$)
   .subscribe(openFileFromEvent);
+
+openUrl$
+  .skipUntil(fullAppReady$)
+  .subscribe(({event,filename}) => handleProtocolRequest(filename));
 
 fullAppReady$
   .subscribe(() => {
