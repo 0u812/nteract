@@ -375,15 +375,21 @@ function mergeCellAfter(state: DocumentState, action: MergeCellAfterAction) {
   );
 }
 
-type NewCellAppendAction = { type: 'NEW_CELL_APPEND', cellType: CellType}
+type NewCellAppendAction = { type: 'NEW_CELL_APPEND', cellType: CellType, source: string }
 function newCellAppend(state: DocumentState, action: NewCellAppendAction) {
-  const { cellType } = action;
+  const { cellType, source } = action;
   const notebook: ImmutableNotebook = state.get('notebook');
   const cellOrder : ImmutableCellOrder = notebook.get('cellOrder');
   const cell: ImmutableCell = cellType === 'markdown' ? emptyMarkdownCell : emptyCodeCell;
+
+  const applySubtypeToCell = (cell) => { return cellType === 'omex' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'omex') :
+    cellType === 'antimony' ?
+    cell.setIn(['metadata', 'tellurium', 'te_cell_type'], 'antimony') : cell; };
+
   const index = cellOrder.count();
   const cellID = uuid.v4();
-  return state.set('notebook', insertCellAt(notebook, cell, cellID, index));
+  return state.set('notebook', insertCellAt(notebook, applySubtypeToCell(cell.set('source', source)), cellID, index));
 }
 
 type UpdateSourceAction = { type: 'UPDATE_CELL_SOURCE', id: CellID, source: string }

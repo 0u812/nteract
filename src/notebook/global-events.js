@@ -4,6 +4,8 @@ import type { Store } from 'redux';
 import type { AppState } from './records';
 import { ipcRenderer } from 'electron';
 import { getVCardWindow } from './vcard';
+import { extname } from 'path';
+import { importFileIntoNotebook } from './actions';
 
 import {
   forceShutdownKernel,
@@ -28,15 +30,45 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
       vcard.webContents.send('update-personal-info', keys);
     }
   });
+
+  // https://gist.github.com/armaldio/75ae2b6476da83110cf8d54d47e89b56
+
+  document.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      for (let f of e.dataTransfer.files) {
+          console.log('File(s) you dragged here: ', f.path)
+          const ext = extname(f.path);
+          console.log('file has extension: ', ext);
+          if (ext === '.omex') {
+            store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
+          }
+      }
+      return false;
+  });
+
+  document.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+  });
 }
 
 // drag/drop
 
-document.ondragover = document.ondrop = (ev) => {
-  ev.preventDefault()
-}
-
-document.body.ondrop = (ev) => {
-  console.log(ev.dataTransfer.files[0].path)
-  ev.preventDefault()
-}
+// document.ondragover = (ev) => {
+//   // console.log('document.ondragover');
+//   // console.log(ev.dataTransfer.files[0].path);
+//   ev.preventDefault();
+//   return false;
+// }
+//
+// document.body.ondrop = (ev) => {
+//   console.log('document.body.ondrop ', ev.dataTransfer.files[0].path);
+//   ev.preventDefault();
+// }
+//
+// document.ondrop = (ev) => {
+//   // console.log('document.ondrop');
+//   // console.log(ev.dataTransfer.files[0].path);
+//   ev.preventDefault();
+// }

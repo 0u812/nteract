@@ -196,21 +196,28 @@ const openFile$ = Rx.Observable.fromEvent(
   'open-file', (event, filename) => ({ event, filename })
 );
 
-// const openUrl$ = Rx.Observable.fromEvent(
-//   app,
-//   'open-url', (event, filename) => ({ event, filename })
-// );
-
 function openFileFromEvent({ event, filename }) {
-  event.preventDefault();
+  if (event) {
+    event.preventDefault();
+  }
+  alert('openFileFromEvent ' + filename.toString());
+  console.log('openFileFromEvent', resolve(filename));
   launch(resolve(filename));
 }
 
 
+// app.on('open-url', (e, url) => {
+//   handleProtocolRequest(url);
+// });
+const openUrl$ = Rx.Observable.fromEvent(
+  app,
+  'open-url', (e, url) => ({ e, url })
+);
+
 // Since we can't launch until app is ready
 // and macOS will send the open-file events early,
 // buffer those that come early.
-openFile$
+openUrl$
   .buffer(fullAppReady$) // Form an array of open-file events from before app-ready
   .first() // Should only be the first
   .subscribe((buffer) => {
@@ -238,6 +245,7 @@ openFile$
       notebooks
         .forEach((f) => {
           try {
+            console.log('launch', resolve(f));
             launch(resolve(f));
           } catch (e) {
             log.error(e);
@@ -252,10 +260,6 @@ openFile$
 openFile$
   .skipUntil(fullAppReady$)
   .subscribe(openFileFromEvent);
-
-app.on('open-url', (e, url) => {
-  handleProtocolRequest(url);
-});
 
 fullAppReady$
   .subscribe(() => {

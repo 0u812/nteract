@@ -7,6 +7,7 @@ import {
 import {
   createCellAfter,
   createCellBefore,
+  createCellAppend,
 } from '../actions';
 
 import {
