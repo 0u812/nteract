@@ -37,18 +37,20 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
       e.preventDefault();
       e.stopPropagation();
       for (let f of e.dataTransfer.files) {
-          const ext = extname(f.path);
-          if (ext === '.omex' || ext === '.zip') {
-            store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
-          } else if (ext === '.xml') {
-            store.dispatch(importFileIntoNotebook('', f.path, '', 'sbml', 'below'));
-          }
+        const ext = extname(f.path);
+        if (ext === '.omex' || ext === '.zip') {
+          store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
+        } else if (ext === '.xml') {
+          store.dispatch(importFileIntoNotebook('', f.path, '', 'sbml', 'below'));
+        } else if (ext === '.py') {
+          store.dispatch(importFileIntoNotebook('', f.path, '', 'python', 'below'));
+        }
       }
       return false;
   });
 
   document.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
   });
 }
