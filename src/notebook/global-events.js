@@ -40,8 +40,10 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
           console.log('File(s) you dragged here: ', f.path)
           const ext = extname(f.path);
           console.log('file has extension: ', ext);
-          if (ext === '.omex') {
+          if (ext === '.omex' || ext === '.zip') {
             store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
+          } else if (ext === '.xml') {
+            store.dispatch(importFileIntoNotebook('', f.path, '', 'sbml', 'below'));
           }
       }
       return false;
@@ -52,23 +54,3 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
       e.stopPropagation();
   });
 }
-
-// drag/drop
-
-// document.ondragover = (ev) => {
-//   // console.log('document.ondragover');
-//   // console.log(ev.dataTransfer.files[0].path);
-//   ev.preventDefault();
-//   return false;
-// }
-//
-// document.body.ondrop = (ev) => {
-//   console.log('document.body.ondrop ', ev.dataTransfer.files[0].path);
-//   ev.preventDefault();
-// }
-//
-// document.ondrop = (ev) => {
-//   // console.log('document.ondrop');
-//   // console.log(ev.dataTransfer.files[0].path);
-//   ev.preventDefault();
-// }
