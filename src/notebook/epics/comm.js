@@ -67,7 +67,6 @@ export const createCommErrorAction = error =>
  * @return {Object}      COMM_OPEN action
  */
 export function commOpenAction(message) {
-  console.log('commOpenAction');
   // invariant: expects a comm_open message
   return {
     type: COMM_OPEN,
@@ -90,7 +89,6 @@ export function commOpenAction(message) {
  * @return {Object}      COMM_MESSAGE action
  */
 export function commMessageAction(message) {
-  console.log('commMessageAction');
   return {
     type: COMM_MESSAGE,
     comm_id: message.content.comm_id,

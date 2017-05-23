@@ -58,9 +58,7 @@ export const notebookLoaded = (filename, notebook: Notebook) => ({
   * @returns  {ActionObservable}  ActionObservable for a NEW_KERNEL action
   */
 export const extractNewKernel = (filename: string, notebook: ImmutableNotebook) => {
-  console.log('extractNewKernel');
   const cwd = (filename && !filename.startsWith('http') && !filename.startsWith('https') && path.dirname(path.resolve(filename))) || process.cwd();
-  console.log('extractNewKernel cwd', cwd);
   const kernelSpecName = notebook.getIn(
     ['metadata', 'kernelspec', 'name'], notebook.getIn(
       ['metadata', 'language_info', 'name'],
@@ -80,8 +78,6 @@ export const extractNewKernel = (filename: string, notebook: ImmutableNotebook) 
   * @returns  {Object}  The filename and notebook in Immutable.Map form
   */
 export const convertRawNotebook = (filename: string, data) => {
-  console.log('convertRawNotebook');
-  console.log('convertRawNotebook data', data);
   if (data instanceof Buffer || typeof data === 'string') {
     return {
       filename,
@@ -113,14 +109,10 @@ export const loadEpic = (actions: ActionsObservable) =>
     .switchMap(action => {
       const isURL = action.filename.startsWith('http') || action.filename.startsWith('https');
       const filepart = isURL ? action.filename : action.filename.replace('file://','');
-      console.log('filepart', filepart);
       return (isURL ? readURLObservable(action.filename) : readFileObservable(filepart))
         .map((response, data) => convertRawNotebook(filepart, response, data))
         .flatMap(({ filename, notebook }) => {
-          console.log('before extractNewKernel, filename', filename);
           const { cwd, kernelSpecName } = extractNewKernel(filename, notebook);
-          console.log('before notebookLoaded, cwd', cwd);
-          console.log('before notebookLoaded, kernelSpecName', kernelSpecName);
           return Observable.of(
             notebookLoaded(filename && !filename.startsWith('http') && !filename.startsWith('https') ? filename : null, notebook),
             // Find kernel based on kernel name

@@ -18,7 +18,6 @@ export default function (
   state: MetadataState = defaultMetadataState,
   action: ChangeFilenameAction
 ) {
-  console.log('metadata change filename');
   if (action.type === 'CHANGE_FILENAME' || action.type === 'SET_NOTEBOOK') {
     return changeFilename(state, action);
   }

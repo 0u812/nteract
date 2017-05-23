@@ -197,16 +197,7 @@ const openFile$ = Rx.Observable.fromEvent(
 );
 
 function openFileFromEvent({ event, filename }) {
-  if (event) {
-    event.preventDefault();
-  }
-  // alert('openFileFromEvent ' + filename.toString());
-  const fnstr = filename ? filename.toString() : 'no filename';
-  dialog.showMessageBox({
-    title: 'openFileFromEvent',
-    message: 'openFileFromEvent ' + fnstr,
-  });
-  console.log('openFileFromEvent', resolve(filename));
+  event.preventDefault();
   launch(resolve(filename));
 }
 
@@ -247,7 +238,6 @@ openFile$.merge(openUrl$)
       notebooks
         .forEach((f) => {
           try {
-            console.log('launch', resolve(f));
             launch(resolve(f));
           } catch (e) {
             log.error(e);

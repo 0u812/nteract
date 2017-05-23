@@ -25,7 +25,6 @@ export function convertFileEpic(action$, store) {
         throw new Error('kernel not connected');
       }
 
-      // console.log('importFileEpic map');
       const identity = uuid.v4();
 
       const target_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
@@ -103,7 +102,6 @@ export function saveFileEpic(action$, store) {
           // TODO: throw here on error
           if (message.content.data.status === 'okay') {
             // success
-            console.log('done saving');
             const notificationSystem = state.app.get('notificationSystem');
             notificationSystem.addNotification({
               title: `Saved ${message.content.data.file}`,

@@ -16,7 +16,6 @@ export function handleProtocolRequest(uristr) {
       const keys = uri.search(true);
       if ('url' in keys) {
         const notebook_url = keys['url'];
-        console.log('Open notebook at ', notebook_url);
         launch(notebook_url);
       }
     }
