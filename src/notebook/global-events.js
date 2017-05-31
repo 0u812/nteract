@@ -38,7 +38,7 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
       e.stopPropagation();
       for (let f of e.dataTransfer.files) {
         const ext = extname(f.path);
-        if (ext === '.omex' || ext === '.zip') {
+        if (ext === '.omex' || ext === '.sedx' || ext === '.zip') {
           store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
         } else if (ext === '.xml') {
           store.dispatch(importFileIntoNotebook('', f.path, '', 'sbml', 'below'));

@@ -26,7 +26,7 @@ const commonKeywords = [
   // antimony
   'model', 'end', 'species', 'var', 'const',
   // phrasedml
-  'simulate', 'run', 'repeat', 'plot', 'for', 'in'
+  'simulate', 'run', 'repeat', 'plot', 'report', 'for', 'in'
   ];
 const commonBuiltins = [];
 
