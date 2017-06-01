@@ -33,6 +33,7 @@ class CellCreator extends Component {
     this.importFile = this.importFile.bind(this); // not sure if this is necessary
     this.importPython = this.importPython.bind(this);
     this.importSBML = this.importSBML.bind(this);
+    this.importCellML = this.importCellML.bind(this);
     this.importOMEX = this.importOMEX.bind(this);
   }
 
@@ -96,6 +97,25 @@ class CellCreator extends Component {
     });
   }
 
+  importCellML(): void {
+    const { dispatch, above, id } = this.props;
+
+    const dialog_opts = {
+      title: 'Import a CellML file',
+      filters: [{ name: 'CellML files', extensions: ['xml', 'cellml'] }],
+      properties: ['openFile'],
+    };
+    dialog.showOpenDialog(dialog_opts, (fname) => {
+      if (fname) {
+        const f = fname[0];
+        if (!id)
+          dispatch(importFileIntoNotebook('', f, '', 'cellml', above ? 'above' : 'below'));
+        else
+          dispatch(importFileIntoNotebook(id, f, '', 'cellml', above ? 'above' : 'below'));
+      }
+    });
+  }
+
   importOMEX(): void {
     const { dispatch, above, id } = this.props;
 
@@ -130,6 +150,7 @@ class CellCreator extends Component {
       mergeCell: this.mergeCell,
       importPython: this.importPython,
       importSBML: this.importSBML,
+      importCellML: this.importCellML,
       importOMEX: this.importOMEX,
     };
 

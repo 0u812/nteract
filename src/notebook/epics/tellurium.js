@@ -27,11 +27,14 @@ export function convertFileEpic(action$, store) {
 
       const identity = uuid.v4();
 
+      const source_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
+        action.filetype === 'omex' ? 'omex' : action.filetype === 'cellml' ? 'cellml' :
+        () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
       const target_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
-        action.filetype === 'omex' ? 'omex' :
+        action.filetype === 'omex' ? 'omex' : action.filetype === 'cellml' ? 'antimony' :
         () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
 
-      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: target_format, path: action.path});
+      const commOpen = createCommOpenMessage(identity, 'convert_file_comm', {target_format: source_format, path: action.path});
       const childMessages = channels.iopub.childOf(commOpen);
 
       channels.shell.next(commOpen);

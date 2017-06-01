@@ -42,6 +42,8 @@ export function initGlobalHandlers(store: Store<AppState, Action>) {
           store.dispatch(importFileIntoNotebook('', f.path, '', 'omex', 'below'));
         } else if (ext === '.xml') {
           store.dispatch(importFileIntoNotebook('', f.path, '', 'sbml', 'below'));
+        } else if (ext === '.cellml') {
+          store.dispatch(importFileIntoNotebook('', f.path, '', 'cellml', 'below'));
         } else if (ext === '.py') {
           store.dispatch(importFileIntoNotebook('', f.path, '', 'python', 'below'));
         }

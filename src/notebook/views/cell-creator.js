@@ -11,6 +11,7 @@ type Props = {
   mergeCell: () => void,
   importPython: () => void,
   importSBML: () => void,
+  importCellML: () => void,
   importOMEX: () => void,
 };
 
@@ -20,7 +21,7 @@ type State = {|
 
 // https://github.com/sindresorhus/electron-context-menu/blob/master/index.js
 // https://github.com/electron/electron/issues/5794#issuecomment-222687713
-const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importOmexAct) => [
+const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importCellMLAct, importOmexAct) => [
   {
     id: 'importpython',
     label: 'Import Pyhton script...',
@@ -36,6 +37,13 @@ const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importOmexAct
     enabled: true
   },
   {
+    id: 'importcellml',
+    label: 'Import CellML...',
+    // accelerator: 'CmdOrCtrl+Z',
+    click: (item, win) => importCellMLAct(),
+    enabled: true
+  },
+  {
     id: 'importomex',
     label: 'Import COMBINE archive (OMEX)...',
     // accelerator: 'CmdOrCtrl+Z',
@@ -43,12 +51,12 @@ const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importOmexAct
     enabled: true
   }];
 
-const telluriumPopup = (importPythonAct, importSbmlAct, importOmexAct) => {
-  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importPythonAct, importSbmlAct, importOmexAct));
+const telluriumPopup = (importPythonAct, importSbmlAct, importCellMLAct, importOmexAct) => {
+  const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importPythonAct, importSbmlAct, importCellMLAct, importOmexAct));
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
 
-const renderActionButtons = ({ above, createCell, mergeCell, importPython, importSBML, importOMEX }: Props) => (
+const renderActionButtons = ({ above, createCell, mergeCell, importPython, importSBML, importCellML, importOMEX }: Props) => (
   <div className="cell-creator">
     <button
       onClick={() => createCell('markdown')}
@@ -78,7 +86,7 @@ const renderActionButtons = ({ above, createCell, mergeCell, importPython, impor
         </svg>
       </span>
     </button>
-    <button onClick={() => telluriumPopup(() => importPython(), () => importSBML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
+    <button onClick={() => telluriumPopup(() => importPython(), () => importSBML(), () => importCellML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
       <span className="teicon">
         <svg>
           <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>
