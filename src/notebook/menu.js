@@ -301,7 +301,9 @@ export function updateVCard(store) {
 }
 
 export function exportPDF(filename, notificationSystem) {
-  remote.getCurrentWindow().webContents.printToPDF({ printBackground: true, pageSize: {height: 1600000, width: 250000} }, (error, data) => {
+  // uncomment to control page size
+  // remote.getCurrentWindow().webContents.printToPDF({ printBackground: true, pageSize: {height: 1600000, width: 250000} }, (error, data) => {
+  remote.getCurrentWindow().webContents.printToPDF({ printBackground: true }, (error, data) => {
     if (error) throw error;
     fs.writeFile(`${filename}.pdf`, data, (error_fs) => {
       notificationSystem.addNotification({
