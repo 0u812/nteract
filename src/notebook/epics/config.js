@@ -24,7 +24,7 @@ export const configLoaded = config => ({
 
 const HOME = remote.app.getPath('home');
 
-export const CONFIG_FILE_PATH = path.join(HOME, '.jupyter', 'nteract.json');
+export const CONFIG_FILE_PATH = path.join(HOME, '.jupyter', 'tellurium.json');
 
 /**
   * An epic that loads the configuration.
