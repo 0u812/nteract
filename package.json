@@ -77,6 +77,10 @@
         "dmg"
       ]
     },
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false
+    },
     "win": {
       "target": [
         "nsis"
