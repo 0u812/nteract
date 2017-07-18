@@ -26,7 +26,7 @@ const KERNEL_SPECS = {
       display_name: 'Python 3',
       argv: [
         process.platform === 'win32' ?
-          join(app.getPath('userData'),'telocal','python-3.6.1','python.exe') : 
+          join(app.getPath('userData'),'telocal','python-3.6.1','python.exe') :
           join(app.getPath('userData'),'telocal','python-3.6.1','bin','python3'),
         '-m',
         'ipykernel',
@@ -37,7 +37,7 @@ const KERNEL_SPECS = {
   }
 };
 
-export default function initializeKernelSpecs(kernelSpecs) {
+export default function initializeKernelSpecs() {
   // Object.assign(KERNEL_SPECS, kernelSpecs);
   return KERNEL_SPECS;
 }
