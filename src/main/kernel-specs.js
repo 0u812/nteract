@@ -25,7 +25,9 @@ const KERNEL_SPECS = {
       language: 'python',
       display_name: 'Python 3',
       argv: [
-        join(app.getPath('userData'),'telocal','python-3.6.1','bin','python3'),
+        process.platform === 'win32' ?
+          join(app.getPath('userData'),'telocal','python-3.6.1','python.exe') : 
+          join(app.getPath('userData'),'telocal','python-3.6.1','bin','python3'),
         '-m',
         'ipykernel',
         '-f',
