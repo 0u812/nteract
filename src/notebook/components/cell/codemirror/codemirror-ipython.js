@@ -24,7 +24,7 @@ function wordRegexp(words) {
 const wordOperators = wordRegexp(['a', 'is']);
 const commonKeywords = [
   // antimony
-  'model', 'end', 'species', 'var', 'const', 'compartment', 'substanceOnly',
+  'model', 'end', 'species', 'var', 'const', 'compartment', 'substanceOnly', 'function', 'unit',
   // phrasedml
   'simulate', 'run', 'repeat', 'plot', 'report', 'for', 'in'
   ];
