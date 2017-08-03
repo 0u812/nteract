@@ -93,7 +93,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
           if (!editor.state.completionActive &&
               !excludedIntelliSenseTriggerKeys[(ev.keyCode || ev.which).toString()] &&
               (token.type === 'tag' || token.type === 'variable' || token.string === ' ' ||
-               token.string === '<' || token.string === '/') && executionState === 'idle') {
+               token.string === '<' || token.string === '/' || token.string === '.') && executionState === 'idle') {
             editor.execCommand('autocomplete', { completeSingle: false });
           }
         });
