@@ -114,7 +114,7 @@ export class Cell extends React.PureComponent {
         ref={(el) => { this.cellDiv = el; }}
       >
         {
-          cellFocused ? <Toolbar
+          this.state.hoverCell ? <Toolbar
             type={type}
             cell={cell}
             id={this.props.id}
