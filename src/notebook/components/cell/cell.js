@@ -49,6 +49,7 @@ export class Cell extends React.PureComponent {
 
   constructor(): void {
     super();
+    this.toolbar = null;
     this.selectCell = this.selectCell.bind(this);
     this.focusCellEditor = this.focusCellEditor.bind(this);
     this.focusAboveCell = this.focusAboveCell.bind(this);
@@ -114,7 +115,8 @@ export class Cell extends React.PureComponent {
         ref={(el) => { this.cellDiv = el; }}
       >
         {
-          this.state.hoverCell ? <Toolbar
+          this.state.hoverCell || (this.toolbar && this.toolbar.dropdown && this.toolbar.dropdown.isActive()) ? <Toolbar
+            ref={(toolbar) => { this.toolbar = toolbar; }}
             type={type}
             cell={cell}
             id={this.props.id}
@@ -133,6 +135,7 @@ export class Cell extends React.PureComponent {
             theme={this.props.theme}
           /> :
           <CodeCell
+            ref={(codeCell) => { this.codeCell = codeCell; }}
             focusAbove={this.focusAboveCell}
             focusBelow={this.focusBelowCell}
             cellFocused={cellFocused}
