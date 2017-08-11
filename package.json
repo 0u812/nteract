@@ -95,18 +95,19 @@
       ],
       "desktop": {
         "Comment": "Biological Modeling Environment for Python",
-        "Exec": "/opt/tellurium/tellurium %U",
-        "Icon": "Tellurium",
-        "MimeType": "application/x-ipynb+json",
+        "TryExec": "/opt/Tellurium/tellurium",
+        "Exec": "/opt/Tellurium/tellurium %U",
+        "Icon": "tellurium",
+        "MimeType": "application/x-ipynb+json;",
         "Name": "Tellurium",
-        "Path": "/opt/tellurium/",
+        "Path": "/opt/Tellurium/",
         "StartupNotify": "true",
         "Terminal": "false",
         "Type": "Application",
         "Categories": "Science;Development;"
       },
-      "category": "science",
-      "packageCategory": "editors"
+      "category": "Science;Development",
+      "packageCategory": "Editors"
     },
     "files": [
       "lib",
