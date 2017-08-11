@@ -51,51 +51,61 @@ const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importCellMLA
     enabled: true
   }];
 
-const telluriumPopup = (importPythonAct, importSbmlAct, importCellMLAct, importOmexAct) => {
+const importPopup = (importPythonAct, importSbmlAct, importCellMLAct, importOmexAct) => {
   const menu = remote.Menu.buildFromTemplate(makeTelluriumMenuTemplate(importPythonAct, importSbmlAct, importCellMLAct, importOmexAct));
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
 
+const makeNewCellMenuTemplate = (newPythonCell, newMarkdownCell, newModelCell, newOmexCell) => [
+  {
+    id: 'newpython',
+    label: 'New Python Cell',
+    click: (item, win) => newPythonCell()(),
+    enabled: true
+  },
+  {
+    id: 'newmarkdown',
+    label: 'New Markdown Cell',
+    click: (item, win) => newMarkdownCell(),
+    enabled: true
+  },
+  {
+    id: 'newmodel',
+    label: 'New Model Cell',
+    click: (item, win) => newModelCell(),
+    enabled: true
+  },
+  {
+    id: 'newomex',
+    label: 'New OMEX Cell',
+    click: (item, win) => newOmexCell(),
+    enabled: true
+  }];
+
+const newCellPopup = (newPythonCell, newMarkdownCell, newModelCell, newOmexCell) => {
+  const menu = remote.Menu.buildFromTemplate(makeNewCellMenuTemplate(newPythonCell, newMarkdownCell, newModelCell, newOmexCell));
+  menu.popup(remote.BrowserWindow.getFocusedWindow());
+}
 const renderActionButtons = ({ above, createCell, mergeCell, importPython, importSBML, importCellML, importOMEX }: Props) => (
   <div className="cell-creator">
     <button
-      onClick={() => createCell('markdown')}
-      title="create text cell"
+      onClick={() => newCellPopup(() => createCell('code'), () => createCell('markdown'), () => createCell('antimony'), () => createCell('omex'))}
+      title="New cell..."
       className="add-text-cell"
     >
-      <span className="octicon octicon-markdown" />
-    </button>
-    <button onClick={() => createCell('code')} title="Create code cell" className="add-code-cell">
-      <span className="teicon">
-        <svg>
-          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-python"></use>
-        </svg>
+      <span className="teicon">New &nbsp;
+        <span className="octicon octicon-triangle-down" />
       </span>
     </button>
-    <button onClick={() => createCell('antimony')} title="Create model cell" className="sbml-helper">
-      <span className="teicon">
-        <svg>
-          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-antimony"></use>
-        </svg>
-      </span>
-    </button>
-    <button onClick={() => createCell('omex')} title="Create OMEX cell" className="omex-helper">
-      <span className="teicon">
-        <svg>
-          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-combine"></use>
-        </svg>
-      </span>
-    </button>
-    <button onClick={() => telluriumPopup(() => importPython(), () => importSBML(), () => importCellML(), () => importOMEX())} title="Tellurium actions" className="tellurium-helper">
-      <span className="teicon">
-        <svg>
-          <use xlinkHref="../static/assets/symbol-defs.svg#teicon-telogo"></use>
-        </svg>
+    <button onClick={() => importPopup(() => importPython(), () => importSBML(), () => importCellML(), () => importOMEX())} title="Import file..." className="tellurium-helper">
+      <span className="teicon">Import &nbsp;
+        <span className="octicon octicon-triangle-down" />
       </span>
     </button>
     { above ? null :
     <button onClick={() => mergeCell()} title="merge cells" className="merge-cell">
-      <span className="octicon octicon-arrow-up" />
+      <span className="teicon">Merge
+      </span>
     </button> }
   </div>
 );

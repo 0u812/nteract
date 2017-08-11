@@ -320,9 +320,9 @@ blockquote p {
 {
   display: inline-block;
 
-  width: 22px;
+  /*width: 60px;*/
   height: 20px;
-  padding: 0px 4px;
+  padding: 0px 10px;
 
   text-align: center;
 
@@ -331,7 +331,7 @@ blockquote p {
   background: none;
 }
 
-.cell-creator button span
+.cell-creator button > span
 {
   font-size: 15px;
   line-height: 1;
@@ -339,7 +339,7 @@ blockquote p {
   color: var(--toolbar-button);
 }
 
-.cell-creator button span:hover
+.cell-creator button > span:hover
 {
   color: var(--toolbar-button-hover);
 }
