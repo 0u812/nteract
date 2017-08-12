@@ -17,6 +17,7 @@ type Props = {
 
 type State = {|
   show: boolean,
+  showMerge: boolean, // highlight cells about to be merged
 |};
 
 // https://github.com/sindresorhus/electron-context-menu/blob/master/index.js
@@ -60,7 +61,7 @@ const makeNewCellMenuTemplate = (newPythonCell, newMarkdownCell, newModelCell, n
   {
     id: 'newpython',
     label: 'New Python Cell',
-    click: (item, win) => newPythonCell()(),
+    click: (item, win) => newPythonCell(),
     enabled: true
   },
   {
@@ -86,41 +87,20 @@ const newCellPopup = (newPythonCell, newMarkdownCell, newModelCell, newOmexCell)
   const menu = remote.Menu.buildFromTemplate(makeNewCellMenuTemplate(newPythonCell, newMarkdownCell, newModelCell, newOmexCell));
   menu.popup(remote.BrowserWindow.getFocusedWindow());
 }
-const renderActionButtons = ({ above, createCell, mergeCell, importPython, importSBML, importCellML, importOMEX }: Props) => (
-  <div className="cell-creator">
-    <button
-      onClick={() => newCellPopup(() => createCell('code'), () => createCell('markdown'), () => createCell('antimony'), () => createCell('omex'))}
-      title="New cell..."
-      className="add-text-cell"
-    >
-      <span className="teicon">New &nbsp;
-        <span className="octicon octicon-triangle-down" />
-      </span>
-    </button>
-    <button onClick={() => importPopup(() => importPython(), () => importSBML(), () => importCellML(), () => importOMEX())} title="Import file..." className="tellurium-helper">
-      <span className="teicon">Import &nbsp;
-        <span className="octicon octicon-triangle-down" />
-      </span>
-    </button>
-    { above ? null :
-    <button onClick={() => mergeCell()} title="merge cells" className="merge-cell">
-      <span className="teicon">Merge
-      </span>
-    </button> }
-  </div>
-);
 
 export default class CellCreator extends PureComponent {
   props: Props;
   state: State;
   updateVisibility: (mouseEvent: MouseEvent) => void;
   hoverElement: HTMLElement;
+  mergeElement: HTMLElement;
 
   constructor(): void {
     super();
 
     this.state = {
       show: false,
+      showMerge: false,
     };
 
     this.updateVisibility = throttle(this.updateVisibility.bind(this), 200);
@@ -139,12 +119,49 @@ export default class CellCreator extends PureComponent {
   }
 
   updateVisibility(mouseEvent: MouseEvent): void {
+    let showMerge = false;
     if (this.hoverElement) {
       const { clientX: x, clientY: y } = mouseEvent;
       const { left, right, top, bottom } = this.hoverElement.getBoundingClientRect();
       const show = (left < x && x < right) && (top < y && y < bottom);
       this.setState({ show });
+
+      // console.log('this.props.above ', this.props.above);
+      if (!this.props.above && this.mergeElement) {
+        const { left, right, top, bottom } = this.mergeElement.getBoundingClientRect();
+        showMerge = (left < x && x < right) && (top < y && y < bottom);
+      }
     }
+    if (showMerge != this.state.showMerge) {
+      this.setState({ showMerge });
+      console.log('show merge? ', this.state.showMerge);
+    }
+  }
+
+  renderActionButtons({ above, createCell, mergeCell, importPython, importSBML, importCellML, importOMEX }: Props): React.Element<any> {
+    return (
+      <div className="cell-creator">
+        <button
+          onClick={() => newCellPopup(() => createCell('code'), () => createCell('markdown'), () => createCell('antimony'), () => createCell('omex'))}
+          title="New cell..."
+          className="add-text-cell"
+        >
+          <span className="teicon">New &nbsp;
+            <span className="octicon octicon-triangle-down" />
+          </span>
+        </button>
+        <button onClick={() => importPopup(() => importPython(), () => importSBML(), () => importCellML(), () => importOMEX())} title="Import file..." className="tellurium-helper">
+          <span className="teicon">Import &nbsp;
+            <span className="octicon octicon-triangle-down" />
+          </span>
+        </button>
+        { above ? null :
+        <button ref={(ref) => { this.mergeElement = ref; }} onClick={() => mergeCell()} title="Merge cells" className="merge-cell">
+          <span className="teicon">Merge
+          </span>
+        </button> }
+      </div>
+    );
   }
 
   render(): React.Element<any> {
@@ -152,7 +169,7 @@ export default class CellCreator extends PureComponent {
       <div className="creator-hover-mask">
         <div className="creator-hover-region" ref={(ref) => { this.hoverElement = ref; }}>
           { this.state.show || !this.props.id
-            ? renderActionButtons(this.props)
+            ? this.renderActionButtons(this.props)
             : null }
         </div>
       </div>

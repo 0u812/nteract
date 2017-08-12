@@ -145,6 +145,10 @@ blockquote p {
     box-shadow: 3px 3px 9px rgba(0,0,0,.12), -3px -3px 9px rgba(0,0,0,.12);
 }
 
+.cell.highlight-okay {
+    box-shadow: 3px 3px 9px rgba(37, 228, 47, 0.12), -3px -3px 9px rgba(37, 228, 47, 0.12);
+}
+
 .cell:hover .prompt,
 .cell:active .prompt
 {
