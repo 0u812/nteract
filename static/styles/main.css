@@ -4,6 +4,9 @@
 :root {
   --prompt-width: 50px;
   --cell-placeholder-opacity: 0.3;
+
+  --toolbar-button-red: #ef9292;
+  --toolbar-button-red-hover: #e50000;
 }
 
 @media print {
@@ -205,9 +208,20 @@ blockquote p {
     color: var(--toolbar-button);
 }
 
+/* red button is red */
+.cell-toolbar button span.redbutton
+{
+    color: var(--toolbar-button-red);
+}
+
 .cell-toolbar button span:hover
 {
     color: var(--toolbar-button-hover);
+}
+
+.cell-toolbar button span.redbutton:hover
+{
+    color: var(--toolbar-button-red-hover);
 }
 
 .cell.text .rendered

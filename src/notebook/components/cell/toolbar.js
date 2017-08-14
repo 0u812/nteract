@@ -188,13 +188,6 @@ export default class Toolbar extends React.PureComponent {
           >
             <span className="octicon octicon-pin" />
           </button>
-          <button
-            onClick={this.removeCell}
-            title="delete cell"
-            className="deleteButton"
-          >
-            <span className="octicon octicon-trashcan" />
-          </button>
           <Dropdown ref={(dropdown) => { this.dropdown = dropdown; }}>
             <DropdownTrigger>
               <button title="show additional actions">
@@ -249,6 +242,13 @@ export default class Toolbar extends React.PureComponent {
               </ul>
             </DropdownContent>
           </Dropdown>
+          <button
+            onClick={this.removeCell}
+            title="delete cell"
+            className="deleteButton"
+          >
+            <span className="redbutton octicon octicon-trashcan" />
+          </button>
         </div>
       </div>
     );
