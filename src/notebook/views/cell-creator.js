@@ -4,6 +4,10 @@ import React, { PureComponent } from 'react';
 import { throttle } from 'lodash';
 const log = require('electron-log');
 
+import {
+  highlightCells,
+} from '../actions';
+
 type Props = {
   above: boolean,
   id: string|null,
@@ -94,6 +98,12 @@ export default class CellCreator extends PureComponent {
   updateVisibility: (mouseEvent: MouseEvent) => void;
   hoverElement: HTMLElement;
   mergeElement: HTMLElement;
+  cellAbove = null;
+  cellBelow = null;
+
+  static contextTypes = {
+    store: React.PropTypes.object,
+  };
 
   constructor(): void {
     super();
@@ -134,7 +144,9 @@ export default class CellCreator extends PureComponent {
     }
     if (showMerge != this.state.showMerge) {
       this.setState({ showMerge });
-      console.log('show merge? ', this.state.showMerge);
+      if (showMerge) {
+        this.context.store.dispatch(highlightCells([this.props.id], 'ok'));
+      }
     }
   }
 

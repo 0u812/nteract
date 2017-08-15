@@ -156,6 +156,7 @@ export const DocumentRecord = Immutable.Record({
   stickyCells: new Immutable.Set(),
   editorFocused: null,
   cellFocused: null,
+  highlightedCells: null,
   copied: new Immutable.Map(),
 });
 

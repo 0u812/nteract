@@ -23,6 +23,7 @@ export const SET_NOTEBOOK = 'SET_NOTEBOOK';
 
 export const MOVE_CELL = 'MOVE_CELL';
 export const REMOVE_CELL = 'REMOVE_CELL';
+export const HIGHLIGHT_CELLS = 'HIGHLIGHT_CELLS';
 
 export const NEW_NOTEBOOK = 'NEW_NOTEBOOK';
 export const READ_NOTEBOOK = 'READ_NOTEBOOK';

@@ -313,6 +313,13 @@ function removeCellFromState(state: DocumentState, action: RemoveCellAction) {
   );
 }
 
+type HighlightCellAction = { type: 'HIGHLIGHT_CELL', ids: list, status: string };
+function highlightCells(state: DocumentState, action: HighlightCellAction) {
+  const { ids, status } = action;
+  console.log('highlight cell reducer ', ids, status);
+  return state.set('highlightedCells', ids);
+}
+
 type NewCellAfterAction = {
   type: 'NEW_CELL_AFTER', id: CellID, cellType: CellType, source: string
 };
@@ -578,6 +585,8 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return moveCell(state, action);
     case constants.REMOVE_CELL:
       return removeCellFromState(state, action);
+    case constants.HIGHLIGHT_CELLS:
+      return highlightCells(state, action);
     case constants.NEW_CELL_AFTER:
       return newCellAfter(state, action);
     case constants.NEW_CELL_BEFORE:

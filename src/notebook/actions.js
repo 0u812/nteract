@@ -61,6 +61,14 @@ export function removeCell(id) {
   };
 }
 
+export function highlightCells(ids, status) {
+  return {
+    type: constants.HIGHLIGHT_CELLS,
+    ids,
+    status,
+  };
+}
+
 export function createCellAfter(cellType, id, source) {
   return {
     type: constants.NEW_CELL_AFTER,
