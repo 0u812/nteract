@@ -105,6 +105,11 @@ CodeMirror.defineMode('omex', function() {
         }
       }
 
+      // Handle SBO terms
+      if (stream.match(/^SBO:[0-9]+/)) {
+          return 'number';
+      }
+
       // Handle keywords
       if (stream.match(keywords)) {
         return 'keyword';
