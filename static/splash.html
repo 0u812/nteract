@@ -101,8 +101,8 @@
       Loading...
     </div>
     <script>
-      var appVersion = require('electron').remote.app.getVersion();
-      document.getElementById('tetext').innerHTML += ' ' + appVersion.toString();
+      // var appVersion = require('electron').remote.app.getVersion();
+      // document.getElementById('tetext').innerHTML += ' ' + appVersion.toString();
       require('electron').ipcRenderer.on('first-time-init', function(event, message) {
         document.getElementById('status').innerHTML = 'Performing first-time initialization...';
       });
