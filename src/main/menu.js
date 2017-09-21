@@ -88,41 +88,17 @@ export const fileSubMenus = {
     label: '&Open Example Notebook',
     submenu: [
       {
-        label: '&Intro',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'intro.ipynb')),
+        label: '&Quickstart',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'quickstart.ipynb')),
       },
       {
-        label: '&Plotly',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'plotly.ipynb')),
-      },
-      {
-        label: '&Plotlyr',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'plotlyr.ipynb')),
-      },
-      {
-        label: '&Altair',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'altair.ipynb')),
-      },
-      {
-        label: '&Geojson',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'geojson.ipynb')),
-      },
-      {
-        label: '&Pandas to GeoJSON',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'pandas-to-geojson.ipynb')),
-      },
-      {
-        label: '&Named display updates',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'display-updates.ipynb')),
-      },
-      {
-        label: '&Analyze nteract download metrics',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'download-stats.ipynb')),
-      },
-      {
-        label: '&Exploring Custom Revival with JSON.parse',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'immutable-revival.ipynb'))
+        label: '&PhraSEDML Basics',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'phrasedml-basics.ipynb')),
       }
+      // {
+      //   label: '&Analyze nteract download metrics',
+      //   click: launch.bind(null, path.join(exampleNotebooksDirectory, 'download-stats.ipynb')),
+      // },
     ]
   },
   save: {
