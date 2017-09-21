@@ -92,8 +92,8 @@ export const fileSubMenus = {
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'quickstart.ipynb')),
       },
       {
-        label: '&PhraSEDML Basics',
-        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'phrasedml-basics.ipynb')),
+        label: '&COMBINE Archive Basics',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'omex-basics.ipynb')),
       }
       // {
       //   label: '&Analyze nteract download metrics',
