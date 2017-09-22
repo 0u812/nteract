@@ -95,8 +95,8 @@
       ],
       "desktop": {
         "Comment": "Biological Modeling Environment for Python",
-        "TryExec": "/opt/Tellurium/tellurium",
-        "Exec": "/opt/Tellurium/tellurium %U",
+        "TryExec": "tellurium",
+        "Exec": "tellurium %U",
         "Icon": "tellurium",
         "MimeType": "application/x-ipynb+json;",
         "Name": "Tellurium",
