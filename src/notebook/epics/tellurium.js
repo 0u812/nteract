@@ -139,7 +139,10 @@ export function getNotebookPathEpic(action$, store) {
       }
       console.log('open ', message.comm_id);
 
-      const reply = createCommMessage(message.comm_id, {location: 'abc'});
+      console.log('filename ', state.metadata.get('filename'));
+      // console.log('state ', state)
+
+      const reply = createCommMessage(message.comm_id, {location: state.metadata.get('filename') || ''});
       channels.shell.next(reply);
 
       return reply;
