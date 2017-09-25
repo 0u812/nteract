@@ -31,6 +31,7 @@ import {
 import {
   convertFileEpic,
   saveFileEpic,
+  getNotebookPathEpic,
 } from './tellurium';
 
 import {
@@ -64,6 +65,7 @@ const epics = [
   saveConfigOnChangeEpic,
   convertFileEpic,
   saveFileEpic,
+  getNotebookPathEpic,
 ].map(wrapEpic);
 
 export default epics;

@@ -2,6 +2,7 @@ import Rx from 'rxjs/Rx';
 
 import {
   createCommOpenMessage,
+  createCommMessage,
 } from './comm';
 
 import {
@@ -119,8 +120,45 @@ export function saveFileEpic(action$, store) {
           } else {
             throw new TelluriumError(message.content.data.error, 'ERROR SAVING');
           }
-        });
+        }); // TODO: add take until
     })
     .mergeAll()
+    .filter(() => false);
+}
+
+// used for saving non-notebook files
+export function getNotebookPathEpic(action$, store) {
+  return action$.ofType('COMM_OPEN')
+    .filter((message) => message.target_name == "get_notebook_location")
+    // .take(1)
+    .map((message) => {
+      const state = store.getState();
+      const channels = state.app.channels;
+      if (!channels || !channels.iopub || !channels.shell) {
+        throw new Error('kernel not connected');
+      }
+      console.log('open ', message.comm_id);
+
+      const reply = createCommMessage(message.comm_id, {location: 'abc'});
+      channels.shell.next(reply);
+
+      return reply;
+
+      // const childMessages = channels.iopub.childOf(createCommOpenMessage(message.comm_id, "get_notebook_location"));
+      //
+      // return childMessages
+      //   .map((m) => {
+      //     console.log('msg ', m);
+      //     return m;
+      //   })
+      //   .ofMessageType(['comm_msg'])
+      //   .map((message) => {
+      //     console.log('replied to ', message.comm_id);
+      //     const reply = createCommMessage(message.comm_id, {location: 'abc'});
+      //     channels.shell.next(reply);
+      //     return 1;
+      //     });
+    })
+    // .mergeAll()
     .filter(() => false);
 }
