@@ -140,12 +140,12 @@ export function getNotebookPathEpic(action$, store) {
       if (!channels || !channels.iopub || !channels.shell) {
         throw new Error('kernel not connected');
       }
-      console.log('open ', message.comm_id);
-      console.log('filename ', state.metadata.get('filename'));
+      // console.log('open ', message.comm_id);
+      // console.log('filename ', state.metadata.get('filename'));
 
       const reply = createCommMessage(message.comm_id, {location: state.metadata.get('filename') || ''});
       channels.shell.next(reply);
-      console.log('sent reply');
+      // console.log('sent reply');
       return reply;
     })
     .filter(() => false);
