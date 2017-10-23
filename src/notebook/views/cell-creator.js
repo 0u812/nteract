@@ -29,7 +29,7 @@ type State = {|
 const makeTelluriumMenuTemplate = (importPythonAct, importSbmlAct, importCellMLAct, importOmexAct) => [
   {
     id: 'importpython',
-    label: 'Import Pyhton script...',
+    label: 'Import Python script...',
     // accelerator: 'CmdOrCtrl+Z',
     click: (item, win) => importPythonAct(),
     enabled: true
