@@ -81,21 +81,15 @@ export function executeCellInNotebook(store: Object, id: String, cell: Object): 
 }
 
 export function formatForJupyter(notebook): void {
-//   let n = notebook;
-//   console.log(notebook);
-//   const cells = notebook.get('cellMap');
-  const new_notebook = notebook.update('cellMap', cellMap =>
+  return notebook.update('cellMap', cellMap =>
     cellMap.map(cell => cell.update('source', source => {
       const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
       return (codetype === 'omex' ? '%%omex\n' :
         codetype === 'antimony' ? '%%crn\n' : '')+
         cell.get('source');
     }
-    ))
+    ).removeIn(['metadata', 'tellurium']))
   );
-  console.log(new_notebook);
-  return new_notebook;
-//   return notebook;
 }
 
 export class Notebook extends React.PureComponent {
