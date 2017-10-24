@@ -90,8 +90,12 @@ export default class Toolbar extends React.PureComponent {
           filename = `${filename}.xml`;
         }
 
-        const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
-        alert(`Save SBML ${filename}`);
+        this.context.store.dispatch(saveFileFromString(
+          'antimony', // source_format
+          'sbml',     // target_format
+          this.props.cell.get('source'), // source content
+          filename // path of file to write
+        ));
       }
     }
   }
@@ -109,7 +113,6 @@ export default class Toolbar extends React.PureComponent {
           filename = `${filename}.omex`;
         }
 
-        const codetype = this.props.cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
         this.context.store.dispatch(saveFileFromString(
           'omex', // source_format
           'omex', // target_format

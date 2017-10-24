@@ -80,6 +80,24 @@ export function executeCellInNotebook(store: Object, id: String, cell: Object): 
      cell.get('source')));
 }
 
+export function formatForJupyter(notebook): void {
+//   let n = notebook;
+//   console.log(notebook);
+//   const cells = notebook.get('cellMap');
+  const new_notebook = notebook.update('cellMap', cellMap =>
+    cellMap.map(cell => cell.update('source', source => {
+      const codetype = cell.getIn(['metadata', 'tellurium', 'te_cell_type']);
+      return (codetype === 'omex' ? '%%omex\n' :
+        codetype === 'antimony' ? '%%crn\n' : '')+
+        cell.get('source');
+    }
+    ))
+  );
+  console.log(new_notebook);
+  return new_notebook;
+//   return notebook;
+}
+
 export class Notebook extends React.PureComponent {
   props: Props;
   createCellElement: (s: string) => ?React.Element<any>;

@@ -8,7 +8,7 @@ import {
 
 import { openVCardWindow } from './vcard';
 
-import {executeCellInNotebook} from './components/notebook'
+import { executeCellInNotebook, formatForJupyter } from './components/notebook'
 
 import * as path from 'path';
 
@@ -50,6 +50,12 @@ export function dispatchSaveAs(store, evt, filename) {
   const state = store.getState();
   const notebook = state.document.get('notebook');
   store.dispatch(saveAs(filename, notebook));
+}
+
+export function dispatchExportJupyter(store, evt, filename) {
+  const state = store.getState();
+  const notebook = state.document.get('notebook');
+  store.dispatch(save(filename, formatForJupyter(notebook)));
 }
 
 const dialog = remote.dialog;
@@ -373,6 +379,7 @@ export function initMenuHandlers(store) {
   ipc.on('menu:unhide-all', dispatchUnhideAll.bind(null, store));
   ipc.on('menu:save', dispatchSave.bind(null, store));
   ipc.on('menu:save-as', dispatchSaveAs.bind(null, store));
+  ipc.on('menu:export-jupyter', dispatchExportJupyter.bind(null, store));
   ipc.on('menu:new-code-cell', dispatchCreateCellAfter.bind(null, store));
   ipc.on('menu:new-text-cell', dispatchCreateTextCellAfter.bind(null, store));
   ipc.on('menu:copy-cell', dispatchCopyCell.bind(null, store));

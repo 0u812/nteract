@@ -107,7 +107,7 @@ export const fileSubMenus = {
     accelerator: 'CmdOrCtrl+S',
   },
   saveAs: {
-    label: 'Save &As',
+    label: 'Save &As...',
     click: (item, focusedWindow) => {
       const opts = {
         title: 'Save Notebook As',
@@ -128,6 +128,28 @@ export const fileSubMenus = {
       });
     },
     accelerator: 'CmdOrCtrl+Shift+S',
+  },
+  exportJupyter: {
+    label: 'Export to &Jupyter...',
+    click: (item, focusedWindow) => {
+      const opts = {
+        title: 'Export to Jupyter Notebook',
+        filters: [{ name: 'Notebooks', extensions: ['ipynb'] }],
+      };
+
+      if (process.cwd() === '/') {
+        opts.defaultPath = app.getPath('home');
+      }
+
+      dialog.showSaveDialog(opts, (filename) => {
+        if (!filename) {
+          return;
+        }
+
+        const ext = path.extname(filename) === '' ? '.ipynb' : '';
+        send(focusedWindow, 'menu:export-jupyter', `${filename}${ext}`);
+      });
+    },
   },
   publish: {
     label: '&Publish',
@@ -159,6 +181,7 @@ export const file = {
     fileSubMenus.openExampleNotebooks,
     fileSubMenus.save,
     fileSubMenus.saveAs,
+    fileSubMenus.exportJupyter,
     fileSubMenus.publish,
     fileSubMenus.exportPDF,
     fileSubMenus.updateVCard,
@@ -540,6 +563,7 @@ export function loadFullMenu(kernelSpecs) {
       fileSubMenus.openExampleNotebooks,
       fileSubMenus.save,
       fileSubMenus.saveAs,
+      fileSubMenus.exportJupyter,
       fileSubMenus.publish,
       fileSubMenus.exportPDF,
       fileSubMenus.updateVCard,

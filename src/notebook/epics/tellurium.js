@@ -49,7 +49,11 @@ export function convertFileEpic(action$, store) {
             //   autoDismiss: 4,
             //   level: 'error',
             // });
-            throw new TelluriumError(message.content.data.error, 'ERROR IMPORTING ARCHIVE');
+            if (source_format === 'antimony') {
+              throw new TelluriumError(message.content.data.error, 'ERROR IMPORTING SBML');
+            } else {
+              throw new TelluriumError(message.content.data.error, 'ERROR IMPORTING ARCHIVE');
+            }
             // return Rx.Observable.throw(new Error('Unable to import archive.'));
             // return Rx.Observable.of({
             //   type: ERROR_GENERAL,
