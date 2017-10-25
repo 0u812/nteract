@@ -91,8 +91,7 @@
       "maintainer": "J Kyle Medley <medjk@comcast.net>",
       "target": [
         "rpm",
-        "deb",
-        "AppImage"
+        "deb"
       ],
       "desktop": {
         "Comment": "Biological Modeling Environment for Python",
