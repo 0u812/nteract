@@ -94,6 +94,10 @@ export const fileSubMenus = {
       {
         label: '&COMBINE Archive Basics',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'omex-basics.ipynb')),
+      },
+      {
+        label: '&Calzone Study',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'calzone.ipynb')),
       }
       // {
       //   label: '&Analyze nteract download metrics',
