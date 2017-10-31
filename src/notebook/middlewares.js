@@ -27,6 +27,10 @@ export const errorMiddleware = store => next => (action) => {
   } else {
     errorText = JSON.stringify(action, 2, 2);
   }
+  if (action.type === 'ERROR_EXECUTING') {
+    bannerText = 'KERNEL NOT READY';
+    errorText = 'Cannot process request yet.';
+  }
   const state = store.getState();
   const notificationSystem = state.app.get('notificationSystem');
   if (notificationSystem) {
