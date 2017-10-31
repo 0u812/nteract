@@ -1,6 +1,6 @@
 /* @flow */
 
-const { app } = require('electron').remote;
+const { app, dialog } = require('electron').remote;
 
 const path = require('path');
 
@@ -91,6 +91,17 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;
+
+        // check for failed spawn
+        spawn.on('error', (err) => {
+          dialog.showMessageBox({
+            type: 'error',
+            buttons: ['Okay'],
+            title: 'Critical Error',
+            message: 'Unable to start Python kernel.',
+            detail: 'The Tellurium Python kernel failed to start. It may be missing or non-functional. Your Tellurium installation may be corrupt.',
+          });
+        });
 
         const identity = uuid.v4();
         // TODO: I'm realizing that we could trigger on when the underlying sockets
