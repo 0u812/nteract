@@ -31,7 +31,7 @@ export function convertFileEpic(action$, store) {
       const source_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
         action.filetype === 'omex' ? 'omex' : action.filetype === 'cellml' ? 'cellml' :
         () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
-      const target_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
+      let target_format = action.filetype === 'python' ? 'python' : action.filetype === 'sbml' ? 'antimony' :
         action.filetype === 'omex' ? 'omex' : action.filetype === 'cellml' ? 'antimony' :
         () => {throw new TelluriumError('Source filetype not recognized.', 'ERROR IMPORTING ARCHIVE')};
 
@@ -61,16 +61,33 @@ export function convertFileEpic(action$, store) {
             //   error: true,
             // });
           }
-          if (action.id) {
-            // we have a cell id
-            if (action.position === 'below') {
-              return createCellAfter(target_format, action.id, message.content.data.content)
-            } else if (action.position === 'above') {
-              return createCellBefore(target_format, action.id, message.content.data.content)
+          // no error - add cells to notebook
+          const cells = message.content.data.content.cells;
+          if (cells) {
+            if (cells.length === 0) {
+              throw new TelluriumError('Failed to import any COMBINE archive entries', 'ERROR IMPORTING ARCHIVE');
+            }
+            if (cells.length > 1) {
+              throw new TelluriumError('Multiple cells returned - operation not supported', 'ERROR IMPORTING ARCHIVE');
+            }
+            const cell = cells[0];
+            // for combine archives containing only SBML
+            if (cell.type === 'antimony') {
+              target_format = 'antimony';
+            }
+            if (action.id) {
+              // we have a cell id
+              if (action.position === 'below') {
+                return createCellAfter(target_format, action.id, cell.source)
+              } else if (action.position === 'above') {
+                return createCellBefore(target_format, action.id, cell.source)
+              }
+            } else {
+              // we don't have a cell id - just append to end
+              return createCellAppend(target_format, cell.source)
             }
           } else {
-            // we don't have a cell id - just append to end
-            return createCellAppend(target_format, message.content.data.content)
+            throw new TelluriumError('Could not import file - internal error', 'ERROR IMPORTING ARCHIVE');
           }
         });
     })
