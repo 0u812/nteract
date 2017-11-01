@@ -91,12 +91,20 @@ export const fileSubMenus = {
         label: '&Quickstart',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'quickstart.ipynb')),
       },
+//       {
+//         label: '&Tutorial',
+//         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'tutorial.ipynb')),
+//       },
       {
         label: '&COMBINE Archive Basics',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'omex-basics.ipynb')),
       },
       {
-        label: '&Calzone Study',
+        label: '&Yeast Oscillation Study (2001)',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'wolf2001.ipynb')),
+      },
+      {
+        label: '&Mitotic Division Study (2007)',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'calzone.ipynb')),
       }
       // {
