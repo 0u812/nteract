@@ -97,8 +97,9 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
         // check for failed spawn
         spawn.on('error', (err) => {
           // check if the Tellurium/telocal directory exists
-          const userdata = path.join(app.getPath('userData'), 'telocal', 'ipython');
-          if (fs.existsSync(userdata)) {
+          const userdata = app.getPath('userData');
+          const telocal_dir = path.join(app.getPath('userData'), 'telocal');
+          if (fs.existsSync(telocal_dir)) {
             dialog.showMessageBox({
               type: 'error',
               buttons: ['Okay'],
