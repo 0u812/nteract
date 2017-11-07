@@ -4,6 +4,8 @@ const { app, dialog } = require('electron').remote;
 
 const path = require('path');
 
+const fs = require('fs');
+
 import Rx from 'rxjs/Rx';
 
 import { launchSpec } from 'spawnteract';
@@ -94,13 +96,26 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
 
         // check for failed spawn
         spawn.on('error', (err) => {
-          dialog.showMessageBox({
-            type: 'error',
-            buttons: ['Okay'],
-            title: 'Critical Error',
-            message: 'Unable to start Python kernel.',
-            detail: 'The Tellurium Python kernel failed to start. It may be missing or non-functional. Your Tellurium installation may be corrupt.',
-          });
+          // check if the Tellurium/telocal directory exists
+          const userdata = path.join(app.getPath('userData'), 'telocal', 'ipython');
+          if (fs.existsSync(userdata)) {
+            dialog.showMessageBox({
+              type: 'error',
+              buttons: ['Okay'],
+              title: 'Critical Error',
+              message: 'Unable to start Python kernel.',
+              detail: 'You appear to have an older version of Tellurium notebook installed. Please remove the directory "'+userdata+'" and restart Tellurium.',
+            });
+          } else {
+            // otherwise, tell the user there's something wrong with the installation
+            dialog.showMessageBox({
+              type: 'error',
+              buttons: ['Okay'],
+              title: 'Critical Error',
+              message: 'Unable to start Python kernel.',
+              detail: 'The Tellurium Python kernel failed to start. It may be missing or non-functional. Your Tellurium installation may be corrupt.',
+            });
+          }
         });
 
         const identity = uuid.v4();
