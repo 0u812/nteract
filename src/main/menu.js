@@ -260,6 +260,7 @@ export const cell = {
     {
       label: 'Run All',
       click: createSender('menu:run-all'),
+      accelerator: 'CmdOrCtrl+Shift+Return',
     },
     {
       label: 'Run All Below',
