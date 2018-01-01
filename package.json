@@ -1,6 +1,6 @@
 {
   "name": "Tellurium",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "Biological Network Modeling Environment",
   "main": "./lib/main/index.js",
   "repository": {
