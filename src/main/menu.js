@@ -84,6 +84,10 @@ export const fileSubMenus = {
     },
     accelerator: 'CmdOrCtrl+O',
   },
+  openRecent: {
+    label: 'Open &Recent...',
+    enabled: false,
+  },
   openExampleNotebooks: {
     label: '&Open Example Notebook',
     submenu: [
@@ -183,6 +187,11 @@ export const fileSubMenus = {
   updateVCard: {
     label: 'Update Personal Info...',
     click: createSender('menu:updateVCard'),
+  },
+  quit: {
+    label: '&Quit',
+    accelerator: 'CmdOrCtrl+Q',
+    click: () => {app.quit()},
   },
 };
 export const file = {
@@ -573,13 +582,18 @@ export function loadFullMenu(kernelSpecs) {
         submenu: newNotebookItems,
       },
       fileSubMenus.open,
+      fileSubMenus.openRecent,
       fileSubMenus.openExampleNotebooks,
+      {type: 'separator'},
       fileSubMenus.save,
       fileSubMenus.saveAs,
       fileSubMenus.exportJupyter,
+      {type: 'separator'},
       fileSubMenus.publish,
       fileSubMenus.exportPDF,
       fileSubMenus.updateVCard,
+      {type: 'separator'},
+      fileSubMenus.quit,
     ],
   };
 
