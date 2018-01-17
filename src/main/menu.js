@@ -86,6 +86,7 @@ export const fileSubMenus = {
   },
   openRecent: {
     label: 'Open &Recent...',
+    submenu: [],
     enabled: false,
   },
   openExampleNotebooks: {

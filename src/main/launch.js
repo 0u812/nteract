@@ -2,6 +2,8 @@ import path from 'path';
 
 import { shell, BrowserWindow } from 'electron';
 
+import { addToRecentDocuments } from './recent';
+
 let launchIpynb;
 
 let notebookWindow;
@@ -57,6 +59,10 @@ export function launch(filename) {
   win.on('closed', () => {
     win = null;
   });
+
+  // add to recent docs
+  addToRecentDocuments(filename);
+
   return win;
 }
 launchIpynb = launch;

@@ -262,11 +262,17 @@ openUrl$
   .skipUntil(fullAppReady$)
   .subscribe(({event,filename}) => handleProtocolRequest(filename));
 
+let menu;
+
+export function getMenu() {
+  return menu;
+}
+
 fullAppReady$
   .subscribe(() => {
     kernelSpecsPromise.then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
-        const menu = loadFullMenu(kernelSpecs);
+        menu = loadFullMenu(kernelSpecs);
         Menu.setApplicationMenu(menu);
       } else {
         dialog.showMessageBox({
