@@ -189,17 +189,22 @@ export const fileSubMenus = {
     label: 'Update Personal Info...',
     click: createSender('menu:updateVCard'),
   },
-  quit: {
+};
+
+if (process.platform !== 'darwin') {
+  fileSubMenus.quit = {
     label: '&Quit',
     accelerator: 'CmdOrCtrl+Q',
     click: () => {app.quit()},
-  },
-};
+  };
+}
+
 export const file = {
   label: '&File',
   submenu: [
     fileSubMenus.new,
     fileSubMenus.open,
+    fileSubMenus.openRecent,
     fileSubMenus.openExampleNotebooks,
     fileSubMenus.save,
     fileSubMenus.saveAs,
@@ -209,6 +214,10 @@ export const file = {
     fileSubMenus.updateVCard,
   ],
 };
+
+if (process.platform !== 'darwin') {
+  file.submenu.push(fileSubMenus.quit,);
+}
 
 export const edit = {
   label: 'Edit',
