@@ -85,7 +85,7 @@ export const fileSubMenus = {
     accelerator: 'CmdOrCtrl+O',
   },
   openRecent: {
-    label: 'Open &Recent...',
+    label: 'Open &Recent',
     submenu: [],
     enabled: false,
   },

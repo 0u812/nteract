@@ -1,16 +1,46 @@
 import { basename } from 'path';
 import { Menu, MenuItem } from 'electron';
-// import { getMenu } from './recent.js';
+import { launch } from './launch';
 
 let recent = [];
 
-const max = 10;
+const max_items = 6;
 
-export function addToRecentDocuments(filename) {
+export function rebuildRecentMenu() {
   const menu = Menu.getApplicationMenu();
   const openRecent = menu.items[0].submenu.items[2];
   if (!openRecent) {
-    console.log("could not find openRecent");
+    return;
+  }
+
+  openRecent.submenu.clear();
+  for(const item of recent) {
+    openRecent.submenu.append(new MenuItem({
+      label: basename(item),
+      click: launch.bind(null, item),
+    }));
+  }
+
+  if (recent.length > 0) {
+    // sep
+    openRecent.submenu.append(new MenuItem({
+      type: 'separator',
+    }));
+    // add clear button
+    openRecent.submenu.append(new MenuItem({
+      label: 'Clear',
+      click: clearRecentDocuments,
+    }));
+    openRecent.enabled = true;
+  } else {
+    openRecent.enabled = false;
+  }
+  Menu.setApplicationMenu(menu);
+}
+
+export function addToRecentDocuments(filename) {
+  if (!filename) {
+    console.log("add to recent return");
     return;
   }
 
@@ -21,21 +51,16 @@ export function addToRecentDocuments(filename) {
   }
 
   // add to recent list
-  console.log("addToRecentDocuments ", filename);
   recent.push(filename);
 
-  const overflow = recent.length - 10;
+  const overflow = recent.length - max_items;
   if (overflow > 0) {
     recent.splice(0,overflow);
   }
-  openRecent.submenu.clear();
-  for(const item of recent) {
-    console.log("add item ", item);
-    openRecent.submenu.append(new MenuItem({
-      label: basename(item),
-    }));
-  }
-//   openRecent.submenu.append(new MenuItem({label: 'abc',}));
-  openRecent.enabled = true;
-  Menu.setApplicationMenu(menu);
+  rebuildRecentMenu();
+}
+
+export function clearRecentDocuments() {
+  recent = [];
+  rebuildRecentMenu();
 }
