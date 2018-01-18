@@ -206,12 +206,10 @@ willQuit$.take(1)
   .catch((err) => {
     // possible failures include non-writable perms
     // nothing we can do, just give up
-    console.log('err writing recents');
     process.exit();
   })
   .subscribe(() => {
-    console.log('wrote recents');
-//     process.exit();
+    process.exit();
   });
 
 const openFile$ = Rx.Observable.fromEvent(

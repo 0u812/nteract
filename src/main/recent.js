@@ -2,6 +2,7 @@ import { join, basename } from 'path';
 import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
 import { writeFileObservable } from '../utils/fs';
+import { writeFileSync } from 'fs';
 
 let recents = [];
 
@@ -69,6 +70,6 @@ export function clearRecentDocuments() {
 export function writeRecentDocumentsObservable() {
   const filepath = join(app.getPath('userData'),'recents.json');
   // TODO: use defer?
-  console.log('write ', filepath);
+  writeFileSync(filepath, JSON.stringify(recents));
   return writeFileObservable(filepath, JSON.stringify(recents));
 }
