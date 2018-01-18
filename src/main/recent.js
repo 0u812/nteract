@@ -1,7 +1,7 @@
 import { join, basename } from 'path';
 import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
-import { writeFileObservable } from '../utils/fs';
+import { readFileObservable, writeFileObservable } from '../utils/fs';
 import { writeFileSync } from 'fs';
 
 let recents = [];
@@ -42,7 +42,6 @@ export function rebuildRecentMenu() {
 
 export function addToRecentDocuments(filename) {
   if (!filename) {
-    console.log("add to recents return");
     return;
   }
 
@@ -60,6 +59,18 @@ export function addToRecentDocuments(filename) {
     recents.splice(0,overflow);
   }
   rebuildRecentMenu();
+}
+
+export function readRecentDocumentsObservable() {
+  console.log('readRecentDocumentsObservable');
+  const filepath = join(app.getPath('userData'),'recents.json');
+  return readFileObservable(filepath)
+    .catch((err) => {})
+    .map((data) => {
+      recents = JSON.parse(data);
+      console.log('set recents ', recents);
+      rebuildRecentMenu();
+    });
 }
 
 export function clearRecentDocuments() {

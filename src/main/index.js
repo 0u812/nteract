@@ -24,7 +24,11 @@ import initializeKernelSpecs from './kernel-specs';
 
 import { handleProtocolRequest } from './protocol-handlers';
 
-import { writeRecentDocumentsObservable } from './recent.js';
+import {
+  writeRecentDocumentsObservable,
+  readRecentDocumentsObservable,
+  rebuildRecentMenu,
+} from './recent.js';
 
 const log = require('electron-log');
 
@@ -126,6 +130,8 @@ const prepJupyterObservable = prepareEnv
 const kernelSpecsPromise = prepJupyterObservable
   .toPromise()
   .then(() => initializeKernelSpecs());
+
+readRecentDocumentsObservable().subscribe(() => {});
 
 /**
  * Creates an Rx.Subscriber that will create a splash page onNext and close the
@@ -296,6 +302,7 @@ fullAppReady$
       if (Object.keys(kernelSpecs).length !== 0) {
         menu = loadFullMenu(kernelSpecs);
         Menu.setApplicationMenu(menu);
+        rebuildRecentMenu();
       } else {
         dialog.showMessageBox({
           type: 'warning',
