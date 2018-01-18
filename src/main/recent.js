@@ -1,8 +1,9 @@
-import { basename } from 'path';
-import { Menu, MenuItem } from 'electron';
+import { join, basename } from 'path';
+import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
+import { writeFileObservable } from '../utils/fs';
 
-let recent = [];
+let recents = [];
 
 const max_items = 6;
 
@@ -14,14 +15,14 @@ export function rebuildRecentMenu() {
   }
 
   openRecent.submenu.clear();
-  for(const item of recent) {
+  for(const item of recents) {
     openRecent.submenu.append(new MenuItem({
       label: basename(item),
       click: launch.bind(null, item),
     }));
   }
 
-  if (recent.length > 0) {
+  if (recents.length > 0) {
     // sep
     openRecent.submenu.append(new MenuItem({
       type: 'separator',
@@ -40,27 +41,34 @@ export function rebuildRecentMenu() {
 
 export function addToRecentDocuments(filename) {
   if (!filename) {
-    console.log("add to recent return");
+    console.log("add to recents return");
     return;
   }
 
   // remove duplicates
-  const index = recent.findIndex(x => x == filename);
+  const index = recents.findIndex(x => x == filename);
   if (index != -1) {
-    recent.splice(index,1);
+    recents.splice(index,1);
   }
 
-  // add to recent list
-  recent.push(filename);
+  // add to recents list
+  recents.push(filename);
 
-  const overflow = recent.length - max_items;
+  const overflow = recents.length - max_items;
   if (overflow > 0) {
-    recent.splice(0,overflow);
+    recents.splice(0,overflow);
   }
   rebuildRecentMenu();
 }
 
 export function clearRecentDocuments() {
-  recent = [];
+  recents = [];
   rebuildRecentMenu();
+}
+
+export function writeRecentDocumentsObservable() {
+  console.log('writeRecentDocumentsObservable');
+  const filepath = join(app.getPath('userData'),'recents.json');
+  // TODO: use defer?
+  return writeFileObservable(filepath, JSON.stringify(recents));
 }

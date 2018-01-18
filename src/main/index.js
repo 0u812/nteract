@@ -24,6 +24,8 @@ import initializeKernelSpecs from './kernel-specs';
 
 import { handleProtocolRequest } from './protocol-handlers';
 
+import { writeRecentDocumentsObservable } from './recent.js';
+
 const log = require('electron-log');
 
 const kernelspecs = require('kernelspecs');
@@ -189,6 +191,23 @@ const windowAllClosed = Rx.Observable.fromEvent(app, 'window-all-closed');
 windowAllClosed
   .skipUntil(appAndKernelSpecsReady)
   .subscribe(closeAppOnNonDarwin);
+
+// when closing, write out recent documents
+const willQuit$ = Rx.Observable.fromEvent(
+  app,
+  'will-quit'//,
+//   (event) => { event.preventDefault(); }
+);
+
+willQuit$.take(1)
+  .subscribe((event) => {
+    event.preventDefault();
+    const writeRecent = writeRecentDocumentsObservable();
+//     console.log('remove all listeners');
+//     app.removeAllListeners('will-quit');
+//     app.quit();
+    process.exit();
+  });
 
 const openFile$ = Rx.Observable.fromEvent(
   app,
