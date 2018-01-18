@@ -16,7 +16,7 @@ export function rebuildRecentMenu() {
   }
 
   openRecent.submenu.clear();
-  for(const item of recents) {
+  for(const item of recents.slice().reverse()) {
     openRecent.submenu.append(new MenuItem({
       label: basename(item),
       click: launch.bind(null, item),
