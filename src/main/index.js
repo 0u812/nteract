@@ -195,18 +195,23 @@ windowAllClosed
 // when closing, write out recent documents
 const willQuit$ = Rx.Observable.fromEvent(
   app,
-  'will-quit'//,
-//   (event) => { event.preventDefault(); }
+  'will-quit'
 );
 
 willQuit$.take(1)
-  .subscribe((event) => {
+  .map((event) => {
     event.preventDefault();
-    const writeRecent = writeRecentDocumentsObservable();
-//     console.log('remove all listeners');
-//     app.removeAllListeners('will-quit');
-//     app.quit();
+    return writeRecentDocumentsObservable();
+  })
+  .catch((err) => {
+    // possible failures include non-writable perms
+    // nothing we can do, just give up
+    console.log('err writing recents');
     process.exit();
+  })
+  .subscribe(() => {
+    console.log('wrote recents');
+//     process.exit();
   });
 
 const openFile$ = Rx.Observable.fromEvent(

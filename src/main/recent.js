@@ -67,8 +67,8 @@ export function clearRecentDocuments() {
 }
 
 export function writeRecentDocumentsObservable() {
-  console.log('writeRecentDocumentsObservable');
   const filepath = join(app.getPath('userData'),'recents.json');
   // TODO: use defer?
+  console.log('write ', filepath);
   return writeFileObservable(filepath, JSON.stringify(recents));
 }
