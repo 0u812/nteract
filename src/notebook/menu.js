@@ -252,14 +252,22 @@ export function dispatchFindKernels(store) {
   const state = store.getState();
   const notificationSystem = state.app.get('notificationSystem');
   notificationSystem.addNotification({
-    title: 'Kernelz',
-    message: 'Wassap',
+    title: 'Kernels Discovered',
+    message: 'Press "scan" to discover kernels.',
     level: 'info',
     autoDismiss: 0,
+    position: 'tc',
     children: (
       <div>
-        <h2>Hello World</h2>
-        <a>Anchor</a>
+        <button title="Scan">
+          <span className="octicon octicon-search"/>Scan
+        </button>
+        <button title="Manual">
+          <span className="octicon octicon-chevron-right"/>Manual
+        </button>
+        <button title="Cancel">
+          <span className="octicon octicon-x"/>Cancel
+        </button>
       </div>
       ),
   });
