@@ -246,6 +246,16 @@ export function dispatchRestartClearAll(store) {
   dispatchClearAll(store);
 }
 
+export function dispatchFindKernels(store) {
+  const state = store.getState();
+  const notificationSystem = state.app.get('notificationSystem');
+  notificationSystem.addNotification({
+    title: 'Kernelz',
+    message: 'Wassap',
+    level: 'info',
+  });
+}
+
 export function dispatchZoomIn() {
   webFrame.setZoomLevel(webFrame.getZoomLevel() + 1);
 }
@@ -389,6 +399,7 @@ export function initMenuHandlers(store) {
   ipc.on('menu:interrupt-kernel', dispatchInterruptKernel.bind(null, store));
   ipc.on('menu:restart-kernel', dispatchRestartKernel.bind(null, store));
   ipc.on('menu:restart-and-clear-all', dispatchRestartClearAll.bind(null, store));
+  ipc.on('menu:find-kernels', dispatchFindKernels.bind(null, store));
   ipc.on('menu:publish:gist', dispatchPublishAnonGist.bind(null, store));
   ipc.on('menu:zoom-in', dispatchZoomIn.bind(null, store));
   ipc.on('menu:zoom-out', dispatchZoomOut.bind(null, store));

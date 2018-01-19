@@ -571,6 +571,10 @@ export function loadFullMenu(kernelSpecs) {
         click: createSender('menu:restart-and-clear-all'),
       },
       {
+        label: 'Find Kernels...',
+        click: createSender('menu:find-kernels'),
+      },
+      {
         type: 'separator',
       },
       // All the available kernels
