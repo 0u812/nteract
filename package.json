@@ -144,7 +144,7 @@
     "ijavascript": "^5.0.17",
     "immutable": "^3.7.6",
     "jupyter-paths": "^1.1.0",
-    "kernelspecs": "^1.1.0",
+    "kernelspecs": "^2.0.0",
     "leaflet": "^1.0.1",
     "lodash": "^4.17.2",
     "mathjax-electron": "^1.2.0",
