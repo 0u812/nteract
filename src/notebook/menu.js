@@ -14,6 +14,8 @@ import * as path from 'path';
 
 import * as fs from 'fs';
 
+import React, { PureComponent } from 'react';
+
 import {
   load,
   newNotebook,
@@ -253,6 +255,13 @@ export function dispatchFindKernels(store) {
     title: 'Kernelz',
     message: 'Wassap',
     level: 'info',
+    autoDismiss: 0,
+    children: (
+      <div>
+        <h2>Hello World</h2>
+        <a>Anchor</a>
+      </div>
+      ),
   });
 }
 
