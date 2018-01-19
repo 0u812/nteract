@@ -1,3 +1,4 @@
+import Rx from 'rxjs/Rx';
 import { join, basename } from 'path';
 import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
@@ -64,10 +65,12 @@ export function addToRecentDocuments(filename) {
 export function readRecentDocumentsObservable() {
   const filepath = join(app.getPath('userData'),'recents.json');
   return readFileObservable(filepath)
-    .catch((err) => {})
     .map((data) => {
       recents = JSON.parse(data);
       rebuildRecentMenu();
+    })
+    .catch((err) => {
+      return Rx.Observable.Empty();
     });
 }
 
