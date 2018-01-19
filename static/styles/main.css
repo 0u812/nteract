@@ -629,3 +629,16 @@ li:only-child {
     background: var(--status-bar);
     z-index: 99;
 }
+
+.notification-button-info {
+  color: white;
+  background-color: #41555d;
+  border: none;
+  padding: 6px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}

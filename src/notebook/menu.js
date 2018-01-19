@@ -259,13 +259,13 @@ export function dispatchFindKernels(store) {
     position: 'tc',
     children: (
       <div>
-        <button title="Scan">
+        <button title="Scan for kernels" className="notification-button-info">
           <span className="octicon octicon-search"/>Scan
         </button>
-        <button title="Manual">
+        <button title="Manually enter kernel" className="notification-button-info">
           <span className="octicon octicon-chevron-right"/>Manual
         </button>
-        <button title="Cancel">
+        <button title="Cancel and return" className="notification-button-info">
           <span className="octicon octicon-x"/>Cancel
         </button>
       </div>
