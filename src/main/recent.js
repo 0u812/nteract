@@ -62,13 +62,11 @@ export function addToRecentDocuments(filename) {
 }
 
 export function readRecentDocumentsObservable() {
-  console.log('readRecentDocumentsObservable');
   const filepath = join(app.getPath('userData'),'recents.json');
   return readFileObservable(filepath)
     .catch((err) => {})
     .map((data) => {
       recents = JSON.parse(data);
-      console.log('set recents ', recents);
       rebuildRecentMenu();
     });
 }
