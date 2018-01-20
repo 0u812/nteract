@@ -606,10 +606,12 @@ export function loadFullMenu(kernelSpecs) {
       fileSubMenus.publish,
       fileSubMenus.exportPDF,
       fileSubMenus.updateVCard,
-      {type: 'separator'},
-      fileSubMenus.quit,
     ],
   };
+
+  if (process.platform !== 'darwin') {
+    fileWithNew.submenu.push({type: 'separator'},fileSubMenus.quit);
+  }
 
   template.push(fileWithNew);
   template.push(edit);
