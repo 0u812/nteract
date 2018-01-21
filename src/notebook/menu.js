@@ -252,21 +252,23 @@ export function dispatchFindKernels(store) {
   const state = store.getState();
   const notificationSystem = state.app.get('notificationSystem');
   notificationSystem.addNotification({
-    title: 'Kernels Discovered',
-    message: 'Press "scan" to discover kernels.',
+    title: 'Discover Kernels',
+    message: 'Press "scan" to discover kernels on your local filesystem.',
     level: 'info',
     autoDismiss: 0,
     position: 'tc',
     children: (
       <div>
+        <div className="spinner">
+          <div className="bounce1"></div>
+          <div className="bounce2"></div>
+          <div className="bounce3"></div>
+        </div>
         <button title="Scan for kernels" className="notification-button-info">
           <span className="octicon octicon-search"/>Scan
         </button>
         <button title="Manually enter kernel" className="notification-button-info">
           <span className="octicon octicon-chevron-right"/>Manual
-        </button>
-        <button title="Cancel and return" className="notification-button-info">
-          <span className="octicon octicon-x"/>Cancel
         </button>
       </div>
       ),
