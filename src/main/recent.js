@@ -4,7 +4,7 @@ import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
 import { readFileObservable, writeFileObservable } from '../utils/fs';
 import { writeFileSync } from 'fs';
-import { getMenu } from './index';
+import { getMenu } from './menu';
 
 let recents = [];
 

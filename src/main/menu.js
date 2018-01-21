@@ -626,3 +626,13 @@ export function loadFullMenu(kernelSpecs) {
 //   const menu = Menu.buildFromTemplate(template);
   return template;
 }
+
+let menu;
+
+export function getMenu() {
+  return menu;
+}
+
+export function setMenu(newmenu) {
+  menu = newmenu;
+}

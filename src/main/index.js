@@ -17,7 +17,7 @@ import {
   launchNewNotebook,
 } from './launch';
 
-import { loadFullMenu } from './menu';
+import { loadFullMenu, setMenu } from './menu';
 
 import prepareEnv from './prepare-env';
 import initializeKernelSpecs from './kernel-specs';
@@ -290,19 +290,11 @@ openUrl$
   .skipUntil(fullAppReady$)
   .subscribe(({event,filename}) => handleProtocolRequest(filename));
 
-let menu;
-
-export function getMenu() {
-  return menu;
-}
-
 fullAppReady$
   .subscribe(() => {
     kernelSpecsPromise.then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
-        menu = loadFullMenu(kernelSpecs);
-        console.log('called loadFullMenu');
-//         Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
+        setMenu( loadFullMenu(kernelSpecs) );
         rebuildRecentMenu();
       } else {
         dialog.showMessageBox({
