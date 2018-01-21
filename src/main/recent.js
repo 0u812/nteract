@@ -4,21 +4,26 @@ import { app, Menu, MenuItem } from 'electron';
 import { launch } from './launch';
 import { readFileObservable, writeFileObservable } from '../utils/fs';
 import { writeFileSync } from 'fs';
+import { getMenu } from './index';
 
 let recents = [];
 
 const max_items = 6;
 
 export function rebuildRecentMenu() {
-  const menu = Menu.getApplicationMenu();
-  const openRecent = menu.items[0].submenu.items[2];
+  const menu = getMenu();
+  if (!menu) {
+    return;
+  }
+  const file_index = process.platform === 'darwin' ? 1 : 0;
+  const openRecent = menu[file_index].submenu[2];
   if (!openRecent) {
     return;
   }
 
-  openRecent.submenu.clear();
+  openRecent.submenu = [];
   for(const item of recents.slice().reverse()) {
-    openRecent.submenu.append(new MenuItem({
+    openRecent.submenu.push(new MenuItem({
       label: basename(item),
       click: launch.bind(null, item),
     }));
@@ -26,11 +31,11 @@ export function rebuildRecentMenu() {
 
   if (recents.length > 0) {
     // sep
-    openRecent.submenu.append(new MenuItem({
+    openRecent.submenu.push(new MenuItem({
       type: 'separator',
     }));
     // add clear button
-    openRecent.submenu.append(new MenuItem({
+    openRecent.submenu.push(new MenuItem({
       label: 'Clear',
       click: clearRecentDocuments,
     }));
@@ -38,7 +43,7 @@ export function rebuildRecentMenu() {
   } else {
     openRecent.enabled = false;
   }
-  Menu.setApplicationMenu(menu);
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
 }
 
 export function addToRecentDocuments(filename) {

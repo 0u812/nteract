@@ -301,7 +301,8 @@ fullAppReady$
     kernelSpecsPromise.then((kernelSpecs) => {
       if (Object.keys(kernelSpecs).length !== 0) {
         menu = loadFullMenu(kernelSpecs);
-        Menu.setApplicationMenu(menu);
+        console.log('called loadFullMenu');
+//         Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
         rebuildRecentMenu();
       } else {
         dialog.showMessageBox({
