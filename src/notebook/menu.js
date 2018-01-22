@@ -254,12 +254,12 @@ function discoverKernels() {
 
 export class Spinneret extends PureComponent {
   props: {show: true};
-  state: {show: true};
+//   state: {show: true};
 
   constructor(): void {
     super();
 
-    this.state = {
+    this.props = {
       show: true,
     };
   }
@@ -267,7 +267,7 @@ export class Spinneret extends PureComponent {
   render(): React.Element<any> {
     return (
 //       {
-        this.state.show ?
+        this.props.show ?
         <div className="spinner">
           <div className="bounce1"></div>
           <div className="bounce2"></div>
@@ -289,13 +289,22 @@ export class FindKernelsControls extends PureComponent {
     this.state = {
       showSpinner: true,
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(event): void {
+    console.log('handleClick', this.state.showSpinner);
+    event.stopPropagation();
+    this.setState({
+      showSpinner: !this.state.showSpinner,
+    });
   }
 
   render(): React.Element<any> {
     return (
       <div>
-        <Spinneret show={this.showSpinner}/>
-        <button title="Scan for kernels" className="notification-button-info">
+        <Spinneret show={this.state.showSpinner}/>
+        <button title="Scan for kernels" className="notification-button-info" onClick={this.handleClick}>
           <span className="octicon octicon-search"/>Scan
         </button>
         <button title="Manually enter kernel" className="notification-button-info">
@@ -314,6 +323,7 @@ export function dispatchFindKernels(store) {
     message: 'Press "scan" to discover kernels on your local filesystem.',
     level: 'info',
     autoDismiss: 0,
+//     dismissible: false,
     position: 'tc',
     getInitialState: () => { return {showSpinner: false}; },
     onClick: () => { this.setState( {showSpinner: true} ); },
