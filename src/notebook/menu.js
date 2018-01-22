@@ -248,6 +248,29 @@ export function dispatchRestartClearAll(store) {
   dispatchClearAll(store);
 }
 
+function discoverKernels() {
+
+}
+
+export class Spinneret extends PureComponent {
+  props: Props;
+  state: State;
+  render(): React.Element<any> {
+    return (
+//       this.state.showSpinner
+//       {
+//         true ?
+        <div className="spinner">
+          <div className="bounce1"></div>
+          <div className="bounce2"></div>
+          <div className="bounce3"></div>
+        </div>
+//         : null
+//       }
+    );
+  }
+}
+
 export function dispatchFindKernels(store) {
   const state = store.getState();
   const notificationSystem = state.app.get('notificationSystem');
@@ -257,13 +280,11 @@ export function dispatchFindKernels(store) {
     level: 'info',
     autoDismiss: 0,
     position: 'tc',
+    getInitialState: () => { return {showSpinner: false}; },
+    onClick: () => { this.setState( {showSpinner: true} ); },
     children: (
       <div>
-        <div className="spinner">
-          <div className="bounce1"></div>
-          <div className="bounce2"></div>
-          <div className="bounce3"></div>
-        </div>
+        <Spinneret/>
         <button title="Scan for kernels" className="notification-button-info">
           <span className="octicon octicon-search"/>Scan
         </button>
