@@ -253,20 +253,55 @@ function discoverKernels() {
 }
 
 export class Spinneret extends PureComponent {
-  props: Props;
-  state: State;
+  props: {show: true};
+  state: {show: true};
+
+  constructor(): void {
+    super();
+
+    this.state = {
+      show: true,
+    };
+  }
+
   render(): React.Element<any> {
     return (
-//       this.state.showSpinner
 //       {
-//         true ?
+        this.state.show ?
         <div className="spinner">
           <div className="bounce1"></div>
           <div className="bounce2"></div>
           <div className="bounce3"></div>
         </div>
-//         : null
+        : null
 //       }
+    );
+  }
+}
+
+export class FindKernelsControls extends PureComponent {
+  props: {showSpinner: true};
+  state: {showSpinner: true};
+
+  constructor(): void {
+    super();
+
+    this.state = {
+      showSpinner: true,
+    };
+  }
+
+  render(): React.Element<any> {
+    return (
+      <div>
+        <Spinneret show={this.showSpinner}/>
+        <button title="Scan for kernels" className="notification-button-info">
+          <span className="octicon octicon-search"/>Scan
+        </button>
+        <button title="Manually enter kernel" className="notification-button-info">
+          <span className="octicon octicon-chevron-right"/>Manual
+        </button>
+      </div>
     );
   }
 }
@@ -283,15 +318,7 @@ export function dispatchFindKernels(store) {
     getInitialState: () => { return {showSpinner: false}; },
     onClick: () => { this.setState( {showSpinner: true} ); },
     children: (
-      <div>
-        <Spinneret/>
-        <button title="Scan for kernels" className="notification-button-info">
-          <span className="octicon octicon-search"/>Scan
-        </button>
-        <button title="Manually enter kernel" className="notification-button-info">
-          <span className="octicon octicon-chevron-right"/>Manual
-        </button>
-      </div>
+        <FindKernelsControls/>
       ),
   });
 }
