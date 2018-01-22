@@ -37,8 +37,14 @@ const KERNEL_SPECS = {
   }
 };
 
-export default function initializeKernelSpecs() {
+export function initializeKernelSpecs() {
   // Object.assign(KERNEL_SPECS, kernelSpecs);
+  return KERNEL_SPECS;
+}
+
+export function initializeKernelSpecsFromSpecs(kernelSpecs) {
+  Object.assign(KERNEL_SPECS, kernelSpecs);
+  console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
 }
 

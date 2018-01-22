@@ -647,13 +647,13 @@ li:only-child {
 /* http://tobiasahlin.com/spinkit/ */
 .spinner {
 /*   margin: 100px auto 0; */
-  width: 70px;
+  width: auto;
   text-align: center;
 }
 
 .spinner > div {
-  width: 5px;
-  height: 5px;
+  width:  10px;
+  height: 10px;
   background-color: #41555d;
 
   border-radius: 100%;

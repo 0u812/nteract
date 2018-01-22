@@ -20,7 +20,7 @@ import {
 import { loadFullMenu, setMenu } from './menu';
 
 import prepareEnv from './prepare-env';
-import initializeKernelSpecs from './kernel-specs';
+import { initializeKernelSpecs, initializeKernelSpecsFromSpecs } from './kernel-specs';
 
 import { handleProtocolRequest } from './protocol-handlers';
 
@@ -67,6 +67,13 @@ ipc.on('new-kernel', (event, k) => {
 
 ipc.on('open-notebook', (event, filename) => {
   launch(resolve(filename));
+});
+
+ipc.on('find_kernels', (event) => {
+  console.log('find kernels');
+  kernelspecs.findAll().then(
+    (specs) => initializeKernelSpecsFromSpecs(specs)
+  );
 });
 
 const electronReady$ = Rx.Observable.fromEvent(app, 'ready');

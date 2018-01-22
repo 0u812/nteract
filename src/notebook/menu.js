@@ -253,20 +253,18 @@ function discoverKernels() {
 }
 
 export class Spinneret extends PureComponent {
-  props: {show: true};
-//   state: {show: true};
+  props: {show: false};
 
   constructor(): void {
     super();
 
     this.props = {
-      show: true,
+      show: false,
     };
   }
 
   render(): React.Element<any> {
     return (
-//       {
         this.props.show ?
         <div className="spinner">
           <div className="bounce1"></div>
@@ -274,42 +272,60 @@ export class Spinneret extends PureComponent {
           <div className="bounce3"></div>
         </div>
         : null
-//       }
     );
   }
 }
 
 export class FindKernelsControls extends PureComponent {
-  props: {showSpinner: true};
-  state: {showSpinner: true};
+  state: {
+    showSpinner: false,
+    showOkayButton: false,
+    showCancelButton: false,
+    showSearchButton: true,
+    showManualButton: true,
+  };
 
   constructor(): void {
     super();
 
     this.state = {
-      showSpinner: true,
+      showSpinner: false,
+      showOkayButton: false,
+      showCancelButton: false,
+      showSearchButton: true,
+      showManualButton: true,
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.searchAction = this.searchAction.bind(this);
   }
 
-  handleClick(event): void {
-    console.log('handleClick', this.state.showSpinner);
+  searchAction(event): void {
     event.stopPropagation();
     this.setState({
-      showSpinner: !this.state.showSpinner,
+      showSpinner: true,
+      showOkayButton: false,
+      showCancelButton: false,
+      showSearchButton: false,
+      showManualButton: false,
     });
+    console.log('send find_kernels');
+    ipc.send('find_kernels');
+    console.log('sent find_kernels');
   }
 
   render(): React.Element<any> {
     return (
       <div>
         <Spinneret show={this.state.showSpinner}/>
-        <button title="Scan for kernels" className="notification-button-info" onClick={this.handleClick}>
+        { this.state.showSearchButton ?
+        <button title="Scan for kernels" className="notification-button-info" onClick={this.searchAction}>
           <span className="octicon octicon-search"/>Scan
         </button>
+        : null }
+        { this.state.showManualButton ?
         <button title="Manually enter kernel" className="notification-button-info">
           <span className="octicon octicon-chevron-right"/>Manual
         </button>
+        : null }
       </div>
     );
   }
@@ -323,7 +339,6 @@ export function dispatchFindKernels(store) {
     message: 'Press "scan" to discover kernels on your local filesystem.',
     level: 'info',
     autoDismiss: 0,
-//     dismissible: false,
     position: 'tc',
     getInitialState: () => { return {showSpinner: false}; },
     onClick: () => { this.setState( {showSpinner: true} ); },

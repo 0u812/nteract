@@ -1,3 +1,4 @@
+import { ipcMain as ipc } from 'electron';
 import Rx from 'rxjs/Rx';
 
 import {
