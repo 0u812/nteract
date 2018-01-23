@@ -7,6 +7,10 @@ import {
   shutdownKernel,
 } from '../kernel/shutdown';
 
+import React, { PureComponent } from 'react';
+
+import { FindKernelsControls } from '../menu';
+
 import { AppRecord } from '../records';
 
 declare class AppState {
@@ -110,6 +114,12 @@ type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uuid
 function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
   const { specs, uuid } = action;
   console.log('findKernelsResult');
+  state.notificationSystem.editNotification({
+    uuid: uuid,
+    children: (
+        <FindKernelsControls identity={uuid} kernel_specs={[1,2,3]}/>
+      ),
+  });
   return state.set('findKernelsResult', {specs, uuid});
 }
 

@@ -291,7 +291,10 @@ export class FindKernelsControls extends PureComponent {
     showSearchButton: true,
     showManualButton: true,
   };
-  props: {identity: ''};
+  props: {
+    identity: '',
+    kernel_specs: [],
+  };
 
   constructor(): void {
     super();
@@ -307,6 +310,7 @@ export class FindKernelsControls extends PureComponent {
 
     this.props = {
       identity: '',
+      kernel_specs: [],
     };
   }
 

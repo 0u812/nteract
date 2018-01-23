@@ -23,7 +23,7 @@ const KERNEL_SPECS = {
     name: 'python3',
     spec: {
       language: 'python',
-      display_name: 'Python 3',
+      display_name: 'Python 3 (built-in)',
       argv: [
         process.platform === 'win32' ?
           join(app.getPath('userData'),'telocal','python-3.6.3','python.exe') :
