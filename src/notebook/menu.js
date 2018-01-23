@@ -280,6 +280,7 @@ export class Spinneret extends PureComponent {
 }
 
 export function dispatchFindKernelsReply(store, specs, uuid) {
+  console.log('dispatchFindKernelsReply ', uuid);
   store.dispatch( findKernelsReply(specs, uuid) );
 }
 
@@ -329,6 +330,7 @@ export class FindKernelsControls extends PureComponent {
   }
 
   render(): React.Element<any> {
+    console.log('kernel_specs = ', this.props.kernel_specs);
     return (
       <div>
         <Spinneret show={this.state.showSpinner}/>
@@ -510,7 +512,7 @@ export function initMenuHandlers(store) {
   ipc.on('menu:restart-kernel', dispatchRestartKernel.bind(null, store));
   ipc.on('menu:restart-and-clear-all', dispatchRestartClearAll.bind(null, store));
   ipc.on('menu:find-kernels', dispatchFindKernels.bind(null, store));
-  ipc.on('find_kernels_reply', dispatchFindKernelsReply.bind(null, store));
+  ipc.on('find_kernels_reply', (sender, specs, uuid) => dispatchFindKernelsReply(store, specs, uuid));
 
   ipc.on('menu:publish:gist', dispatchPublishAnonGist.bind(null, store));
   ipc.on('menu:zoom-in', dispatchZoomIn.bind(null, store));

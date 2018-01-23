@@ -113,7 +113,8 @@ function setGithubToken(state: AppState, action: SetGithubTokenAction) {
 type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uuid: string };
 function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
   const { specs, uuid } = action;
-  console.log('findKernelsResult');
+  console.log('findKernelsResult1', specs);
+  console.log('findKernelsResult2', uuid);
   state.notificationSystem.editNotification({
     uuid: uuid,
     children: (

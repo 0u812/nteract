@@ -213,11 +213,11 @@ export const interruptKernel = {
   type: constants.INTERRUPT_KERNEL,
 };
 
-export function findKernelsReply(kernelSpecs, uuid) {
+export function findKernelsReply(specs, uuid) {
   console.log('findKernelsReply action');
   return {
     type: constants.FIND_KERNELS_REPLY,
-    kernelSpecs,
+    specs,
     uuid,
   };
 }
