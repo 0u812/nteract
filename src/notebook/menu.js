@@ -31,6 +31,7 @@ import {
   newKernel,
   killKernel,
   interruptKernel,
+  findKernelsReply,
   copyCell,
   cutCell,
   pasteCell,
@@ -276,6 +277,10 @@ export class Spinneret extends PureComponent {
   }
 }
 
+export function dispatchFindKernelsReply(store, specs, uuid) {
+  store.dispatch( findKernelsReply(specs, uuid) );
+}
+
 export class FindKernelsControls extends PureComponent {
   state: {
     showSpinner: false,
@@ -492,6 +497,8 @@ export function initMenuHandlers(store) {
   ipc.on('menu:restart-kernel', dispatchRestartKernel.bind(null, store));
   ipc.on('menu:restart-and-clear-all', dispatchRestartClearAll.bind(null, store));
   ipc.on('menu:find-kernels', dispatchFindKernels.bind(null, store));
+  ipc.on('find_kernels_reply', dispatchFindKernelsReply.bind(null, store));
+
   ipc.on('menu:publish:gist', dispatchPublishAnonGist.bind(null, store));
   ipc.on('menu:zoom-in', dispatchZoomIn.bind(null, store));
   ipc.on('menu:zoom-out', dispatchZoomOut.bind(null, store));

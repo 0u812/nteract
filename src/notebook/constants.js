@@ -16,6 +16,7 @@ export const LAUNCH_KERNEL_BY_NAME = 'LAUNCH_KERNEL_BY_NAME';
 export const NEW_KERNEL = 'NEW_KERNEL';
 export const KILL_KERNEL = 'KILL_KERNEL';
 export const INTERRUPT_KERNEL = 'INTERRUPT_KERNEL';
+export const FIND_KERNELS_REPLY = 'FIND_KERNELS_REPLY';
 
 export const EXIT = 'EXIT';
 

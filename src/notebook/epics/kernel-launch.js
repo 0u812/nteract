@@ -47,6 +47,7 @@ import {
   LAUNCH_KERNEL_BY_NAME,
   SET_LANGUAGE_INFO,
   ERROR_KERNEL_LAUNCH_FAILED,
+  FIND_KERNELS_REPLY,
 } from '../constants';
 
 export function setLanguageInfo(langInfo: LanguageInfoMetadata) {
@@ -165,7 +166,7 @@ export const watchExecutionStateEpic = (action$: ActionsObservable) =>
   *
   * @returns  {Observable}  The reply from main process
   */
-export const kernelSpecsObservable =
+export function kernelSpecsObservable() {
   Rx.Observable.create((observer) => {
     ipc.on('kernel_specs_reply', (event, specs) => {
       observer.next(specs);
@@ -173,6 +174,7 @@ export const kernelSpecsObservable =
     });
     ipc.send('kernel_specs_request');
   });
+}
 
 /**
   * Gets information about newly launched kernel.
@@ -197,7 +199,7 @@ export const newKernelByNameEpic = (action$: ActionsObservable) =>
       }
     })
     .mergeMap(action =>
-      kernelSpecsObservable
+      kernelSpecsObservable()
         .mergeMap(specs => Rx.Observable.of(newKernel(specs[action.kernelSpecName], action.cwd)))
   );
 
@@ -225,3 +227,17 @@ export const newKernelEpic = (action$: ActionsObservable) =>
         }),
         source,
     ));
+
+/**
+  * Processes reply from main containing kernel specs.
+  *
+  * @param  {ActionObservable} action$  ActionObservable for FIND_KERNEL_REPLY action
+  */
+export const findKernelsReplyEpic = (action$: ActionsObservable) =>
+  action$.ofType(FIND_KERNELS_REPLY)
+    .do((action) => {
+      console.log('find kernels reply epic for', action.uuid);
+    })
+    .catch((error, source) => {
+      console.log('a problem');
+    });
