@@ -166,7 +166,7 @@ export const watchExecutionStateEpic = (action$: ActionsObservable) =>
   * @returns  {Observable}  The reply from main process
   */
 export function kernelSpecsObservable() {
-  Rx.Observable.create((observer) => {
+  return Rx.Observable.create((observer) => {
     ipc.on('kernel_specs_reply', (event, specs) => {
       observer.next(specs);
       observer.complete();
