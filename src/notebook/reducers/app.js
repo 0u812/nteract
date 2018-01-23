@@ -106,6 +106,13 @@ function setGithubToken(state: AppState, action: SetGithubTokenAction) {
   return state.set('token', githubToken);
 }
 
+type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uuid: string };
+function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
+  const { specs, uuid } = action;
+  console.log('findKernelsResult');
+  return state.set('findKernelsResult', {specs, uuid});
+}
+
 type AppAction = NewKernelAction | SetGithubTokenAction |
   SetNotificationSystemAction | SetExecutionStateAction;
 
@@ -135,6 +142,8 @@ export default function handleApp(state: AppState = defaultAppState, action: App
       return setNotificationsSystem(state, action);
     case 'SET_GITHUB_TOKEN':
       return setGithubToken(state, action);
+    case 'FIND_KERNELS_REPLY':
+      return findKernelsResult(state, action);
     default:
       return state;
   }

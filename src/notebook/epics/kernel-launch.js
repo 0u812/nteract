@@ -47,7 +47,6 @@ import {
   LAUNCH_KERNEL_BY_NAME,
   SET_LANGUAGE_INFO,
   ERROR_KERNEL_LAUNCH_FAILED,
-  FIND_KERNELS_REPLY,
 } from '../constants';
 
 export function setLanguageInfo(langInfo: LanguageInfoMetadata) {
@@ -227,17 +226,3 @@ export const newKernelEpic = (action$: ActionsObservable) =>
         }),
         source,
     ));
-
-/**
-  * Processes reply from main containing kernel specs.
-  *
-  * @param  {ActionObservable} action$  ActionObservable for FIND_KERNEL_REPLY action
-  */
-export const findKernelsReplyEpic = (action$: ActionsObservable) =>
-  action$.ofType(FIND_KERNELS_REPLY)
-    .do((action) => {
-      console.log('find kernels reply epic for', action.uuid);
-    })
-    .catch((error, source) => {
-      console.log('a problem');
-    });

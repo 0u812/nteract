@@ -13,7 +13,6 @@ import {
   acquireKernelInfoEpic,
   watchExecutionStateEpic,
   newKernelByNameEpic,
-  findKernelsReplyEpic,
 } from './kernel-launch';
 
 import {
@@ -59,7 +58,6 @@ const epics = [
   updateDisplayEpic,
   newKernelEpic,
   newKernelByNameEpic,
-  findKernelsReplyEpic,
   acquireKernelInfoEpic,
   watchExecutionStateEpic,
   loadConfigEpic,

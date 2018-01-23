@@ -133,6 +133,7 @@ export const AppRecord = Immutable.Record({
   lastSaved: null,
   configLastSaved: null,
   error: null,
+  findKernelsResult: null,
 });
 
 export type Document = {

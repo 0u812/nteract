@@ -69,10 +69,10 @@ ipc.on('open-notebook', (event, filename) => {
   launch(resolve(filename));
 });
 
-ipc.on('find_kernels', (event) => {
-  console.log('find kernels');
+ipc.on('find_kernels', (event, identity) => {
+  console.log('find kernels', identity);
   kernelspecs.findAll().then(
-    (specs) => event.sender.send('find_kernels_reply', initializeKernelSpecsFromSpecs(specs), 'uuid-abc')
+    (specs) => event.sender.send('find_kernels_reply', initializeKernelSpecsFromSpecs(specs), identity)
   );
 });
 

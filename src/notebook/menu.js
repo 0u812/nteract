@@ -14,6 +14,8 @@ import * as path from 'path';
 
 import * as fs from 'fs';
 
+import * as uuid from 'uuid';
+
 import React, { PureComponent } from 'react';
 
 import {
@@ -289,6 +291,7 @@ export class FindKernelsControls extends PureComponent {
     showSearchButton: true,
     showManualButton: true,
   };
+  props: {identity: ''};
 
   constructor(): void {
     super();
@@ -301,6 +304,10 @@ export class FindKernelsControls extends PureComponent {
       showManualButton: true,
     };
     this.searchAction = this.searchAction.bind(this);
+
+    this.props = {
+      identity: '',
+    };
   }
 
   searchAction(event): void {
@@ -313,7 +320,7 @@ export class FindKernelsControls extends PureComponent {
       showManualButton: false,
     });
     console.log('send find_kernels');
-    ipc.send('find_kernels');
+    ipc.send('find_kernels', this.props.identity);
     console.log('sent find_kernels');
   }
 
@@ -339,16 +346,18 @@ export class FindKernelsControls extends PureComponent {
 export function dispatchFindKernels(store) {
   const state = store.getState();
   const notificationSystem = state.app.get('notificationSystem');
+  const identity = uuid.v4();
   notificationSystem.addNotification({
     title: 'Discover Kernels',
     message: 'Press "scan" to discover kernels on your local filesystem.',
     level: 'info',
     autoDismiss: 0,
     position: 'tc',
-    getInitialState: () => { return {showSpinner: false}; },
-    onClick: () => { this.setState( {showSpinner: true} ); },
+    uuid: identity,
+//     getInitialState: () => { return {showSpinner: false}; },
+//     onClick: () => { this.setState( {showSpinner: true} ); },
     children: (
-        <FindKernelsControls/>
+        <FindKernelsControls identity={identity}/>
       ),
   });
 }
