@@ -19,8 +19,8 @@ const KERNEL_SPECS = {
       }
     }
   },
-  python3: {
-    name: 'python3',
+  tepython3: {
+    name: 'tepython3',
     spec: {
       language: 'python',
       display_name: 'Python 3 (built-in)',
@@ -44,7 +44,7 @@ export function initializeKernelSpecs() {
 
 export function initializeKernelSpecsFromSpecs(kernelSpecs) {
   Object.assign(KERNEL_SPECS, kernelSpecs);
-//   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
+  console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
 }
 

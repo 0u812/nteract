@@ -644,6 +644,14 @@ li:only-child {
   cursor: pointer;
 }
 
+.notification-button-okay {
+  background-color: #30bc23;
+}
+
+.notification-button-cancel {
+  background-color: #bc2323;
+}
+
 /* http://tobiasahlin.com/spinkit/ */
 .spinner {
 /*   margin: 100px auto 0; */

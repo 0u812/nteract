@@ -360,7 +360,8 @@ export class FindKernelsControls extends PureComponent {
         {specList ?
           <p>
           These kernels will appear under your language menu if you press accept.
-          Didn't find what you're looking for? <a href="http://ipython.readthedocs.io/en/stable/install/kernel_install.html">Read more.</a>
+          Didn't find what you're looking for?
+          <a href="http://ipython.readthedocs.io/en/stable/install/kernel_install.html">Read more.</a>
           </p> :
           <p>
           Press "scan" to discover kernels on your local filesystem.
@@ -368,12 +369,12 @@ export class FindKernelsControls extends PureComponent {
         }
         <Spinneret show={this.state.showSpinner}/>
         { this.state.showOkayButton ?
-        <button title="Accept these kernels" className="notification-button-info">
+        <button title="Accept these kernels" className="notification-button-info notification-button-okay">
           <span className="octicon octicon-check"/>Accept
         </button>
         : null }
         { this.state.showCancelButton ?
-        <button title="Cancel and return" className="notification-button-info">
+        <button title="Cancel and return" className="notification-button-info notification-button-cancel">
           <span className="octicon octicon-x"/>Cancel
         </button>
         : null }
