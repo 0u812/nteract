@@ -346,6 +346,14 @@ export class FindKernelsControls extends PureComponent {
     return (
       <div>
         {specList}
+        {specList ? <p>
+          Showing available kernels.
+          These kernels will appear under your language menu if you press accept.
+          </p> :
+          <p>
+          Press "scan" to discover kernels on your local filesystem.
+          </p>
+        }
         <Spinneret show={this.state.showSpinner}/>
         { this.state.showSearchButton ?
         <button title="Scan for kernels" className="notification-button-info" onClick={this.searchAction}>
@@ -368,7 +376,6 @@ export function dispatchFindKernels(store) {
   const identity = uuid.v4();
   notificationSystem.addNotification({
     title: 'Discover Kernels',
-    message: 'Press "scan" to discover kernels on your local filesystem.',
     level: 'info',
     autoDismiss: 0,
     position: 'tc',
