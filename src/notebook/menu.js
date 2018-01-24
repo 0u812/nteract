@@ -279,9 +279,9 @@ export class Spinneret extends PureComponent {
   }
 }
 
-export function dispatchFindKernelsReply(store, specs, uuid) {
-  console.log('dispatchFindKernelsReply ', uuid);
-  store.dispatch( findKernelsReply(specs, uuid) );
+export function dispatchFindKernelsReply(store, specs, uid) {
+  console.log('dispatchFindKernelsReply ', uid);
+  store.dispatch( findKernelsReply(specs, uid) );
 }
 
 export class FindKernelsControls extends PureComponent {
@@ -359,7 +359,7 @@ export function dispatchFindKernels(store) {
     level: 'info',
     autoDismiss: 0,
     position: 'tc',
-    uuid: identity,
+    uid: identity,
 //     getInitialState: () => { return {showSpinner: false}; },
 //     onClick: () => { this.setState( {showSpinner: true} ); },
     children: (

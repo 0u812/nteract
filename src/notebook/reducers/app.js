@@ -110,18 +110,18 @@ function setGithubToken(state: AppState, action: SetGithubTokenAction) {
   return state.set('token', githubToken);
 }
 
-type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uuid: string };
+type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uid: string };
 function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
-  const { specs, uuid } = action;
+  const { specs, uid } = action;
   console.log('findKernelsResult1', specs);
-  console.log('findKernelsResult2', uuid);
-  state.notificationSystem.editNotification({
-    uuid: uuid,
+  console.log('findKernelsResult2', uid);
+  state.notificationSystem.editNotification(uid, {
+    uid: uid,
     children: (
-        <FindKernelsControls identity={uuid} kernel_specs={[1,2,3]}/>
+        <FindKernelsControls identity={uid} kernel_specs={specs}/>
       ),
   });
-  return state.set('findKernelsResult', {specs, uuid});
+  return state.set('findKernelsResult', {specs, uid});
 }
 
 type AppAction = NewKernelAction | SetGithubTokenAction |
