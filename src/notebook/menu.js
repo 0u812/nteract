@@ -284,13 +284,20 @@ export function dispatchFindKernelsReply(store, specs, uid) {
   store.dispatch( findKernelsReply(specs, uid) );
 }
 
+function getPathForSpec(spec) {
+  // hack that sometimes works
+  return spec.argv ?
+    (spec.argv.length > 0 ? spec.argv[0] : '')
+    : '';
+}
+
 export class FindKernelsControls extends PureComponent {
   state: {
     showSpinner: false,
     showOkayButton: false,
     showCancelButton: false,
     showSearchButton: true,
-    showManualButton: true,
+    showManualButton: false,
   };
   props: {
     identity: '',
@@ -305,7 +312,7 @@ export class FindKernelsControls extends PureComponent {
       showOkayButton: false,
       showCancelButton: false,
       showSearchButton: true,
-      showManualButton: true,
+      showManualButton: false,
     };
     this.searchAction = this.searchAction.bind(this);
 
@@ -324,9 +331,7 @@ export class FindKernelsControls extends PureComponent {
       showSearchButton: false,
       showManualButton: false,
     });
-    console.log('send find_kernels');
     ipc.send('find_kernels', this.props.identity);
-    console.log('sent find_kernels');
   }
 
   componentWillReceiveProps(nextProps): void {
@@ -336,15 +341,17 @@ export class FindKernelsControls extends PureComponent {
         showOkayButton: true,
         showCancelButton: true,
         showSearchButton: true,
-        showManualButton: true,
+        showManualButton: false,
       });
     }
   }
 
   render(): React.Element<any> {
-    console.log('kernel_specs = ', this.props.kernel_specs);
     const listItems = this.props.kernel_specs ? Object.keys(this.props.kernel_specs).map(
-      (spec) => <li>{this.props.kernel_specs[spec].spec.display_name}</li>
+      (spec) => <li
+      key={this.props.kernel_specs[spec].spec.display_name}
+      title={getPathForSpec(this.props.kernel_specs[spec].spec)}
+      >{this.props.kernel_specs[spec].spec.display_name}</li>
     ) : null;
     const specList = listItems ? <ul>{listItems}</ul> : null;
     return (
