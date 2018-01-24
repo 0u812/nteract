@@ -329,10 +329,23 @@ export class FindKernelsControls extends PureComponent {
     console.log('sent find_kernels');
   }
 
+  componentWillReceiveProps(nextProps): void {
+    if (nextProps.kernel_specs) {
+      this.setState({
+        showSpinner: false,
+      });
+    }
+  }
+
   render(): React.Element<any> {
     console.log('kernel_specs = ', this.props.kernel_specs);
+    const listItems = this.props.kernel_specs ? Object.keys(this.props.kernel_specs).map(
+      (spec) => <li>{this.props.kernel_specs[spec].spec.display_name}</li>
+    ) : null;
+    const specList = listItems ? <ul>{listItems}</ul> : null;
     return (
       <div>
+        {specList}
         <Spinneret show={this.state.showSpinner}/>
         { this.state.showSearchButton ?
         <button title="Scan for kernels" className="notification-button-info" onClick={this.searchAction}>
