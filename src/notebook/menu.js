@@ -333,6 +333,10 @@ export class FindKernelsControls extends PureComponent {
     if (nextProps.kernel_specs) {
       this.setState({
         showSpinner: false,
+        showOkayButton: true,
+        showCancelButton: true,
+        showSearchButton: true,
+        showManualButton: true,
       });
     }
   }
@@ -346,8 +350,8 @@ export class FindKernelsControls extends PureComponent {
     return (
       <div>
         {specList}
-        {specList ? <p>
-          Showing available kernels.
+        {specList ?
+          <p>
           These kernels will appear under your language menu if you press accept.
           </p> :
           <p>
@@ -355,6 +359,16 @@ export class FindKernelsControls extends PureComponent {
           </p>
         }
         <Spinneret show={this.state.showSpinner}/>
+        { this.state.showOkayButton ?
+        <button title="Accept these kernels" className="notification-button-info">
+          <span className="octicon octicon-check"/>Accept
+        </button>
+        : null }
+        { this.state.showCancelButton ?
+        <button title="Cancel and return" className="notification-button-info">
+          <span className="octicon octicon-x"/>Cancel
+        </button>
+        : null }
         { this.state.showSearchButton ?
         <button title="Scan for kernels" className="notification-button-info" onClick={this.searchAction}>
           <span className="octicon octicon-search"/>Scan
