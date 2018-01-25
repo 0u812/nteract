@@ -369,11 +369,15 @@ export class FindKernelsControls extends PureComponent {
       <div>
         {specList}
         {specList ?
+          <div>
           <p>
           These kernels will appear under your language menu if you press accept.
+          </p><p>
           Didn't find what you're looking for?
           <a href="http://ipython.readthedocs.io/en/stable/install/kernel_install.html">Read more.</a>
-          </p> :
+          </p>
+          </div>
+          :
           <p>
           Press "scan" to discover kernels on your local filesystem.
           </p>
