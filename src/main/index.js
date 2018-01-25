@@ -73,6 +73,10 @@ ipc.on('find_kernels', (event, identity) => {
   kernelspecs.findAll().then(
     (specs) => event.sender.send('find_kernels_reply', addDefaultSpecs(specs), identity)
   );
+  // delayed version
+//   kernelspecs.findAll().then(
+//     (specs) => setTimeout( (specs) => event.sender.send('find_kernels_reply', addDefaultSpecs(specs), identity), 1000, specs )
+//   );
 });
 
 ipc.on('update_kernel_specs', (event, specs) => {
