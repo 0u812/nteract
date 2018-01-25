@@ -43,14 +43,16 @@ export function initializeKernelSpecs() {
 }
 
 export function initializeKernelSpecsFromSpecs(kernelSpecs) {
-  Object.assign(KERNEL_SPECS, kernelSpecs);
+  const specs = {};
+  Object.assign(specs, kernelSpecs, KERNEL_SPECS);
+  Object.assign(KERNEL_SPECS, specs);
 //   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
 }
 
 export function addDefaultSpecs(kernelSpecs) {
   const specs = {};
-  Object.assign(specs, KERNEL_SPECS, kernelSpecs);
+  Object.assign(specs, kernelSpecs, KERNEL_SPECS);
 //   console.log('addDefaultSpecs');
 //   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return specs;
