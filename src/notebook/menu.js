@@ -335,7 +335,6 @@ export class FindKernelsControls extends PureComponent {
   }
 
   acceptHandler(event): void {
-    console.log('acceptHandler');
     ipc.send('update_kernel_specs', this.props.kernel_specs);
   }
 

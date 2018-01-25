@@ -76,8 +76,6 @@ ipc.on('find_kernels', (event, identity) => {
 });
 
 ipc.on('update_kernel_specs', (event, specs) => {
-  console.log('update_kernel_specs');
-  console.log(JSON.stringify(specs, null, 2));
   setMenu( loadFullMenu(initializeKernelSpecsFromSpecs(specs)) );
   rebuildRecentMenu();
 });
