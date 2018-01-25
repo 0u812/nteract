@@ -214,7 +214,6 @@ export const interruptKernel = {
 };
 
 export function findKernelsReply(specs, uid) {
-  console.log('findKernelsReply action');
   return {
     type: constants.FIND_KERNELS_REPLY,
     specs,

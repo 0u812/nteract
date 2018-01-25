@@ -280,7 +280,6 @@ export class Spinneret extends PureComponent {
 }
 
 export function dispatchFindKernelsReply(store, specs, uid) {
-  console.log('dispatchFindKernelsReply ', uid);
   store.dispatch( findKernelsReply(specs, uid) );
 }
 
@@ -331,7 +330,6 @@ export class FindKernelsControls extends PureComponent {
       showSearchButton: false,
       showManualButton: false,
     });
-    console.log('send find_kernels ', this.props.identity);
     ipc.send('find_kernels', this.props.identity);
   }
 

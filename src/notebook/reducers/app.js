@@ -122,7 +122,6 @@ function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
         <FindKernelsControls identity={identity} kernel_specs={specs}/>
       ),
   });
-  console.log('findKernelsResult new id', identity);
   return state.set('findKernelsResult', {specs, uid});
 }
 
