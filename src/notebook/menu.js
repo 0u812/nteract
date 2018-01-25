@@ -374,7 +374,7 @@ export class FindKernelsControls extends PureComponent {
           These kernels will appear under your language menu if you press accept.
           </p><p>
           Didn't find what you're looking for?
-          <a href="http://ipython.readthedocs.io/en/stable/install/kernel_install.html">Read more.</a>
+          <a href="http://ipython.readthedocs.io/en/stable/install/kernel_install.html">Read more about installing kernels.</a>
           </p>
           </div>
           :
