@@ -9,6 +9,8 @@ import {
 
 import React, { PureComponent } from 'react';
 
+import * as uuid from 'uuid';
+
 import { FindKernelsControls } from '../menu';
 
 import { AppRecord } from '../records';
@@ -113,11 +115,14 @@ function setGithubToken(state: AppState, action: SetGithubTokenAction) {
 type FindKernelsResultAction = { type: 'FIND_KERNELS_REPLY', specs: Object, uid: string };
 function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
   const { specs, uid } = action;
+  const identity = uuid.v4();
   state.notificationSystem.editNotification(uid, {
+    uid: identity,
     children: (
-        <FindKernelsControls identity={uid} kernel_specs={specs}/>
+        <FindKernelsControls identity={identity} kernel_specs={specs}/>
       ),
   });
+  console.log('findKernelsResult new id', identity);
   return state.set('findKernelsResult', {specs, uid});
 }
 

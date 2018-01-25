@@ -331,7 +331,20 @@ export class FindKernelsControls extends PureComponent {
       showSearchButton: false,
       showManualButton: false,
     });
+    console.log('send find_kernels ', this.props.identity);
     ipc.send('find_kernels', this.props.identity);
+  }
+
+  componentDidMount(): void {
+    if (this.props.kernel_specs) {
+      this.setState({
+        showSpinner: false,
+        showOkayButton: true,
+        showCancelButton: true,
+        showSearchButton: true,
+        showManualButton: false,
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps): void {
