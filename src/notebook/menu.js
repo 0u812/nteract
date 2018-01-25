@@ -314,6 +314,7 @@ export class FindKernelsControls extends PureComponent {
       showManualButton: false,
     };
     this.searchAction = this.searchAction.bind(this);
+    this.acceptHandler = this.acceptHandler.bind(this);
 
 //     this.props = {
 //       identity: '',
@@ -331,6 +332,11 @@ export class FindKernelsControls extends PureComponent {
       showManualButton: false,
     });
     ipc.send('find_kernels', this.props.identity);
+  }
+
+  acceptHandler(event): void {
+    console.log('acceptHandler');
+    ipc.send('update_kernel_specs', this.props.kernel_specs);
   }
 
   componentDidMount(): void {
@@ -384,7 +390,7 @@ export class FindKernelsControls extends PureComponent {
         }
         <Spinneret show={this.state.showSpinner}/>
         { this.state.showOkayButton ?
-        <button title="Accept these kernels" className="notification-button-info notification-button-okay">
+        <button title="Accept these kernels" className="notification-button-info notification-button-okay" onClick={this.acceptHandler}>
           <span className="octicon octicon-check"/>Accept
         </button>
         : null }

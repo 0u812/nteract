@@ -48,6 +48,18 @@ export function initializeKernelSpecsFromSpecs(kernelSpecs) {
   return KERNEL_SPECS;
 }
 
+export function addDefaultSpecs(kernelSpecs) {
+  const specs = {};
+  Object.assign(specs, KERNEL_SPECS, kernelSpecs);
+//   console.log('addDefaultSpecs');
+//   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
+  return specs;
+}
+
+export function getKernelSpecs() {
+  return KERNEL_SPECS;
+}
+
 ipc.on('kernel_specs_request', (event) => {
   event.sender.send('kernel_specs_reply', KERNEL_SPECS);
 });
