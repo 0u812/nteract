@@ -261,9 +261,9 @@ export class Spinneret extends PureComponent {
   constructor(): void {
     super();
 
-    this.props = {
-      show: false,
-    };
+//     this.props = {
+//       show: false,
+//     };
   }
 
   render(): React.Element<any> {
@@ -316,10 +316,10 @@ export class FindKernelsControls extends PureComponent {
     };
     this.searchAction = this.searchAction.bind(this);
 
-    this.props = {
-      identity: '',
-      kernel_specs: [],
-    };
+//     this.props = {
+//       identity: '',
+//       kernel_specs: [],
+//     };
   }
 
   searchAction(event): void {
