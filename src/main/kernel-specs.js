@@ -44,7 +44,7 @@ export function initializeKernelSpecs() {
 
 export function initializeKernelSpecsFromSpecs(kernelSpecs) {
   Object.assign(KERNEL_SPECS, kernelSpecs);
-  console.log(JSON.stringify(KERNEL_SPECS, null, 2));
+//   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
 }
 
