@@ -7,7 +7,7 @@ import {
 } from '../utils/fs';
 import _ from 'lodash';
 
-const KERNEL_SPECS = {
+const DEFAULT_SPECS = {
   node_nteract: {
     name: 'node_nteract',
     spec: {
@@ -43,6 +43,9 @@ const KERNEL_SPECS = {
   }
 };
 
+let KERNEL_SPECS = {};
+Object.assign(KERNEL_SPECS, DEFAULT_SPECS);
+
 export function initializeKernelSpecs() {
   // Object.assign(KERNEL_SPECS, kernelSpecs);
   return KERNEL_SPECS;
@@ -54,21 +57,19 @@ export function initializeKernelSpecsFromDisk() {
   return readFileObservable(kernel_spec_filename)
     .map((data) => {
       const specs = {};
-      Object.assign(specs, JSON.parse(data), KERNEL_SPECS);
-      console.log('read specs from disk');
-      console.log(JSON.stringify(KERNEL_SPECS, null, 2));
-      Object.assign(KERNEL_SPECS, specs);
+      Object.assign(specs, JSON.parse(data), DEFAULT_SPECS);
+      console.log(JSON.stringify(specs, null, 2));
+      KERNEL_SPECS = specs;
       return specs;
     })
     .catch((err) => {
-      console.log('could not read specs from disk');
       return Rx.Observable.of(KERNEL_SPECS);
     });
 }
 
 export function initializeKernelSpecsFromSpecs(kernelSpecs) {
   const specs = {};
-  Object.assign(specs, kernelSpecs, KERNEL_SPECS);
+  Object.assign(specs, kernelSpecs, DEFAULT_SPECS);
   if (!_.isEqual(specs, KERNEL_SPECS)) {
     // if the specs changed write to disk
     writeFile(kernel_spec_filename, JSON.stringify(specs), (err) => {
@@ -76,14 +77,14 @@ export function initializeKernelSpecsFromSpecs(kernelSpecs) {
       }
     );
   }
-  Object.assign(KERNEL_SPECS, specs);
+  KERNEL_SPECS = specs;
 //   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
 }
 
 export function addDefaultSpecs(kernelSpecs) {
   const specs = {};
-  Object.assign(specs, kernelSpecs, KERNEL_SPECS);
+  Object.assign(specs, kernelSpecs, DEFAULT_SPECS);
 //   console.log('addDefaultSpecs');
 //   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return specs;

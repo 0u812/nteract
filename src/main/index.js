@@ -145,15 +145,10 @@ const prepJupyterObservable = prepareEnv
 const kernelSpecsObservable = prepJupyterObservable
   .mergeMap(() => initializeKernelSpecsFromDisk());
 
-console.log('create subject');
 const kernelSpecsSubject = new Rx.AsyncSubject();
-console.log('subscribe subject');
 kernelSpecsObservable.subscribe(kernelSpecsSubject);
-console.log('subscribe to subject');
-kernelSpecsSubject.subscribe(() => {console.log('callit');});
 
 kernelSpecsObservable.catch((err) => {
-  console.log('kernelSpecsObservable catch');
   dialog.showMessageBox({
     type: 'error',
     title: 'No Kernels Installed',
