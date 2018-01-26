@@ -93,28 +93,30 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;
+        const isBuiltIn = kernelSpec.name ? kernelSpec.name === 'tepython3' : false;
+        const displayName = kernelSpec.spec.display_name || 'Unknown';
 
         // check for failed spawn
         spawn.on('error', (err) => {
           // check if the Tellurium/telocal directory exists
           const userdata = app.getPath('userData');
           const telocal_dir = path.join(app.getPath('userData'), 'telocal');
-          if (fs.existsSync(telocal_dir)) {
-            dialog.showMessageBox({
-              type: 'error',
-              buttons: ['Okay'],
-              title: 'Critical Error',
-              message: 'Unable to start Python kernel.',
-              detail: 'You appear to have an older version of Tellurium notebook installed. Please remove the directory "'+userdata+'" and restart Tellurium.',
-            });
-          } else {
+          if (isBuiltIn) {
             // otherwise, tell the user there's something wrong with the installation
             dialog.showMessageBox({
               type: 'error',
               buttons: ['Okay'],
               title: 'Critical Error',
               message: 'Unable to start Python kernel.',
-              detail: 'The Tellurium Python kernel failed to start. It may be missing or non-functional. Your Tellurium installation may be corrupt.',
+              detail: 'The Tellurium built-in Python kernel failed to start. It may be missing or non-functional. Your Tellurium installation may be corrupt.',
+            });
+          } else {
+            dialog.showMessageBox({
+              type: 'error',
+              buttons: ['Okay'],
+              title: 'Critical Error',
+              message: 'Unable to start kernel.',
+              detail: 'Failed to start the kernel "' + displayName + '", which is used by this notebook. Please choose a different kernel from the Language menu.',
             });
           }
         });
