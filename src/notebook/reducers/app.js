@@ -117,6 +117,7 @@ function findKernelsResult(state: AppState, action: FindKernelsResultAction) {
   const { specs, uid } = action;
   const identity = uuid.v4();
   state.notificationSystem.editNotification(uid, {
+    title: 'Found Kernels',
     uid: identity,
     children: (
         <FindKernelsControls identity={identity} kernel_specs={specs}/>

@@ -20,7 +20,7 @@ import {
 import { loadFullMenu, setMenu } from './menu';
 
 import prepareEnv from './prepare-env';
-import { initializeKernelSpecs, initializeKernelSpecsFromSpecs, getKernelSpecs, addDefaultSpecs } from './kernel-specs';
+import { initializeKernelSpecs, initializeKernelSpecsFromSpecs, getKernelSpecs, addDefaultSpecs, initializeKernelSpecsFromDisk } from './kernel-specs';
 
 import { handleProtocolRequest } from './protocol-handlers';
 
@@ -142,9 +142,23 @@ const prepJupyterObservable = prepareEnv
     )
   );
 
-const kernelSpecsPromise = prepJupyterObservable
-  .toPromise()
-  .then(() => initializeKernelSpecs());
+const kernelSpecsObservable = prepJupyterObservable
+  .mergeMap(() => initializeKernelSpecsFromDisk())
+  .catch((err) => {
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'No Kernels Installed',
+        buttons: [],
+        message: 'Failed to configure any kernels. Please reinstall.',
+      }, (index) => {
+        if (index === 0) {
+          app.quit();
+        }
+      });
+    });
+const kernelSpecsSubject = new Rx.AsyncSubject();
+kernelSpecsObservable.subscribe(kernelSpecsSubject);
+// kernelSpecsSubject.subscribe(() => {console.log('callit');});
 
 readRecentDocumentsObservable().subscribe(() => {});
 
@@ -195,7 +209,7 @@ export function createSplashSubscriber() {
   });
 }
 
-const appAndKernelSpecsReady = Rx.Observable.zip(fullAppReady$, kernelSpecsPromise);
+const appAndKernelSpecsReady = Rx.Observable.zip(fullAppReady$, kernelSpecsSubject);
 
 electronReady$
   // TODO: Take until first window is shown
@@ -260,7 +274,8 @@ openFile$.merge(openUrl$)
     // based on if arguments went through argv or through open-file events
     if (notebooks.length <= 0 && buffer.length <= 0) {
       log.info('launching an empty notebook by default');
-      kernelSpecsPromise.then((specs) => {
+      kernelSpecsSubject.subscribe((specs) => {
+        console.log('kernelSpecsSubject1');
         let kernel;
 
         if (argv.kernel in specs) {
@@ -307,7 +322,8 @@ openUrl$
 
 fullAppReady$
   .subscribe(() => {
-    kernelSpecsPromise.then((kernelSpecs) => {
+    kernelSpecsSubject.subscribe((kernelSpecs) => {
+      console.log('kernelSpecsSubject2');
       if (Object.keys(kernelSpecs).length !== 0) {
         setMenu( loadFullMenu(kernelSpecs) );
         rebuildRecentMenu();
@@ -327,21 +343,5 @@ fullAppReady$
           }
         });
       }
-    }).catch((err) => {
-      dialog.showMessageBox({
-        type: 'error',
-        title: 'No Kernels Installed',
-        buttons: [],
-        message: 'No kernels are installed on your system.',
-        detail: 'No kernels are installed on your system so you will not be ' +
-          'able to execute code cells in any language. You can read about ' +
-          'installing kernels at ' +
-          'https://ipython.readthedocs.io/en/latest/install/kernel_install.html' +
-          `\nFull error: ${err.message}`,
-      }, (index) => {
-        if (index === 0) {
-          app.quit();
-        }
-      });
-    });
+    })
   });

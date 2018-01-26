@@ -1,5 +1,10 @@
 import { app, ipcMain as ipc } from 'electron';
 import { join } from 'path';
+import { writeFile } from 'fs';
+import {
+  readFileObservable,
+} from '../utils/fs';
+import _ from 'lodash';
 
 const KERNEL_SPECS = {
   node_nteract: {
@@ -42,9 +47,34 @@ export function initializeKernelSpecs() {
   return KERNEL_SPECS;
 }
 
+const kernel_spec_filename = join(app.getPath('userData'),'kernels.json');
+
+export function initializeKernelSpecsFromDisk() {
+  return readFileObservable(kernel_spec_filename)
+    .catch((err) => {
+      console.log('could not read specs from disk');
+      return KERNEL_SPECS;
+    })
+    .map((data) => {
+      const specs = {};
+      Object.assign(specs, JSON.parse(data), KERNEL_SPECS);
+      console.log('read specs from disk');
+      console.log(JSON.stringify(KERNEL_SPECS, null, 2));
+      Object.assign(KERNEL_SPECS, specs);
+      return specs;
+    });
+}
+
 export function initializeKernelSpecsFromSpecs(kernelSpecs) {
   const specs = {};
   Object.assign(specs, kernelSpecs, KERNEL_SPECS);
+  if (!_.isEqual(specs, KERNEL_SPECS)) {
+    // if the specs changed write to disk
+    writeFile(kernel_spec_filename, JSON.stringify(specs), (err) => {
+        // unable to write file, just continue
+      }
+    );
+  }
   Object.assign(KERNEL_SPECS, specs);
 //   console.log(JSON.stringify(KERNEL_SPECS, null, 2));
   return KERNEL_SPECS;
