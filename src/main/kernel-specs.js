@@ -1,6 +1,7 @@
 import { app, ipcMain as ipc } from 'electron';
 import { join } from 'path';
 import { writeFile } from 'fs';
+import Rx from 'rxjs/Rx';
 import {
   readFileObservable,
 } from '../utils/fs';
@@ -51,10 +52,6 @@ const kernel_spec_filename = join(app.getPath('userData'),'kernels.json');
 
 export function initializeKernelSpecsFromDisk() {
   return readFileObservable(kernel_spec_filename)
-    .catch((err) => {
-      console.log('could not read specs from disk');
-      return KERNEL_SPECS;
-    })
     .map((data) => {
       const specs = {};
       Object.assign(specs, JSON.parse(data), KERNEL_SPECS);
@@ -62,6 +59,10 @@ export function initializeKernelSpecsFromDisk() {
       console.log(JSON.stringify(KERNEL_SPECS, null, 2));
       Object.assign(KERNEL_SPECS, specs);
       return specs;
+    })
+    .catch((err) => {
+      console.log('could not read specs from disk');
+      return Rx.Observable.of(KERNEL_SPECS);
     });
 }
 

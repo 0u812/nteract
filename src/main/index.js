@@ -143,22 +143,28 @@ const prepJupyterObservable = prepareEnv
   );
 
 const kernelSpecsObservable = prepJupyterObservable
-  .mergeMap(() => initializeKernelSpecsFromDisk())
-  .catch((err) => {
-      dialog.showMessageBox({
-        type: 'error',
-        title: 'No Kernels Installed',
-        buttons: [],
-        message: 'Failed to configure any kernels. Please reinstall.',
-      }, (index) => {
-        if (index === 0) {
-          app.quit();
-        }
-      });
-    });
+  .mergeMap(() => initializeKernelSpecsFromDisk());
+
+console.log('create subject');
 const kernelSpecsSubject = new Rx.AsyncSubject();
+console.log('subscribe subject');
 kernelSpecsObservable.subscribe(kernelSpecsSubject);
-// kernelSpecsSubject.subscribe(() => {console.log('callit');});
+console.log('subscribe to subject');
+kernelSpecsSubject.subscribe(() => {console.log('callit');});
+
+kernelSpecsObservable.catch((err) => {
+  console.log('kernelSpecsObservable catch');
+  dialog.showMessageBox({
+    type: 'error',
+    title: 'No Kernels Installed',
+    buttons: [],
+    message: 'Failed to configure any kernels. Please reinstall.',
+  }, (index) => {
+    if (index === 0) {
+      app.quit();
+    }
+  });
+});
 
 readRecentDocumentsObservable().subscribe(() => {});
 
