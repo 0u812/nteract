@@ -186,6 +186,7 @@ class Prompt extends React.Component {
         this.onChange = (e) => this._onChange(e);
     }
 
+    // https://stackoverflow.com/questions/28889826/react-set-focus-on-input-after-render
     componentDidMount() {
       this.inputElt.focus();
     }
@@ -194,6 +195,11 @@ class Prompt extends React.Component {
         if (prevState.value !== this.state.value) {
             this.props.onChange(this.state.value);
         }
+    }
+
+    componentWillUnmount() {
+      key.unbind('esc');
+      key.unbind('enter');
     }
 
     _onChange(e) {
@@ -227,9 +233,12 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
     });
 
     key('enter', () => {
+      console.log('enter key');
       find_callback(promptValue);
       Popup.close();
     });
+
+    key.filter = (event) => true;
 
     this.create({
         title: 'Find in Notebook',
