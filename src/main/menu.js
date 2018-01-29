@@ -270,6 +270,13 @@ export const edit = {
       accelerator: 'CmdOrCtrl+Shift+V',
       click: createSender('menu:paste-cell'),
     },
+    {
+      type: 'separator',
+    },
+    {
+      label: 'Find in Notebook...',
+      click: createSender('menu:find-in-notebook'),
+    },
   ],
 };
 

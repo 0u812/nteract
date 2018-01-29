@@ -8,6 +8,8 @@ import { Map as ImmutableMap } from 'immutable';
 
 import NotificationSystem from 'react-notification-system';
 
+import Popup from 'react-popup';
+
 import configureStore from './store';
 import { reducers } from './reducers';
 import Notebook from './components/notebook';
@@ -61,6 +63,7 @@ class App extends React.PureComponent {
           <NotificationSystem
             ref={(notificationSystem) => { this.notificationSystem = notificationSystem; }}
           />
+          <Popup/>
           <link rel="stylesheet" href="../static/styles/main.css" />
         </div>
       </Provider>

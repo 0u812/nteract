@@ -221,6 +221,12 @@ export function findKernelsReply(specs, uid) {
   };
 }
 
+export function findInNotebook(specs, uid) {
+  return {
+    type: constants.FIND_IN_NOTEBOOK,
+  };
+}
+
 export function setNotificationSystem(notificationSystem) {
   return {
     type: constants.SET_NOTIFICATION_SYSTEM,
