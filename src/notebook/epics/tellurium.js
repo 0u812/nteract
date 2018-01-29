@@ -216,19 +216,19 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
         content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
         buttons: {
             left: ['cancel'],
-            right: [{
-                text: 'Find All',
-                key: '⌘+s',
-                action: () => {
-                    find_callback(promptValue);
-                    Popup.close();
-                }
-            },
-            {
+            right: [
+              {
                 text: 'Replace All',
-                key: '⌘+s',
+                className: 'danger',
                 action: () => {
                     replace_callback(promptValue);
+                    Popup.close();
+                }
+              },
+              {
+                text: 'Find All',
+                action: () => {
+                    find_callback(promptValue);
                     Popup.close();
                 }
             },
