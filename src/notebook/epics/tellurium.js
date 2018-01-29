@@ -23,8 +23,6 @@ import {
 
 import * as uuid from 'uuid';
 
-key('a', function(){ console.log('le a') });
-
 export function convertFileEpic(action$, store) {
   return action$.ofType('CONVERT_FILE')
     .map((action) => {
@@ -188,6 +186,10 @@ class Prompt extends React.Component {
         this.onChange = (e) => this._onChange(e);
     }
 
+    componentDidMount() {
+      this.inputElt.focus();
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.value !== this.state.value) {
             this.props.onChange(this.state.value);
@@ -201,7 +203,11 @@ class Prompt extends React.Component {
     }
 
     render() {
-        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
+        return <input type="text" placeholder={this.props.placeholder}
+          className="mm-popup__input"
+          value={this.state.value}
+          onChange={this.onChange}
+          ref={(input) => {this.inputElt = input;}} />;
     }
 }
 
