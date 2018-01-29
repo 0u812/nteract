@@ -2,6 +2,8 @@ import Rx from 'rxjs/Rx';
 
 import React from 'react';
 
+import key from 'keymaster';
+
 import {
   createCommOpenMessage,
   createCommMessage,
@@ -20,6 +22,8 @@ import {
 } from '../middlewares';
 
 import * as uuid from 'uuid';
+
+key('a', function(){ console.log('le a') });
 
 export function convertFileEpic(action$, store) {
   return action$.ofType('CONVERT_FILE')
@@ -201,12 +205,25 @@ class Prompt extends React.Component {
     }
 }
 
+// key('esc', () => {
+//   Popup.close();
+// });
+
 /** Prompt plugin */
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
     let promptValue = null;
     let promptChange = function (value) {
         promptValue = value;
     };
+
+    key('esc', () => {
+      Popup.close();
+    });
+
+    key('enter', () => {
+      find_callback(promptValue);
+      Popup.close();
+    });
 
     this.create({
         title: 'Find in Notebook',
@@ -215,7 +232,6 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
             left: [
               {
                 text: 'cancel',
-                key: 'esc',
                 action: () => { Popup.close() },
               }
             ],
@@ -230,7 +246,6 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
               },
               {
                 text: 'Find All',
-                key: 'enter',
                 action: () => {
                     find_callback(promptValue);
                     Popup.close();

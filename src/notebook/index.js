@@ -8,7 +8,7 @@ import { Map as ImmutableMap } from 'immutable';
 
 import NotificationSystem from 'react-notification-system';
 
-import { key } from 'keymaster';
+import key from 'keymaster';
 
 import Popup from 'react-popup';
 
