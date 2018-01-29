@@ -208,14 +208,17 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
         promptValue = value;
     };
 
-    console.log('registerPlugin');
-    console.log(this);
-
     this.create({
         title: 'Find in Notebook',
         content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
         buttons: {
-            left: ['cancel'],
+            left: [
+              {
+                text: 'cancel',
+                key: 'esc',
+                action: () => { Popup.close() },
+              }
+            ],
             right: [
               {
                 text: 'Replace All',
@@ -227,6 +230,7 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
               },
               {
                 text: 'Find All',
+                key: 'enter',
                 action: () => {
                     find_callback(promptValue);
                     Popup.close();

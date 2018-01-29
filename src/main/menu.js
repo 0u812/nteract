@@ -275,6 +275,7 @@ export const edit = {
     },
     {
       label: 'Find in Notebook...',
+      accelerator: 'CmdOrCtrl+Shift+F',
       click: createSender('menu:find-in-notebook'),
     },
   ],
