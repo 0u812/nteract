@@ -162,7 +162,7 @@
     "react-dom": "^15.4.2",
     "react-json-tree": "0.10.1",
     "react-notification-system": "^0.2.9",
-    "react-popup": "^0.9.2",
+    "react-popup": "^0.7.1",
     "react-redux": "^5.0.0",
     "react-simple-dropdown": "^1.1.4",
     "redux": "^3.5.2",

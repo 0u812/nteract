@@ -11,6 +11,8 @@ import {
   createCellAppend,
 } from '../actions';
 
+import Popup from 'react-popup';
+
 import {
   TelluriumError,
 } from '../middlewares';
@@ -164,6 +166,15 @@ export function getNotebookPathEpic(action$, store) {
       channels.shell.next(reply);
       // console.log('sent reply');
       return reply;
+    })
+    .filter(() => false);
+}
+
+// used for saving non-notebook files
+export function findInNotebookEpic(action$, store) {
+  return action$.ofType('FIND_IN_NOTEBOOK')
+    .do(() => {
+      Popup.alert('I am alert, nice to meet you');
     })
     .filter(() => false);
 }

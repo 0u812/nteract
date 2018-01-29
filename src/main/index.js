@@ -276,7 +276,6 @@ openFile$.merge(openUrl$)
     if (notebooks.length <= 0 && buffer.length <= 0) {
       log.info('launching an empty notebook by default');
       kernelSpecsSubject.subscribe((specs) => {
-        console.log('kernelSpecsSubject1');
         let kernel;
 
         if (argv.kernel in specs) {
@@ -324,7 +323,6 @@ openUrl$
 fullAppReady$
   .subscribe(() => {
     kernelSpecsSubject.subscribe((kernelSpecs) => {
-      console.log('kernelSpecsSubject2');
       if (Object.keys(kernelSpecs).length !== 0) {
         setMenu( loadFullMenu(kernelSpecs) );
         rebuildRecentMenu();
