@@ -1,5 +1,7 @@
 import Rx from 'rxjs/Rx';
 
+import React from 'react';
+
 import {
   createCommOpenMessage,
   createCommMessage,
@@ -170,11 +172,83 @@ export function getNotebookPathEpic(action$, store) {
     .filter(() => false);
 }
 
-// used for saving non-notebook files
+/** The prompt content component */
+class Prompt extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: this.props.defaultValue
+        };
+
+        this.onChange = (e) => this._onChange(e);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.value !== this.state.value) {
+            this.props.onChange(this.state.value);
+        }
+    }
+
+    _onChange(e) {
+        let value = e.target.value;
+
+        this.setState({value: value});
+    }
+
+    render() {
+        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
+    }
+}
+
+/** Prompt plugin */
+Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
+    let promptValue = null;
+    let promptChange = function (value) {
+        promptValue = value;
+    };
+
+    console.log('registerPlugin');
+    console.log(this);
+
+    this.create({
+        title: 'Find in Notebook',
+        content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
+        buttons: {
+            left: ['cancel'],
+            right: [{
+                text: 'Find All',
+                key: '⌘+s',
+                action: () => {
+                    find_callback(promptValue);
+                    Popup.close();
+                }
+            },
+            {
+                text: 'Replace All',
+                key: '⌘+s',
+                action: () => {
+                    replace_callback(promptValue);
+                    Popup.close();
+                }
+            },
+            ]
+        }
+    });
+});
+
+// find in notebook feature
 export function findInNotebookEpic(action$, store) {
   return action$.ofType('FIND_IN_NOTEBOOK')
     .do(() => {
-      Popup.alert('I am alert, nice to meet you');
+      Popup.plugins().prompt('default', 'Find in Notebook',
+        (value) => {
+          Popup.alert('Find ' + value)
+        },
+        (value) => {
+          Popup.alert('Replace ' + value)
+        },
+        );
     })
     .filter(() => false);
 }
