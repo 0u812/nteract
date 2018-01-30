@@ -272,11 +272,9 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
 // open find in notebook dialog
 export function findDialogEpic(action$, store) {
   return action$.ofType('FIND_DIALOG')
-    .mergeMap(() => {
-      const findObservable = Rx.Observable.create( (observer) => {
+    .mergeMap(() => Rx.Observable.create( (observer) =>
         Popup.plugins().prompt('default', 'Find in Notebook',
           (value) => {
-            Popup.alert('Find ' + value);
             observer.next(findInNotebook(value));
             observer.complete();
           },
@@ -284,8 +282,6 @@ export function findDialogEpic(action$, store) {
             Popup.alert('Replace ' + value);
             observer.complete();
           },
-        );
-      });
-      return findObservable;
-    });
+        ) )
+    );
 }
