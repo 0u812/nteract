@@ -23,6 +23,8 @@ import {
 
 import * as uuid from 'uuid';
 
+import CodeMirrorWrapper from '../views/editor';
+
 export function convertFileEpic(action$, store) {
   return action$.ofType('CONVERT_FILE')
     .map((action) => {
@@ -217,10 +219,6 @@ class Prompt extends React.Component {
     }
 }
 
-// key('esc', () => {
-//   Popup.close();
-// });
-
 /** Prompt plugin */
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
     let promptValue = null;
@@ -233,8 +231,12 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
     });
 
     key('enter', () => {
-      console.log('enter key');
       if (promptValue !== null && promptValue !== '') {
+        console.log(CodeMirrorWrapper);
+        console.log(CodeMirrorWrapper.codemirror);
+        const cursor = CodeMirrorWrapper.codemirror.getCursor();
+        console.log(cursor);
+        CodeMirrorWrapper.codemirror.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "styled-background"});
         find_callback(promptValue);
         Popup.close();
       }
