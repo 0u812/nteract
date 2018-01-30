@@ -211,7 +211,7 @@ class Prompt extends React.Component {
     render() {
         return <input type="text" placeholder={this.props.placeholder}
           className="mm-popup__input"
-          value={this.state.value}
+          defaultValue={this.state.value}
           onChange={this.onChange}
           ref={(input) => {this.inputElt = input;}} />;
     }
@@ -234,8 +234,10 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
 
     key('enter', () => {
       console.log('enter key');
-      find_callback(promptValue);
-      Popup.close();
+      if (promptValue !== null && promptValue !== '') {
+        find_callback(promptValue);
+        Popup.close();
+      }
     });
 
     key.filter = (event) => true;
