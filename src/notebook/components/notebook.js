@@ -40,6 +40,7 @@ type Props = {
   CellComponent: any,
   executionState: string,
   models: ImmutableMap<string, any>,
+  searchText: string,
 };
 
 export function getLanguageMode(notebook: any): string {

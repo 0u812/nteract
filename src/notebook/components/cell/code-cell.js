@@ -24,6 +24,7 @@ type Props = {
   focusAbove: () => void,
   focusBelow: () => void,
   models: ImmutableMap<string, any>,
+  searchText: string,
 };
 
 class CodeCell extends React.PureComponent {

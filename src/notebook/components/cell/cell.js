@@ -27,6 +27,7 @@ export type CellProps = {
   pagers: ImmutableList<any>,
   transforms: ImmutableMap<string, any>,
   models: ImmutableMap<string, any>,
+  searchText: string,
 };
 
 type State = {
