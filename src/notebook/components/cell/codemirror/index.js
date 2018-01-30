@@ -13,6 +13,7 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/dialog/dialog';
 import 'codemirror/addon/comment/comment.js';
+import 'codemirror/addon/selection/mark-selection.js';
 
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/ruby/ruby';
