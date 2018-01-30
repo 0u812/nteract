@@ -217,10 +217,6 @@ class Prompt extends React.Component {
     }
 }
 
-// key('esc', () => {
-//   Popup.close();
-// });
-
 /** Prompt plugin */
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
     let promptValue = null;
@@ -233,7 +229,6 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
     });
 
     key('enter', () => {
-      console.log('enter key');
       if (promptValue !== null && promptValue !== '') {
         find_callback(promptValue);
         Popup.close();
