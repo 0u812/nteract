@@ -149,6 +149,7 @@ export class Cell extends React.PureComponent {
             pagers={this.props.pagers}
             running={this.props.running}
             models={this.props.models}
+            searchText={this.props.searchText}
           />
         }
       </div>

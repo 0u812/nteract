@@ -65,6 +65,7 @@ const mapStateToProps = (state: Object) => ({
   stickyCells: state.document.get('stickyCells'),
   executionState: state.app.get('executionState'),
   models: state.comms.get('models'),
+  searchText: state.document.get('searchText'),
 });
 
 export function preExecuteCellChecks(store: Object, id: String, cell: Object): Boolean {
@@ -191,7 +192,8 @@ export class Notebook extends React.PureComponent {
       // Theme is passed through to let the Editor component know when to
       // tell CodeMirror to remeasure
       theme: this.props.theme,
-      models: this.props.models
+      models: this.props.models,
+      searchText: this.props.searchText,
     };
   }
 
