@@ -144,6 +144,7 @@ export type Document = {
   stickyCells: Immutable.Set<any>,
   editorFocused: any,
   cellFocused: any,
+  searchText: any,
   copied: Immutable.Map<any, any>,
 }
 
