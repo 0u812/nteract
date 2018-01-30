@@ -28,6 +28,7 @@ type Props = {
 
 class CodeCell extends React.PureComponent {
   props: Props;
+  editor: Object;
 
   static defaultProps = {
     pagers: new ImmutableList(),
@@ -64,6 +65,7 @@ class CodeCell extends React.PureComponent {
             }
             <Editor
               completion
+              ref={(editor) => { this.editor = editor; }}
               id={this.props.id}
               input={this.props.cell.get('source')}
               language={this.getCodeCellType() === 'omex' || this.getCodeCellType() === 'antimony' ? 'omex' : this.props.language}
