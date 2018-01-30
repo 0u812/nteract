@@ -32,7 +32,7 @@ import {
   convertFileEpic,
   saveFileEpic,
   getNotebookPathEpic,
-  findInNotebookEpic,
+  findDialogEpic,
 } from './tellurium';
 
 import {
@@ -67,7 +67,7 @@ const epics = [
   convertFileEpic,
   saveFileEpic,
   getNotebookPathEpic,
-  findInNotebookEpic,
+  findDialogEpic,
 ].map(wrapEpic);
 
 export default epics;

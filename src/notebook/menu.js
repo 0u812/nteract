@@ -34,7 +34,7 @@ import {
   killKernel,
   interruptKernel,
   findKernelsReply,
-  findInNotebook,
+  findDialog,
   copyCell,
   cutCell,
   pasteCell,
@@ -284,8 +284,8 @@ export function dispatchFindKernelsReply(store, specs, uid) {
   store.dispatch( findKernelsReply(specs, uid) );
 }
 
-export function dispatchFindInNotebook(store) {
-  store.dispatch( findInNotebook() );
+export function dispatchFindDialog(store) {
+  store.dispatch( findDialog() );
 }
 
 function getPathForSpec(spec) {
@@ -580,7 +580,7 @@ export function initMenuHandlers(store) {
   ipc.on('menu:restart-kernel', dispatchRestartKernel.bind(null, store));
   ipc.on('menu:restart-and-clear-all', dispatchRestartClearAll.bind(null, store));
   ipc.on('menu:find-kernels', dispatchFindKernels.bind(null, store));
-  ipc.on('menu:find-in-notebook', dispatchFindInNotebook.bind(null, store));
+  ipc.on('menu:find-in-notebook', dispatchFindDialog.bind(null, store));
   ipc.on('find_kernels_reply', (sender, specs, uuid) => dispatchFindKernelsReply(store, specs, uuid));
 
   ipc.on('menu:publish:gist', dispatchPublishAnonGist.bind(null, store));

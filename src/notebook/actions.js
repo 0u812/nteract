@@ -221,7 +221,13 @@ export function findKernelsReply(specs, uid) {
   };
 }
 
-export function findInNotebook(specs, uid) {
+export function findDialog() {
+  return {
+    type: constants.FIND_DIALOG,
+  };
+}
+
+export function findInNotebook(find_string) {
   return {
     type: constants.FIND_IN_NOTEBOOK,
   };

@@ -537,6 +537,13 @@ function toggleOutputExpansion(state: DocumentState, action: ToggleCellExpansion
       !cells.getIn([id, 'metadata', 'outputExpanded'])));
 }
 
+type FindInNotebookAction = { type: 'FIND_IN_NOTEBOOK', find_string: string }
+function findInNotebook(state: DocumentState, action: FindInNotebookAction) {
+  const { find_string } = action;
+  console.log('findInNotebook red')
+  return state;
+}
+
 type FocusCellActionType = FocusPreviousCellEditorAction | FocusPreviousCellAction |
                            FocusNextCellEditorAction | FocusNextCellAction |
                            FocusCellEditorAction | FocusCellAction;
@@ -625,6 +632,8 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return changeCodeCellType(state, action);
     case constants.TOGGLE_OUTPUT_EXPANSION:
       return toggleOutputExpansion(state, action);
+    case constants.FIND_IN_NOTEBOOK:
+      return findInNotebook(state, action);
     default:
       return state;
   }

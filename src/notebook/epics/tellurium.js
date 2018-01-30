@@ -13,6 +13,7 @@ import {
   createCellAfter,
   createCellBefore,
   createCellAppend,
+  findInNotebook,
 } from '../actions';
 
 import Popup from 'react-popup';
@@ -268,18 +269,23 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
     });
 });
 
-// find in notebook feature
-export function findInNotebookEpic(action$, store) {
-  return action$.ofType('FIND_IN_NOTEBOOK')
-    .do(() => {
-      Popup.plugins().prompt('default', 'Find in Notebook',
-        (value) => {
-          Popup.alert('Find ' + value)
-        },
-        (value) => {
-          Popup.alert('Replace ' + value)
-        },
+// open find in notebook dialog
+export function findDialogEpic(action$, store) {
+  return action$.ofType('FIND_DIALOG')
+    .mergeMap(() => {
+      const findObservable = Rx.Observable.create( (observer) => {
+        Popup.plugins().prompt('default', 'Find in Notebook',
+          (value) => {
+            Popup.alert('Find ' + value);
+            observer.next(findInNotebook(value));
+            observer.complete();
+          },
+          (value) => {
+            Popup.alert('Replace ' + value);
+            observer.complete();
+          },
         );
-    })
-    .filter(() => false);
+      });
+      return findObservable;
+    });
 }
