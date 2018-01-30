@@ -240,7 +240,7 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
 
     this.create({
         title: 'Find in Notebook',
-        content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
+        content: <Prompt onChange={promptChange} placeholder={placeholder} defaultValue={defaultValue} />,
         buttons: {
             left: [
               {
@@ -273,7 +273,7 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
 export function findDialogEpic(action$, store) {
   return action$.ofType('FIND_DIALOG')
     .mergeMap(() => Rx.Observable.create( (observer) =>
-        Popup.plugins().prompt('default', 'Find in Notebook',
+        Popup.plugins().prompt('', 'Find in Notebook',
           (value) => {
             observer.next(findInNotebook(value));
             observer.complete();
