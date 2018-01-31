@@ -540,8 +540,7 @@ function toggleOutputExpansion(state: DocumentState, action: ToggleCellExpansion
 type FindInNotebookAction = { type: 'FIND_IN_NOTEBOOK', find_string: string }
 function findInNotebook(state: DocumentState, action: FindInNotebookAction) {
   const { find_string } = action;
-  console.log('findInNotebook red ', find_string);
-  return state.set('searchText', action.id);
+  return state.set('searchText', find_string);
 }
 
 type FocusCellActionType = FocusPreviousCellEditorAction | FocusPreviousCellAction |
