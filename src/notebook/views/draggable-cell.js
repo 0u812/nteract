@@ -25,6 +25,7 @@ type Props = {|
   pagers: ImmutableList<any>,
   moveCell: (source: string, dest: string, above: boolean) => Object,
   models: ImmutableMap<string, any>,
+  searchText: string,
 |};
 
 type State = {|
@@ -155,6 +156,7 @@ class DraggableCellView extends React.PureComponent {
             pagers={this.props.pagers}
             transforms={this.props.transforms}
             models={this.props.models}
+            searchText={this.props.searchText}
           />
         </div>
       </div>

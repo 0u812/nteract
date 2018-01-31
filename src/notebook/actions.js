@@ -230,6 +230,7 @@ export function findDialog() {
 export function findInNotebook(find_string) {
   return {
     type: constants.FIND_IN_NOTEBOOK,
+    find_string,
   };
 }
 

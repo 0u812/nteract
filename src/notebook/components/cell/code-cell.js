@@ -54,6 +54,7 @@ class CodeCell extends React.PureComponent {
   }
 
   render(): ?React.Element<any> {
+    console.log('code cell search text ', this.props.searchText);
     return (<div className={this.props && this.props.running ? 'cell-running' : ''} >
       {
         !this.isInputHidden() ?
