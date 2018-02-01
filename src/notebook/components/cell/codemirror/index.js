@@ -27,6 +27,11 @@ import 'codemirror/mode/sql/sql';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/gfm/gfm';
 
+CM.keyMap.default["Ctrl-H"] = "replace";
+CM.keyMap.default["Cmd-H"] = "replace";
+console.log(CM.keyMap.default);
+delete CM.keyMap.default["Shift-Ctrl-F"];
+
 import './codemirror-ipython';
 import excludedIntelliSenseTriggerKeys from './excludedIntelliSenseKeys';
 import { codeComplete, pick } from './complete';
