@@ -404,6 +404,8 @@ code {
   background-color: yellow;
 }
 
+.cm-matchhighlight {background-color: lightgreen}
+
 /*
     Codemirror *****************************************************************************
  */

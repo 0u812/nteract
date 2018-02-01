@@ -9,6 +9,8 @@ import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/anyword-hint';
 import 'codemirror/addon/search/search';
 import 'codemirror/addon/search/searchcursor';
+import 'codemirror/addon/search/match-highlighter.js';
+import 'codemirror/addon/search/matchesonscrollbar.js';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/dialog/dialog';
@@ -29,7 +31,7 @@ import 'codemirror/mode/gfm/gfm';
 
 CM.keyMap.default["Ctrl-H"] = "replace";
 CM.keyMap.default["Cmd-H"] = "replace";
-console.log(CM.keyMap.default);
+// console.log(CM.keyMap.default);
 delete CM.keyMap.default["Shift-Ctrl-F"];
 
 import './codemirror-ipython';
@@ -115,8 +117,54 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       }
 
       if (prevProps.searchText !== searchText) {
-        console.log('mark text');
-        cm.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "text-highlight-background"});
+        if (searchText.length > 0) {
+          console.log('mark text');
+//           cm.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "text-highlight-background"});
+//           cm.addOverlay({token: (stream) => {
+//               if (stream.match(searchText))
+//                 return 'matchhighlight';
+//               stream.next();
+//               stream.skipTo(searchText.charAt(0)) || stream.skipToEnd();
+//             }
+//           });
+          const queryCaseInsensitive = (query) => (typeof query == "string" && query == query.toLowerCase());
+          if (cm.state.search && cm.state.search.overlay) {
+            cm.removeOverlay(cm.state.search.overlay, queryCaseInsensitive(searchText));
+          }
+
+          let query;
+          const caseInsensitive = false;
+          // https://codemirror.net/addon/search/search.js
+          if (true) // is string query
+            query = new RegExp(searchText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), caseInsensitive ? "gi" : "g");
+          else // regex query
+            query = new RegExp(searchText.source, searchText.ignoreCase ? "gi" : "g");
+          cm.state.search = {
+            posFrom: null,
+            posTo: null,
+            lastQuery: query,
+            query: query,
+            queryText: searchText,
+            overlay: {token: (stream) => {
+              query.lastIndex = stream.pos;
+              const match = query.exec(stream.string);
+              if (match && match.index == stream.pos) {
+                stream.pos += match[0].length || 1;
+                return "searching";
+              } else if (match) {
+                stream.pos = match.index;
+              } else {
+                stream.skipToEnd();
+              }
+            }},
+          };
+          cm.addOverlay(cm.state.search.overlay);
+//           cm.execCommand('findPersistent');
+//           cm.execCommand('findPersistentNext');
+//           cm.execCommand('find');
+          cm.state.search.posFrom = cm.state.search.posTo = cm.getCursor();
+          cm.execCommand('findNext');
+        }
       }
 
       if (prevProps.editorFocused !== editorFocused) {
