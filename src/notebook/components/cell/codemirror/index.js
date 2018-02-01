@@ -45,7 +45,8 @@ type WrapperProps = {
   executionState: 'idle' | 'starting' | 'not connected',
   language: string,
   onChange: (text: string) => void,
-  onFocusChange: (focused: boolean) => void
+  onFocusChange: (focused: boolean) => void,
+  searchText: string,
 }
 
 type FunctionalComponent<P> = (props: P) => React.Element<*>
@@ -102,10 +103,15 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 
     componentDidUpdate(prevProps: WrapperProps): void {
       const cm = this.codemirror.getCodeMirror();
-      const { cursorBlinkRate, editorFocused, theme } = this.props;
+      const { cursorBlinkRate, editorFocused, theme, searchText } = this.props;
 
       if (prevProps.theme !== theme) {
         cm.refresh();
+      }
+
+      if (prevProps.searchText !== searchText) {
+        console.log('mark text');
+        cm.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "text-highlight-background"});
       }
 
       if (prevProps.editorFocused !== editorFocused) {

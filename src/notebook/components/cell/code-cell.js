@@ -54,6 +54,7 @@ class CodeCell extends React.PureComponent {
   }
 
   render(): ?React.Element<any> {
+//     console.log('code cell render', searchText);
     return (<div className={this.props && this.props.running ? 'cell-running' : ''} >
       {
         !this.isInputHidden() ?
@@ -75,6 +76,7 @@ class CodeCell extends React.PureComponent {
               theme={this.props.theme}
               focusAbove={this.props.focusAbove}
               focusBelow={this.props.focusBelow}
+              searchText={this.props.searchText}
               description={this.getCodeCellType() === 'antimony' ? 'Antimony cell' : this.getCodeCellType() === 'omex' ? 'Combine archive' : 'Python cell'}
             />
           </div> : <div className="input-container invisible" />

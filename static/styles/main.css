@@ -400,8 +400,12 @@ code {
   font-size: 14px;
 }
 
+.text-highlight-background {
+  background-color: yellow;
+}
+
 /*
-    Codemirror
+    Codemirror *****************************************************************************
  */
 
 .CodeMirror
@@ -696,7 +700,7 @@ li:only-child {
 }
 
 
-/* React popup */
+/* React popup **************************************************************************** */
 /* https://github.com/minutemailer/react-popup/blob/gh-pages/popup.example.css */
 
 .mm-popup {
