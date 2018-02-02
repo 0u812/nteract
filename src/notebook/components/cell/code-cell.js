@@ -23,6 +23,8 @@ type Props = {
   running: boolean,
   focusAbove: () => void,
   focusBelow: () => void,
+  wrapNext: () => void;
+  wrapPrev: () => void;
   models: ImmutableMap<string, any>,
   searchText: string,
 };
@@ -76,6 +78,8 @@ class CodeCell extends React.PureComponent {
               theme={this.props.theme}
               focusAbove={this.props.focusAbove}
               focusBelow={this.props.focusBelow}
+              wrapNext={this.props.wrapNext}
+              wrapPrev={this.props.wrapPrev}
               searchText={this.props.searchText}
               description={this.getCodeCellType() === 'antimony' ? 'Antimony cell' : this.getCodeCellType() === 'omex' ? 'Combine archive' : 'Python cell'}
             />

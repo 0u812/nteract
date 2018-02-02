@@ -14,6 +14,8 @@ type Props = {
   completion: boolean,
   focusAbove: () => void,
   focusBelow: () => void,
+  wrapNext: () => void,
+  wrapPrev: () => void,
   theme: string,
   channels: any,
   cursorBlinkRate: number,

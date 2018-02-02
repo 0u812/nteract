@@ -12,6 +12,8 @@ type Props = {
   theme: string,
   focusAbove: () => void,
   focusBelow: () => void,
+  wrapNext: () => void,
+  wrapPrev: () => void,
   focusEditor: Function,
   cellFocused: boolean,
   editorFocused: boolean,
@@ -151,6 +153,8 @@ export default class MarkdownCell extends React.PureComponent {
                theme={this.props.theme}
                focusAbove={this.props.focusAbove}
                focusBelow={this.props.focusBelow}
+               wrapNext={this.props.wrapNext}
+               wrapPrev={this.props.wrapPrev}
                cellFocused={this.props.cellFocused}
                editorFocused={this.props.editorFocused}
              />

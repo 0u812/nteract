@@ -40,6 +40,8 @@ export class Cell extends React.PureComponent {
   selectCell: () => void;
   focusAboveCell: () => void;
   focusBelowCell: () => void;
+  wrapNextCell: () => void;
+  wrapPrevCell: () => void;
   focusCellEditor: () => void;
   setCellHoverState: (mouseEvent: MouseEvent) => void;
   cellDiv: HTMLElement;
@@ -55,6 +57,8 @@ export class Cell extends React.PureComponent {
     this.focusCellEditor = this.focusCellEditor.bind(this);
     this.focusAboveCell = this.focusAboveCell.bind(this);
     this.focusBelowCell = this.focusBelowCell.bind(this);
+    this.wrapNextCell = this.wrapNextCell.bind(this);
+    this.wrapPrevCell = this.wrapPrevCell.bind(this);
     this.setCellHoverState = this.setCellHoverState.bind(this);
   }
 
@@ -104,6 +108,18 @@ export class Cell extends React.PureComponent {
     this.context.store.dispatch(focusNextCellEditor(this.props.id));
   }
 
+  wrapNextCell(): void {
+    console.log('wrap next cell');
+    this.context.store.dispatch(focusPreviousCell(this.props.id));
+    this.context.store.dispatch(focusPreviousCellEditor(this.props.id));
+  }
+
+  wrapPrevCell(): void {
+    console.log('wrap prev cell');
+    this.context.store.dispatch(focusNextCell(this.props.id, true));
+    this.context.store.dispatch(focusNextCellEditor(this.props.id));
+  }
+
   render(): ?React.Element<any> {
     const cell = this.props.cell;
     const type = cell.get('cell_type');
@@ -128,6 +144,8 @@ export class Cell extends React.PureComponent {
           <MarkdownCell
             focusAbove={this.focusAboveCell}
             focusBelow={this.focusBelowCell}
+            wrapNext={this.wrapNextCell}
+            wrapPrev={this.wrapPrevCell}
             focusEditor={this.focusCellEditor}
             cellFocused={cellFocused}
             editorFocused={editorFocused}
@@ -139,6 +157,8 @@ export class Cell extends React.PureComponent {
             ref={(codeCell) => { this.codeCell = codeCell; }}
             focusAbove={this.focusAboveCell}
             focusBelow={this.focusBelowCell}
+            wrapNext={this.wrapNextCell}
+            wrapPrev={this.wrapPrevCell}
             cellFocused={cellFocused}
             editorFocused={editorFocused}
             cell={cell}

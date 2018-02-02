@@ -31,28 +31,28 @@ import 'codemirror/mode/gfm/gfm';
 
 const oldFindNext = CM.commands.findNext;
 CM.commands.findNext = (editor) => {
-  console.log('new find next');
+//   console.log('new find next');
   const before = editor.getCursor();
   oldFindNext(editor);
   const after = editor.getCursor();
 
   if (before.line > after.line ||
       (before.line === after.line && before.char > after.char) ) {
-    console.log('find next wrapped');
+//     console.log('find next wrapped');
     CM.signal(editor, 'wrapNext');
   }
 };
 
 const oldFindPrev = CM.commands.findPrev;
 CM.commands.findPrev = (editor) => {
-  console.log('new find prev');
+//   console.log('new find prev');
   const before = editor.getCursor();
   oldFindPrev(editor);
   const after = editor.getCursor();
 
   if (before.line < after.line ||
       (before.line === after.line && before.char < after.char) ) {
-    console.log('find prev wrapped');
+//     console.log('find prev wrapped');
     CM.signal(editor, 'wrapPrev');
   }
 };
@@ -76,6 +76,8 @@ type WrapperProps = {
   completion: boolean,
   focusAbove: () => void,
   focusBelow: () => void,
+  wrapNext: () => void,
+  wrapPrev: () => void,
   theme: string,
   channels: any,
   cursorBlinkRate: number,
@@ -100,8 +102,6 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
     getCodeMirrorOptions: (p: WrapperProps) => Object;
     goLineUpOrEmit: (editor: Object) => void;
     goLineDownOrEmit: (editor: Object) => void;
-    findNextOrEmit: (editor: Object) => void;
-    findPrevOrEmit: (editor: Object) => void;
     hint: (editor: Object, cb: Function) => void;
 
     static contextTypes = {
@@ -114,12 +114,10 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       this.hint = this.completions.bind(this);
       this.hint.async = true;
       this.clearSearchInNotebook = this.clearSearchInNotebook.bind(this);
-      this.findWrapNextCell = this.findWrapNextCell.bind(this);
-      this.findWrapPrevCell = this.findWrapPrevCell.bind(this);
     }
 
     componentDidMount(): void {
-      const { editorFocused, executionState, focusAbove, focusBelow } = this.props;
+      const { editorFocused, executionState, focusAbove, focusBelow, wrapNext, wrapPrev } = this.props;
       const cm = this.codemirror.getCodeMirror();
 
       // On first load, if focused, set codemirror to focus
@@ -129,8 +127,8 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 
       cm.on('topBoundary', focusAbove);
       cm.on('bottomBoundary', focusBelow);
-      cm.on('wrapNext', this.findWrapNextCell);
-      cm.on('wrapPrev', this.findWrapPrevCell);
+      cm.on('wrapNext', wrapNext);
+      cm.on('wrapPrev', wrapPrev);
 //       console.log('replace find next');
 //       this.codemirror.commands.findNext = this.findNextOrEmit;
 //       cm.commands.findNext = this.findNextOrEmit;
@@ -293,16 +291,8 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       }
     }
 
-    findWrapNextCell(): void {
-      console.log('r wrap next cell');
-    }
-
-    findWrapPrevCell(): void {
-      console.log('r wrap prev cell');
-    }
-
     clearSearchInNotebook(editor: Object): void {
-      console.log('ctx clear search');
+//       console.log('ctx clear search');
       this.context.store.dispatch(findInNotebook());
       // clear search in case it was a local in-cell search
       editor.execCommand('clearSearch');
