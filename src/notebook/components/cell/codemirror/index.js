@@ -29,6 +29,36 @@ import 'codemirror/mode/sql/sql';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/gfm/gfm';
 
+const oldFindNext = CM.commands.findNext;
+CM.commands.findNext = (editor) => {
+  console.log('new find next');
+  const before = editor.getCursor();
+  oldFindNext(editor);
+  const after = editor.getCursor();
+
+  if (before.line > after.line ||
+      (before.line === after.line && before.char > after.char) ) {
+    console.log('find next wrapped');
+    CM.signal(editor, 'wrapNext');
+  }
+};
+
+const oldFindPrev = CM.commands.findPrev;
+CM.commands.findPrev = (editor) => {
+  console.log('new find prev');
+  const before = editor.getCursor();
+  oldFindPrev(editor);
+  const after = editor.getCursor();
+
+  if (before.line < after.line ||
+      (before.line === after.line && before.char < after.char) ) {
+    console.log('find prev wrapped');
+    CM.signal(editor, 'wrapPrev');
+  }
+};
+
+import { findInNotebook } from '../../../actions';
+
 CM.keyMap.default["Ctrl-H"] = "replace";
 CM.keyMap.default["Cmd-H"] = "replace";
 // console.log(CM.keyMap.default);
@@ -70,13 +100,22 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
     getCodeMirrorOptions: (p: WrapperProps) => Object;
     goLineUpOrEmit: (editor: Object) => void;
     goLineDownOrEmit: (editor: Object) => void;
+    findNextOrEmit: (editor: Object) => void;
+    findPrevOrEmit: (editor: Object) => void;
     hint: (editor: Object, cb: Function) => void;
+
+    static contextTypes = {
+      store: React.PropTypes.object,
+    };
 
     constructor(): void {
       super();
 
       this.hint = this.completions.bind(this);
       this.hint.async = true;
+      this.clearSearchInNotebook = this.clearSearchInNotebook.bind(this);
+      this.findWrapNextCell = this.findWrapNextCell.bind(this);
+      this.findWrapPrevCell = this.findWrapPrevCell.bind(this);
     }
 
     componentDidMount(): void {
@@ -90,6 +129,13 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 
       cm.on('topBoundary', focusAbove);
       cm.on('bottomBoundary', focusBelow);
+      cm.on('wrapNext', this.findWrapNextCell);
+      cm.on('wrapPrev', this.findWrapPrevCell);
+//       console.log('replace find next');
+//       this.codemirror.commands.findNext = this.findNextOrEmit;
+//       cm.commands.findNext = this.findNextOrEmit;
+//       cm.commands.findNext1 = null;
+//       cm.commands.xyz = null;
 
       const keyupEvents = Rx.Observable.fromEvent(cm, 'keyup', (editor, ev) => ({ editor, ev }));
 
@@ -117,7 +163,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       }
 
       if (prevProps.searchText !== searchText) {
-        if (searchText.length > 0) {
+        if (searchText && searchText.length > 0) {
           console.log('mark text');
 //           cm.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "text-highlight-background"});
 //           cm.addOverlay({token: (stream) => {
@@ -164,6 +210,9 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 //           cm.execCommand('find');
           cm.state.search.posFrom = cm.state.search.posTo = cm.getCursor();
           cm.execCommand('findNext');
+        } else {
+          // clear the search
+          cm.execCommand('clearSearch');
         }
       }
 
@@ -213,7 +262,8 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
           Up: this.goLineUpOrEmit,
           Down: this.goLineDownOrEmit,
           'Cmd-/': 'toggleComment',
-          'Ctrl-/': 'toggleComment'
+          'Ctrl-/': 'toggleComment',
+          'Esc': this.clearSearchInNotebook,
         },
         indentUnit: 4,
         cursorBlinkRate,
@@ -241,6 +291,21 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       } else {
         editor.execCommand('goLineUp');
       }
+    }
+
+    findWrapNextCell(): void {
+      console.log('r wrap next cell');
+    }
+
+    findWrapPrevCell(): void {
+      console.log('r wrap prev cell');
+    }
+
+    clearSearchInNotebook(editor: Object): void {
+      console.log('ctx clear search');
+      this.context.store.dispatch(findInNotebook());
+      // clear search in case it was a local in-cell search
+      editor.execCommand('clearSearch');
     }
 
     render(): React.Element<*> {
