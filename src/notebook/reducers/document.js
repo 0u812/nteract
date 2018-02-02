@@ -221,6 +221,7 @@ function focusNextCell(state: DocumentState, action: FocusNextCellAction) {
   // When at the end, create a new cell
   if (nextIndex >= cellOrder.size) {
     if (action.wrap) {
+      console.log('reducer focus next cell wrap');
       return state.set('cellFocused', cellOrder.get(0));
     }
     if (!action.createCellIfUndefined) {
@@ -236,6 +237,7 @@ function focusNextCell(state: DocumentState, action: FocusNextCellAction) {
                 .set('notebook',
                   insertCellAt(notebook, cell, cellID, nextIndex));
   }
+  console.log('reducer focus next cell', nextIndex);
 
   // When in the middle of the notebook document, move to the next cell
   return state.set('cellFocused', cellOrder.get(nextIndex));
@@ -260,8 +262,9 @@ type FocusNextCellEditorAction = { type: 'FOCUS_NEXT_CELL_EDITOR', id: CellID, w
 function focusNextCellEditor(state: DocumentState, action: FocusNextCellEditorAction) {
   const cellOrder : ImmutableCellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
-  const nextIndex = action.wrap ? curIndex + 1 :
+  const nextIndex = !action.wrap ? curIndex + 1 :
     (curIndex + 1 < cellOrder.size ? curIndex + 1 : 0);
+  console.log('reducer focus next cell editor', nextIndex);
 
   return state.set('editorFocused', cellOrder.get(nextIndex));
 }
@@ -270,7 +273,7 @@ type FocusPreviousCellEditorAction = { type: 'FOCUS_PREVIOUS_CELL_EDITOR', id: C
 function focusPreviousCellEditor(state: DocumentState, action: FocusPreviousCellEditorAction) {
   const cellOrder : ImmutableCellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
-  const nextIndex = action.wrap ? Math.max(0, curIndex - 1) :
+  const nextIndex = !action.wrap ? Math.max(0, curIndex - 1) :
     (curIndex - 1 < 0 ? cellOrder.size-1 : curIndex - 1);
 
   return state.set('editorFocused', cellOrder.get(nextIndex));

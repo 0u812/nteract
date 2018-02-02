@@ -31,28 +31,24 @@ import 'codemirror/mode/gfm/gfm';
 
 const oldFindNext = CM.commands.findNext;
 CM.commands.findNext = (editor) => {
-//   console.log('new find next');
   const before = editor.getCursor();
   oldFindNext(editor);
   const after = editor.getCursor();
 
   if (before.line > after.line ||
       (before.line === after.line && before.char > after.char) ) {
-//     console.log('find next wrapped');
     CM.signal(editor, 'wrapNext');
   }
 };
 
 const oldFindPrev = CM.commands.findPrev;
 CM.commands.findPrev = (editor) => {
-//   console.log('new find prev');
   const before = editor.getCursor();
   oldFindPrev(editor);
   const after = editor.getCursor();
 
   if (before.line < after.line ||
       (before.line === after.line && before.char < after.char) ) {
-//     console.log('find prev wrapped');
     CM.signal(editor, 'wrapPrev');
   }
 };
@@ -61,7 +57,6 @@ import { findInNotebook } from '../../../actions';
 
 CM.keyMap.default["Ctrl-H"] = "replace";
 CM.keyMap.default["Cmd-H"] = "replace";
-// console.log(CM.keyMap.default);
 delete CM.keyMap.default["Shift-Ctrl-F"];
 
 import './codemirror-ipython';
@@ -129,7 +124,6 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       cm.on('bottomBoundary', focusBelow);
       cm.on('wrapNext', wrapNext);
       cm.on('wrapPrev', wrapPrev);
-//       console.log('replace find next');
 //       this.codemirror.commands.findNext = this.findNextOrEmit;
 //       cm.commands.findNext = this.findNextOrEmit;
 //       cm.commands.findNext1 = null;
@@ -162,7 +156,6 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 
       if (prevProps.searchText !== searchText) {
         if (searchText && searchText.length > 0) {
-          console.log('mark text');
 //           cm.markText({line: 0, ch: 0}, {line: 0, ch: 4}, {className: "text-highlight-background"});
 //           cm.addOverlay({token: (stream) => {
 //               if (stream.match(searchText))
@@ -292,7 +285,6 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
     }
 
     clearSearchInNotebook(editor: Object): void {
-//       console.log('ctx clear search');
       this.context.store.dispatch(findInNotebook());
       // clear search in case it was a local in-cell search
       editor.execCommand('clearSearch');
