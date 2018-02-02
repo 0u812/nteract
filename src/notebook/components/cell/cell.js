@@ -105,19 +105,19 @@ export class Cell extends React.PureComponent {
 
   focusBelowCell(): void {
     this.context.store.dispatch(focusNextCell(this.props.id, true));
-    this.context.store.dispatch(focusNextCellEditor(this.props.id));
+    this.context.store.dispatch(focusNextCellEditor(this.props.id, true));
   }
 
   wrapNextCell(): void {
     console.log('wrap next cell');
-    this.context.store.dispatch(focusPreviousCell(this.props.id));
-    this.context.store.dispatch(focusPreviousCellEditor(this.props.id));
+    this.context.store.dispatch(focusNextCell(this.props.id, false, true));
+    this.context.store.dispatch(focusNextCellEditor(this.props.id, true));
   }
 
   wrapPrevCell(): void {
     console.log('wrap prev cell');
-    this.context.store.dispatch(focusNextCell(this.props.id, true));
-    this.context.store.dispatch(focusNextCellEditor(this.props.id));
+    this.context.store.dispatch(focusPreviousCell(this.props.id, true));
+    this.context.store.dispatch(focusPreviousCellEditor(this.props.id));
   }
 
   render(): ?React.Element<any> {

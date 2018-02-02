@@ -211,7 +211,7 @@ function updateDisplay(state: DocumentState, action: UpdateDisplayAction) {
     currState.setIn(kp, immOutput), state);
 }
 
-type FocusNextCellAction = { type: 'FOCUS_NEXT_CELL', id: CellID, createCellIfUndefined: boolean }
+type FocusNextCellAction = { type: 'FOCUS_NEXT_CELL', id: CellID, createCellIfUndefined: boolean, wrap: boolean }
 function focusNextCell(state: DocumentState, action: FocusNextCellAction) {
   const cellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
@@ -220,6 +220,9 @@ function focusNextCell(state: DocumentState, action: FocusNextCellAction) {
 
   // When at the end, create a new cell
   if (nextIndex >= cellOrder.size) {
+    if (action.wrap) {
+      return state.set('cellFocused', cellOrder.get(0));
+    }
     if (!action.createCellIfUndefined) {
       return state;
     }
@@ -238,11 +241,12 @@ function focusNextCell(state: DocumentState, action: FocusNextCellAction) {
   return state.set('cellFocused', cellOrder.get(nextIndex));
 }
 
-type FocusPreviousCellAction = { type: 'FOCUS_PREVIOUS_CELL', id: CellID };
+type FocusPreviousCellAction = { type: 'FOCUS_PREVIOUS_CELL', id: CellID, wrap: boolean };
 function focusPreviousCell(state: DocumentState, action: FocusPreviousCellAction): DocumentState {
   const cellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
-  const nextIndex = Math.max(0, curIndex - 1);
+  const nextIndex = action.wrap ? Math.max(0, curIndex - 1) :
+    (curIndex - 1 < 0 ? cellOrder.size-1 : curIndex - 1);
 
   return state.set('cellFocused', cellOrder.get(nextIndex));
 }
@@ -252,11 +256,12 @@ function focusCellEditor(state: DocumentState, action: FocusCellEditorAction) {
   return state.set('editorFocused', action.id);
 }
 
-type FocusNextCellEditorAction = { type: 'FOCUS_NEXT_CELL_EDITOR', id: CellID };
+type FocusNextCellEditorAction = { type: 'FOCUS_NEXT_CELL_EDITOR', id: CellID, wrap: boolean };
 function focusNextCellEditor(state: DocumentState, action: FocusNextCellEditorAction) {
   const cellOrder : ImmutableCellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
-  const nextIndex = curIndex + 1;
+  const nextIndex = action.wrap ? curIndex + 1 :
+    (curIndex + 1 < cellOrder.size ? curIndex + 1 : 0);
 
   return state.set('editorFocused', cellOrder.get(nextIndex));
 }
@@ -265,7 +270,8 @@ type FocusPreviousCellEditorAction = { type: 'FOCUS_PREVIOUS_CELL_EDITOR', id: C
 function focusPreviousCellEditor(state: DocumentState, action: FocusPreviousCellEditorAction) {
   const cellOrder : ImmutableCellOrder = state.getIn(['notebook', 'cellOrder'], Immutable.List());
   const curIndex = cellOrder.findIndex((id: CellID) => id === action.id);
-  const nextIndex = Math.max(0, curIndex - 1);
+  const nextIndex = action.wrap ? Math.max(0, curIndex - 1) :
+    (curIndex - 1 < 0 ? cellOrder.size-1 : curIndex - 1);
 
   return state.set('editorFocused', cellOrder.get(nextIndex));
 }

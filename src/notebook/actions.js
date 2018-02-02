@@ -147,18 +147,22 @@ export function focusCell(id) {
   };
 }
 
-export function focusNextCell(id, createCellIfUndefined) {
+export function focusNextCell(id, createCellIfUndefined, shouldWrap) {
+  const wrap = shouldWrap || false;
   return {
     type: constants.FOCUS_NEXT_CELL,
     id,
     createCellIfUndefined,
+    wrap,
   };
 }
 
-export function focusPreviousCell(id) {
+export function focusPreviousCell(id, shouldWrap) {
+  const wrap = shouldWrap || false;
   return {
     type: constants.FOCUS_PREVIOUS_CELL,
     id,
+    wrap,
   };
 }
 
@@ -169,17 +173,21 @@ export function focusCellEditor(id) {
   };
 }
 
-export function focusNextCellEditor(id) {
+export function focusNextCellEditor(id, shouldWrap) {
+  const wrap = shouldWrap || false;
   return {
     type: constants.FOCUS_NEXT_CELL_EDITOR,
     id,
+    wrap,
   };
 }
 
-export function focusPreviousCellEditor(id) {
+export function focusPreviousCellEditor(id, shouldWrap) {
+  const wrap = shouldWrap || false;
   return {
     type: constants.FOCUS_PREVIOUS_CELL_EDITOR,
     id,
+    wrap,
   };
 }
 
