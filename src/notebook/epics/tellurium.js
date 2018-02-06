@@ -181,10 +181,12 @@ class Prompt extends React.Component {
         super(props);
 
         this.state = {
-            value: this.props.defaultValue
+            value: this.props.defaultValue,
+            replaceValue: '',
         };
 
         this.onChange = (e) => this._onChange(e);
+        this.onChangeReplaceInput = (e) => this._onChangeReplaceInput(e);
     }
 
     // https://stackoverflow.com/questions/28889826/react-set-focus-on-input-after-render
@@ -193,8 +195,8 @@ class Prompt extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.value !== this.state.value) {
-            this.props.onChange(this.state.value);
+        if (prevState.value !== this.state.value || prevState.replaceValue !== this.state.replaceValue) {
+            this.props.onChange(this.state.value, this.state.replaceValue);
         }
     }
 
@@ -209,20 +211,34 @@ class Prompt extends React.Component {
         this.setState({value: value});
     }
 
+    _onChangeReplaceInput(e) {
+        let value = e.target.value;
+
+        this.setState({replaceValue: value});
+    }
+
     render() {
-        return <input type="text" placeholder={this.props.placeholder}
-          className="mm-popup__input"
-          defaultValue={this.state.value}
-          onChange={this.onChange}
-          ref={(input) => {this.inputElt = input;}} />;
+        return <div>
+          <input type="text" placeholder={this.props.placeholder}
+            className="mm-popup__input"
+            defaultValue={this.state.value}
+            onChange={this.onChange}
+            ref={(input) => {this.inputElt = input;}} />
+          <input type="text" placeholder="Replace Text"
+            className="mm-popup__input"
+            onChange={this.onChangeReplaceInput}
+            ref={(replaceInput) => {this.replaceInput = replaceInput;}} />
+          </div>;
     }
 }
 
 /** Prompt plugin */
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
-    let promptValue = null;
-    let promptChange = function (value) {
-        promptValue = value;
+    let promptValue = defaultValue;
+    let replaceValue = null;
+    let promptChange = function (findValue, newReplaceValue) {
+        promptValue = findValue;
+        replaceValue = newReplaceValue;
     };
 
     key('esc', () => {
