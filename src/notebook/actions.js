@@ -242,6 +242,13 @@ export function findInNotebook(find_string) {
   };
 }
 
+export function setFocusedCellEditor(editor) {
+  return {
+    type: constants.SET_FOCUSED_CELL_EDITOR,
+    editor,
+  };
+}
+
 export function setNotificationSystem(notificationSystem) {
   return {
     type: constants.SET_NOTIFICATION_SYSTEM,

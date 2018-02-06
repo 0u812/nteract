@@ -552,6 +552,12 @@ function findInNotebook(state: DocumentState, action: FindInNotebookAction) {
   return state.set('searchText', find_string);
 }
 
+type SetFocusedCellEditorAction = { type: 'SET_FOCUSED_CELL_COMPONENT', editor: object }
+function setFocusedCellEditor(state: DocumentState, action: FindInNotebookAction) {
+  const { editor } = action;
+  return state.set('focusedCellEditor', editor);
+}
+
 type FocusCellActionType = FocusPreviousCellEditorAction | FocusPreviousCellAction |
                            FocusNextCellEditorAction | FocusNextCellAction |
                            FocusCellEditorAction | FocusCellAction;
@@ -642,6 +648,8 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return toggleOutputExpansion(state, action);
     case constants.FIND_IN_NOTEBOOK:
       return findInNotebook(state, action);
+    case constants.SET_FOCUSED_CELL_EDITOR:
+      return setFocusedCellEditor(state, action);
     default:
       return state;
   }

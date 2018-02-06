@@ -27,6 +27,7 @@ type Props = {
   wrapPrev: () => void;
   models: ImmutableMap<string, any>,
   searchText: string,
+  setFocusedEditor: (editor) => void,
 };
 
 class CodeCell extends React.PureComponent {
@@ -56,7 +57,6 @@ class CodeCell extends React.PureComponent {
   }
 
   render(): ?React.Element<any> {
-//     console.log('code cell render', searchText);
     return (<div className={this.props && this.props.running ? 'cell-running' : ''} >
       {
         !this.isInputHidden() ?
@@ -82,6 +82,7 @@ class CodeCell extends React.PureComponent {
               wrapPrev={this.props.wrapPrev}
               searchText={this.props.searchText}
               description={this.getCodeCellType() === 'antimony' ? 'Antimony cell' : this.getCodeCellType() === 'omex' ? 'Combine archive' : 'Python cell'}
+              setFocusedEditor={this.props.setFocusedEditor}
             />
           </div> : <div className="input-container invisible" />
       }

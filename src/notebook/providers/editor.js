@@ -10,6 +10,7 @@ type Props = {
   id: string,
   input: any,
   editorFocused: boolean,
+  setFocusedEditor: (editor) => void,
   cellFocused: boolean,
   completion: boolean,
   focusAbove: () => void,

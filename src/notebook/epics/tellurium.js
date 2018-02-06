@@ -272,16 +272,24 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
 // open find in notebook dialog
 export function findDialogEpic(action$, store) {
   return action$.ofType('FIND_DIALOG')
-    .mergeMap(() => Rx.Observable.create( (observer) =>
-        Popup.plugins().prompt('', 'Find in Notebook',
-          (value) => {
-            observer.next(findInNotebook(value));
-            observer.complete();
-          },
-          (value) => {
-            Popup.alert('Replace ' + value);
-            observer.complete();
-          },
-        ) )
+    .mergeMap(() => {
+        const state = store.getState();
+        const editor = state.document.get('focusedCellEditor');
+        let txt = '';
+        if (editor) {
+          txt = editor.getSelection();
+        }
+        return Rx.Observable.create( (observer) =>
+          Popup.plugins().prompt(txt, 'Find in Notebook',
+            (value) => {
+              observer.next(findInNotebook(value));
+              observer.complete();
+            },
+            (value) => {
+              Popup.alert('Replace ' + value);
+              observer.complete();
+            },
+          ) )
+      }
     );
 }

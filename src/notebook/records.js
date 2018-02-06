@@ -145,6 +145,7 @@ export type Document = {
   editorFocused: any,
   cellFocused: any,
   searchText: any,
+  focusedCellEditor: any,
   copied: Immutable.Map<any, any>,
 }
 
@@ -159,6 +160,7 @@ export const DocumentRecord = Immutable.Record({
   editorFocused: null,
   cellFocused: null,
   searchText: null,
+  focusedCellEditor: null,
   highlightedCells: null,
   copied: new Immutable.Map(),
 });

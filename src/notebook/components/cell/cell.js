@@ -13,6 +13,7 @@ import {
   focusCellEditor,
   focusPreviousCellEditor,
   focusNextCellEditor,
+  setFocusedCellEditor,
 } from '../../actions';
 
 export type CellProps = {
@@ -43,6 +44,7 @@ export class Cell extends React.PureComponent {
   wrapNextCell: () => void;
   wrapPrevCell: () => void;
   focusCellEditor: () => void;
+  setFocusedEditor: (editor) => void;
   setCellHoverState: (mouseEvent: MouseEvent) => void;
   cellDiv: HTMLElement;
 
@@ -60,6 +62,7 @@ export class Cell extends React.PureComponent {
     this.wrapNextCell = this.wrapNextCell.bind(this);
     this.wrapPrevCell = this.wrapPrevCell.bind(this);
     this.setCellHoverState = this.setCellHoverState.bind(this);
+    this.setFocusedEditor = this.setFocusedEditor.bind(this);
   }
 
   state = {
@@ -90,6 +93,10 @@ export class Cell extends React.PureComponent {
     }
   }
 
+  setFocusedEditor(editor): void {
+    this.context.store.dispatch(setFocusedCellEditor(editor));
+  }
+
   selectCell(): void {
     this.context.store.dispatch(focusCell(this.props.id));
   }
@@ -109,13 +116,11 @@ export class Cell extends React.PureComponent {
   }
 
   wrapNextCell(): void {
-//     console.log('wrap next cell');
     this.context.store.dispatch(focusNextCell(this.props.id, false, true));
     this.context.store.dispatch(focusNextCellEditor(this.props.id, true));
   }
 
   wrapPrevCell(): void {
-//     console.log('wrap prev cell');
     this.context.store.dispatch(focusPreviousCell(this.props.id, true));
     this.context.store.dispatch(focusPreviousCellEditor(this.props.id, true));
   }
@@ -171,6 +176,7 @@ export class Cell extends React.PureComponent {
             running={this.props.running}
             models={this.props.models}
             searchText={this.props.searchText}
+            setFocusedEditor={this.setFocusedEditor}
           />
         }
       </div>

@@ -67,6 +67,7 @@ type WrapperProps = {
   id: string,
   input: any,
   editorFocused: boolean,
+  setFocusedEditor: (editor) => void,
   cellFocused: boolean,
   completion: boolean,
   focusAbove: () => void,
@@ -118,6 +119,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       // On first load, if focused, set codemirror to focus
       if (editorFocused) {
         this.codemirror.focus();
+        this.props.setFocusedEditor(cm);
       }
 
       cm.on('topBoundary', focusAbove);
@@ -208,7 +210,12 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
       }
 
       if (prevProps.editorFocused !== editorFocused) {
-        editorFocused ? this.codemirror.focus() : cm.getInputField().blur();
+        if (editorFocused) {
+          this.codemirror.focus();
+          this.props.setFocusedEditor(cm);
+        } else {
+          cm.getInputField().blur();
+        }
       }
 
       if (prevProps.cursorBlinkRate !== cursorBlinkRate) {
@@ -302,7 +309,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
             className="cell_cm"
             options={options}
             onChange={onChange}
-            onClick={() => this.codemirror.focus()}
+            onClick={() => {this.codemirror.focus(); this.props.setFocusedEditor(this.codemirror.getCodeMirror());}}
             onFocusChange={onFocusChange}
           />
         </EditorView>
