@@ -14,6 +14,7 @@ import {
   createCellBefore,
   createCellAppend,
   findInNotebook,
+  replaceInNotebook,
 } from '../actions';
 
 import Popup from 'react-popup';
@@ -235,7 +236,7 @@ class Prompt extends React.Component {
 /** Prompt plugin */
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
     let promptValue = defaultValue;
-    let replaceValue = null;
+    let replaceValue = '';
     let promptChange = function (findValue, newReplaceValue) {
         promptValue = findValue;
         replaceValue = newReplaceValue;
@@ -269,7 +270,7 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
                 text: 'Replace All',
                 className: 'danger',
                 action: () => {
-                    replace_callback(promptValue);
+                    replace_callback(promptValue, replaceValue, false, true);
                     Popup.close();
                 }
               },
@@ -301,8 +302,8 @@ export function findDialogEpic(action$, store) {
               observer.next(findInNotebook(value));
               observer.complete();
             },
-            (value) => {
-              Popup.alert('Replace ' + value);
+            (findValue, replaceValue, regex, matchCase) => {
+              observer.next(replaceInNotebook(findValue, replaceValue, regex, matchCase));
               observer.complete();
             },
           ) )

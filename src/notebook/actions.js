@@ -242,6 +242,16 @@ export function findInNotebook(find_string) {
   };
 }
 
+export function replaceInNotebook(find_string, replace_string, regex, match_case) {
+  return {
+    type: constants.REPLACE_IN_NOTEBOOK,
+    find_string,
+    replace_string,
+    regex,
+    match_case
+  };
+}
+
 export function setFocusedCellEditor(editor) {
   return {
     type: constants.SET_FOCUSED_CELL_EDITOR,
