@@ -178,6 +178,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
             query = new RegExp(searchText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), caseInsensitive ? "gi" : "g");
           else // regex query
             query = new RegExp(searchText.source, searchText.ignoreCase ? "gi" : "g");
+
           cm.state.search = {
             posFrom: null,
             posTo: null,
@@ -198,9 +199,6 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
             }},
           };
           cm.addOverlay(cm.state.search.overlay);
-//           cm.execCommand('findPersistent');
-//           cm.execCommand('findPersistentNext');
-//           cm.execCommand('find');
           cm.state.search.posFrom = cm.state.search.posTo = cm.getCursor();
           cm.execCommand('findNext');
         } else {
