@@ -65,6 +65,7 @@ class App extends React.PureComponent {
           />
           <Popup/>
           <link rel="stylesheet" href="../static/styles/main.css" />
+          <link rel="stylesheet" href="../node_modules/pretty-checkbox/dist/pretty-checkbox.min.css" />
         </div>
       </Provider>
     );
