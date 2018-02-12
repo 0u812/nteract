@@ -235,10 +235,12 @@ export function findDialog() {
   };
 }
 
-export function findInNotebook(find_string) {
+export function findInNotebook(find_string, regex, match_case) {
   return {
     type: constants.FIND_IN_NOTEBOOK,
     find_string,
+    regex,
+    match_case,
   };
 }
 
@@ -249,6 +251,14 @@ export function replaceInNotebook(find_string, replace_string, regex, match_case
     replace_string,
     regex,
     match_case
+  };
+}
+
+export function setCellSource(cell_id, source) {
+  return {
+    type: constants.SET_CELL_SOURCE,
+    cell_id,
+    source,
   };
 }
 

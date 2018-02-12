@@ -546,16 +546,33 @@ function toggleOutputExpansion(state: DocumentState, action: ToggleCellExpansion
       !cells.getIn([id, 'metadata', 'outputExpanded'])));
 }
 
-type FindInNotebookAction = { type: 'FIND_IN_NOTEBOOK', find_string: string }
+type FindInNotebookAction = { type: 'FIND_IN_NOTEBOOK', find_string: string, regex: boolean, match_case: boolean }
 function findInNotebook(state: DocumentState, action: FindInNotebookAction) {
-  const { find_string } = action;
-  return state.set('searchText', find_string);
+  const { find_string, regex, match_case } = action;
+  console.log('rudcer match case' ,match_case);
+  return state.set('searchText', find_string)
+    .set('searchRegex', regex)
+    .set('searchMatchCase', match_case);
+}
+
+type ClearSearchReplaceOverlayAction = { type: 'CLEAR_SEARCH_REPLACE_OVERLAY' }
+function clearSearchReplaceOverlay(state: DocumentState, action: ClearSearchReplaceOverlayAction) {
+  return state.set('searchText', null)
+    .set('searchRegex', null)
+    .set('searchMatchCase', null);
 }
 
 type SetFocusedCellEditorAction = { type: 'SET_FOCUSED_CELL_COMPONENT', editor: object }
 function setFocusedCellEditor(state: DocumentState, action: FindInNotebookAction) {
   const { editor } = action;
   return state.set('focusedCellEditor', editor);
+}
+
+type SetCellSourceAction = { type: 'SET_CELL_SOURCE', cell_id: string, source: string }
+function setCellSource(state: DocumentState, action: SetCellSourceAction) {
+  const { cell_id, source } = action;
+  console.log('le set src reducer', cell_id, source);
+  return state.setIn(['notebook', 'cellMap', cell_id, 'source'], source);
 }
 
 type FocusCellActionType = FocusPreviousCellEditorAction | FocusPreviousCellAction |
@@ -572,7 +589,7 @@ type DocumentAction =
   UpdateCellStatusAction | SetLanguageInfoAction | SetKernelInfoAction |
   OverwriteMetadataFieldAction | DeleteMetadataFieldAction | CopyCellAction |
   CutCellAction | PasteCellAction | ChangeCellTypeAction | ChangeCodeCellTypeAction |
-  ToggleCellExpansionAction;
+  ToggleCellExpansionAction | FindInNotebookAction | SetFocusedCellEditorAction;
 
 const defaultDocument: DocumentState = DocumentRecord();
 
@@ -648,8 +665,12 @@ function handleDocument(state: DocumentState = defaultDocument, action: Document
       return toggleOutputExpansion(state, action);
     case constants.FIND_IN_NOTEBOOK:
       return findInNotebook(state, action);
+    case constants.CLEAR_SEARCH_REPLACE_OVERLAY:
+      return clearSearchReplaceOverlay(state, action);
     case constants.SET_FOCUSED_CELL_EDITOR:
       return setFocusedCellEditor(state, action);
+    case constants.SET_CELL_SOURCE:
+      return setCellSource(state, action);
     default:
       return state;
   }

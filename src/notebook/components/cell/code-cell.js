@@ -27,6 +27,8 @@ type Props = {
   wrapPrev: () => void;
   models: ImmutableMap<string, any>,
   searchText: string,
+  searchRegex: boolean,
+  searchMatchCase: boolean,
   setFocusedEditor: (editor) => void,
 };
 
@@ -81,6 +83,8 @@ class CodeCell extends React.PureComponent {
               wrapNext={this.props.wrapNext}
               wrapPrev={this.props.wrapPrev}
               searchText={this.props.searchText}
+              searchRegex={this.props.searchRegex}
+              searchMatchCase={this.props.searchMatchCase}
               description={this.getCodeCellType() === 'antimony' ? 'Antimony cell' : this.getCodeCellType() === 'omex' ? 'Combine archive' : 'Python cell'}
               setFocusedEditor={this.props.setFocusedEditor}
             />

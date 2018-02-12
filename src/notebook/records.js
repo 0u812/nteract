@@ -145,6 +145,8 @@ export type Document = {
   editorFocused: any,
   cellFocused: any,
   searchText: any,
+  searchRegex: any,
+  searchMatchCase: any,
   focusedCellEditor: any,
   copied: Immutable.Map<any, any>,
 }
@@ -160,6 +162,8 @@ export const DocumentRecord = Immutable.Record({
   editorFocused: null,
   cellFocused: null,
   searchText: null,
+  searchRegex: null,
+  searchMatchCase: null,
   focusedCellEditor: null,
   highlightedCells: null,
   copied: new Immutable.Map(),

@@ -15,6 +15,7 @@ import {
   createCellAppend,
   findInNotebook,
   replaceInNotebook,
+  setCellSource,
 } from '../actions';
 
 import Popup from 'react-popup';
@@ -184,10 +185,14 @@ class Prompt extends React.Component {
         this.state = {
             value: this.props.defaultValue,
             replaceValue: '',
+            regexValue: false,
+            matchCaseValue: false,
         };
 
         this.onChange = (e) => this._onChange(e);
         this.onChangeReplaceInput = (e) => this._onChangeReplaceInput(e);
+        this.onChangeRegex = this.onChangeRegex.bind(this);
+        this.onChangeMatchCase = this.onChangeMatchCase.bind(this);
     }
 
     // https://stackoverflow.com/questions/28889826/react-set-focus-on-input-after-render
@@ -196,8 +201,11 @@ class Prompt extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.value !== this.state.value || prevState.replaceValue !== this.state.replaceValue) {
-            this.props.onChange(this.state.value, this.state.replaceValue);
+        if (prevState.value !== this.state.value
+          || prevState.replaceValue !== this.state.replaceValue
+          || prevState.regexValue !== this.state.regexValue
+          || prevState.matchCaseValue !== this.state.matchCaseValue) {
+            this.props.onChange(this.state.value, this.state.replaceValue, this.state.regexValue, this.state.matchCaseValue);
         }
     }
 
@@ -212,23 +220,44 @@ class Prompt extends React.Component {
         this.setState({value: value});
     }
 
-    _onChangeReplaceInput(e) {
-        let value = e.target.value;
-
+    _onChangeReplaceInput(event) {
+        const value = event.target.value;
         this.setState({replaceValue: value});
+    }
+
+    onChangeRegex(event) {
+      this.setState({regexValue: event.target.checked});
+    }
+
+    onChangeMatchCase(event) {
+      this.setState({matchCaseValue: !!event.target.checked});
     }
 
     render() {
         return <div>
-          <input type="text" placeholder={this.props.placeholder}
-            className="mm-popup__input"
-            defaultValue={this.state.value}
-            onChange={this.onChange}
-            ref={(input) => {this.inputElt = input;}} />
-          <input type="text" placeholder="Replace Text"
-            className="mm-popup__input"
-            onChange={this.onChangeReplaceInput}
-            ref={(replaceInput) => {this.replaceInput = replaceInput;}} />
+            <input type="text" placeholder={this.props.placeholder}
+              className="mm-popup__input"
+              defaultValue={this.state.value}
+              onChange={this.onChange}
+              ref={(input) => {this.inputElt = input;}} />
+            <br/>
+            <input type="text" placeholder="Replace with"
+              className="mm-popup__input"
+              onChange={this.onChangeReplaceInput}
+              ref={(replaceInput) => {this.replaceInput = replaceInput;}} />
+            <br/>
+            <div className="pretty p-default p-smooth p-plain">
+                <input type="checkbox" onChange={this.onChangeRegex} />
+                <div className="state p-primary-o">
+                    <label>Regular Expression</label>
+                </div>
+            </div>
+            <div className="pretty p-default p-smooth p-plain">
+                <input type="checkbox" onChange={this.onChangeMatchCase} />
+                <div className="state p-primary-o">
+                    <label>Match Case</label>
+                </div>
+            </div>
           </div>;
     }
 }
@@ -237,9 +266,14 @@ class Prompt extends React.Component {
 Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callback, replace_callback) {
     let promptValue = defaultValue;
     let replaceValue = '';
-    let promptChange = function (findValue, newReplaceValue) {
-        promptValue = findValue;
-        replaceValue = newReplaceValue;
+    let regexValue = false;
+    let matchCaseValue = false;
+
+    let promptChange = function (findValue, newReplaceValue, newRegexValue, newMatchCaseValue) {
+      promptValue = findValue;
+      replaceValue = newReplaceValue;
+      regexValue = newRegexValue;
+      matchCaseValue = newMatchCaseValue;
     };
 
     key('esc', () => {
@@ -270,15 +304,19 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, find_callbac
                 text: 'Replace All',
                 className: 'danger',
                 action: () => {
-                    replace_callback(promptValue, replaceValue, false, true);
-                    Popup.close();
+                    if (promptValue !== null && promptValue !== '') {
+                      replace_callback(promptValue, replaceValue, regexValue, matchCaseValue);
+                      Popup.close();
+                    }
                 }
               },
               {
                 text: 'Find All',
                 action: () => {
-                    find_callback(promptValue);
+                  if (promptValue !== null && promptValue !== '') {
+                    find_callback(promptValue, regexValue, matchCaseValue);
                     Popup.close();
+                  }
                 }
             },
             ]
@@ -297,16 +335,48 @@ export function findDialogEpic(action$, store) {
           txt = editor.getSelection();
         }
         return Rx.Observable.create( (observer) =>
-          Popup.plugins().prompt(txt, 'Find in Notebook',
-            (value) => {
-              observer.next(findInNotebook(value));
+          Popup.plugins().prompt(txt, 'Find in notebook',
+            (findValue, regex, matchCase) => {
+              // find
+              console.log('emit find in notebook', findValue, regex, matchCase);
+              observer.next(findInNotebook(findValue, regex, matchCase));
               observer.complete();
             },
             (findValue, replaceValue, regex, matchCase) => {
+              // replace
               observer.next(replaceInNotebook(findValue, replaceValue, regex, matchCase));
               observer.complete();
             },
           ) )
       }
+    );
+}
+
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceInString(source, find_string, replace_string, regex, match_case) {
+  console.log('source', source);
+  console.log('find_string, replace_string, regex, match_case', find_string, replace_string, regex, match_case);
+  const result = source.replace(
+                        regex ? new RegExp(find_string, match_case ? 'g' : 'gi') : new RegExp(escapeRegExp(find_string), match_case ? 'g' : 'gi'),
+                        replace_string);
+  return result;
+}
+
+// replace string in notebook
+export function replaceInNotebookEpic(action$, store) {
+  return action$.ofType('REPLACE_IN_NOTEBOOK')
+    .flatMap((action) => console.log(action$) || store.getState().document.get('notebook').get('cellMap').map(
+        (cell, cell_id) => setCellSource(
+          cell_id,
+          replaceInString(cell.get('source'),
+                          action.find_string,
+                          action.replace_string,
+                          action.regex,
+                          action.match_case)
+          )
+      ).values()
     );
 }

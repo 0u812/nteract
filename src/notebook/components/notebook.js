@@ -41,6 +41,8 @@ type Props = {
   executionState: string,
   models: ImmutableMap<string, any>,
   searchText: string,
+  searchRegex: boolean,
+  searchMatchCase: boolean,
 };
 
 export function getLanguageMode(notebook: any): string {
@@ -67,6 +69,8 @@ const mapStateToProps = (state: Object) => ({
   executionState: state.app.get('executionState'),
   models: state.comms.get('models'),
   searchText: state.document.get('searchText'),
+  searchRegex: state.document.get('searchRegex'),
+  searchMatchCase: state.document.get('searchMatchCase'),
 });
 
 export function preExecuteCellChecks(store: Object, id: String, cell: Object): Boolean {
@@ -177,7 +181,8 @@ export class Notebook extends React.PureComponent {
   }
 
   createCellProps(id: string, cell: any, transient: any): CellProps {
-    return {
+    console.log('create cell props searchMatchCase', this.props.searchMatchCase);
+    const p = {
       id,
       cell,
       language: getLanguageMode(this.props.notebook),
@@ -195,7 +200,11 @@ export class Notebook extends React.PureComponent {
       theme: this.props.theme,
       models: this.props.models,
       searchText: this.props.searchText,
+      searchRegex: this.props.searchRegex,
+      searchMatchCase: this.props.searchMatchCase,
     };
+    console.log('p.searchMatchCase', p.searchMatchCase);
+    return p;
   }
 
   createCellElement(id: string): ?React.Element<any> {
@@ -205,6 +214,8 @@ export class Notebook extends React.PureComponent {
     const isStickied = this.props.stickyCells.get(id);
 
     const CellComponent = this.props.CellComponent;
+    const cellProps = this.createCellProps(id, cell, transient);
+    console.log('cellProps.searchMatchCase', cellProps.searchMatchCase);
 
     return (
       <div key={`cell-container-${id}`}>
@@ -212,7 +223,7 @@ export class Notebook extends React.PureComponent {
           <div className="cell-placeholder">
             <span className="octicon octicon-link-external" />
           </div> :
-          <CellComponent {...this.createCellProps(id, cell, transient)} />}
+          <CellComponent {...cellProps} />}
         <CellCreator key={`creator-${id}`} id={id} above={false} />
       </div>);
   }

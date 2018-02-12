@@ -150,7 +150,7 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
 
     componentDidUpdate(prevProps: WrapperProps): void {
       const cm = this.codemirror.getCodeMirror();
-      const { cursorBlinkRate, editorFocused, theme, searchText } = this.props;
+      const { cursorBlinkRate, editorFocused, theme, searchText, searchRegex, searchMatchCase } = this.props;
 
       if (prevProps.theme !== theme) {
         cm.refresh();
@@ -172,12 +172,13 @@ const CodeMirrorWrapper: CodeMirrorHOC = (EditorView, customOptions = null) =>
           }
 
           let query;
-          const caseInsensitive = false;
+          const caseInsensitive = !searchMatchCase;
+          console.log('search ', searchText, caseInsensitive);
           // https://codemirror.net/addon/search/search.js
-          if (true) // is string query
+          if (!searchRegex) // is string query
             query = new RegExp(searchText.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), caseInsensitive ? "gi" : "g");
           else // regex query
-            query = new RegExp(searchText.source, searchText.ignoreCase ? "gi" : "g");
+            query = new RegExp(searchText, caseInsensitive ? "gi" : "g");
 
           cm.state.search = {
             posFrom: null,

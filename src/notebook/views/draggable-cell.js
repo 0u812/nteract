@@ -26,6 +26,8 @@ type Props = {|
   moveCell: (source: string, dest: string, above: boolean) => Object,
   models: ImmutableMap<string, any>,
   searchText: string,
+  searchRegex: boolean,
+  searchMatchCase: boolean,
 |};
 
 type State = {|
@@ -157,6 +159,8 @@ class DraggableCellView extends React.PureComponent {
             transforms={this.props.transforms}
             models={this.props.models}
             searchText={this.props.searchText}
+            searchRegex={this.props.searchRegex}
+            searchMatchCase={this.props.searchMatchCase}
           />
         </div>
       </div>

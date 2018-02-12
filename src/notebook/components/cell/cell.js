@@ -29,6 +29,8 @@ export type CellProps = {
   transforms: ImmutableMap<string, any>,
   models: ImmutableMap<string, any>,
   searchText: string,
+  searchRegex: boolean,
+  searchMatchCase: boolean,
 };
 
 type State = {
@@ -126,6 +128,9 @@ export class Cell extends React.PureComponent {
   }
 
   render(): ?React.Element<any> {
+    console.log('cell render searchText', this.props.searchText);
+    console.log('cell render searchRegex', this.props.searchRegex);
+    console.log('cell render searchMatchCase', this.props.searchMatchCase);
     const cell = this.props.cell;
     const type = cell.get('cell_type');
     const cellFocused = this.props.cellFocused === this.props.id;
@@ -176,6 +181,8 @@ export class Cell extends React.PureComponent {
             running={this.props.running}
             models={this.props.models}
             searchText={this.props.searchText}
+            searchRegex={this.props.searchRegex}
+            searchMatchCase={this.props.searchMatchCase}
             setFocusedEditor={this.setFocusedEditor}
           />
         }
