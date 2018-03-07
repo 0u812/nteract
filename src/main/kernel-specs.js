@@ -25,8 +25,8 @@ const DEFAULT_SPECS = {
       }
     }
   },
-  tepython3: {
-    name: 'tepython3',
+  python3: {
+    name: 'python3',
     spec: {
       language: 'python',
       display_name: 'Python 3 (built-in)',
