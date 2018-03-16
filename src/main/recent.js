@@ -75,7 +75,7 @@ export function readRecentDocumentsObservable() {
       rebuildRecentMenu();
     })
     .catch((err) => {
-      return Rx.Observable.Empty();
+      return Rx.Observable.empty();
     });
 }
 
