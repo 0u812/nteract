@@ -111,8 +111,20 @@ export const fileSubMenus = {
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'wolf2001.ipynb')),
       },
       {
+        label: 'Mitotic &Exit (Vinod)',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'vinod2011.ipynb')),
+      },
+      {
         label: '&Mitotic Division Study (Calzone)',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'calzone.ipynb')),
+      },
+      {
+        label: '&Log Plotting (Calzone)',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'logplot.ipynb')),
+      },
+      {
+        label: 'Subplots / Phase &Portraits (Novak)',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'subplot.ipynb')),
       }
       // {
       //   label: '&Analyze nteract download metrics',
