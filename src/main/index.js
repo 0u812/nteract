@@ -30,6 +30,10 @@ import {
   rebuildRecentMenu,
 } from './recent.js';
 
+import * as semver from 'semver';
+import * as fs from 'fs';
+import * as rimraf from 'rimraf';
+
 const log = require('electron-log');
 
 const kernelspecs = require('kernelspecs');
@@ -37,6 +41,8 @@ const jupyterPaths = require('jupyter-paths');
 const path = require('path');
 
 const electron = require('electron');
+// const remote = require('remote');
+// const remdialog = remote.require('dialog');
 const protocol = electron.protocol;
 
 const teProtocolPrefix = 'org.analogmachine.tellurium';
@@ -95,9 +101,30 @@ const fullAppReady$ = Rx.Observable.zip(
 const jupyterConfigDir = path.join(app.getPath('home'), '.jupyter');
 const nteractConfigFilename = path.join(jupyterConfigDir, 'tellurium.json');
 // TODO: use app.getPath('userData') instead
+const versionFile = path.join(app.getPath('userData'), 'version.json');
 const dstTelluriumDataDir = path.join(app.getPath('userData'), 'telocal');
 // TODO: Write VERSION.txt to dstTelluriumDataDir
 // log.info(dstTelluriumDataDir);
+
+// remove telocal if too old
+if (!fs.existsSync(versionFile)) {
+  // old version - wipe telocal
+  console.log('no ver info - wipe telocal');
+//   dialog.showMessageBox('You appear to be running an old version - please remove the directory ' + dstTelluriumDataDir);
+  rimraf.sync(dstTelluriumDataDir);
+  console.log('done wiping telocal for no ver');
+} else {
+  const version_info = JSON.parse(fs.readFileSync(versionFile));
+  console.log('compare ver ' + version_info.version + ' vs ' + app.getVersion());
+  if (semver.lt(version_info.version, app.getVersion())) {
+    // old version - wipe telocal
+    console.log('old version - wipe telocal');
+//     dialog.showMessageBox('You appear to be running an old version - please remove the directory ' + dstTelluriumDataDir);
+    rimraf.sync(dstTelluriumDataDir);
+    fs.unlinkSync(versionFile);
+    console.log('done wiping telocal for old ver');
+  }
+}
 
 let splashWebContents;
 let firstTimeInit = false;
@@ -126,18 +153,23 @@ const prepJupyterObservable = prepareEnv
         }),
       statObservable(dstTelluriumDataDir)
         .catch((err) => {
-          if (err.code === 'ENOENT') {
-            const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', 'telocal');
-            // log.info(srcTelluriumConfigDir);
-            if (splashWebContents) {
-              splashWebContents.send('first-time-init');
-            } else {
-              firstTimeInit = true;
-            }
-            return ncpObservable(
-              srcTelluriumConfigDir,
-              dstTelluriumDataDir)
+          console.log('err stat dst tel data dir');
+          const srcTelluriumConfigDir = path.join(require.resolve('ijavascript'), '..', '..', '..', '..', 'telocal');
+          // log.info(srcTelluriumConfigDir);
+          if (splashWebContents) {
+            splashWebContents.send('first-time-init');
+          } else {
+            firstTimeInit = true;
           }
+          console.log('write sync ver');
+          fs.writeFileSync(versionFile, JSON.stringify({
+            version: app.getVersion()
+          }));
+          console.log('done write sync ver');
+          return ncpObservable(
+            srcTelluriumConfigDir,
+            dstTelluriumDataDir)
+          console.log('stat error not ENOENT');
         })
     )
   );
