@@ -4,6 +4,8 @@ import * as path from 'path';
 import { launch, launchNewNotebook } from './launch';
 import { installShellCommand } from './cli';
 
+import { addToRecentDocuments } from './recent';
+
 function getExampleNotebooksDir() {
   if (process.env.NODE_ENV === 'development') {
     return path.resolve(path.join(__dirname, '..', '..', 'example-notebooks'));
@@ -141,6 +143,7 @@ export const fileSubMenus = {
         }
 
         const ext = path.extname(filename) === '' ? '.ipynb' : '';
+        addToRecentDocuments(`${filename}${ext}`);
         send(focusedWindow, 'menu:save-as', `${filename}${ext}`);
       });
     },
