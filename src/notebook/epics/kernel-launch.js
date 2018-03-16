@@ -93,7 +93,7 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;
-        const isBuiltIn = kernelSpec.name ? kernelSpec.name === 'tepython3' : false;
+        const isBuiltIn = kernelSpec.name ? kernelSpec.name === 'python3' : false;
         const displayName = kernelSpec.spec.display_name || 'Unknown';
 
         // check for failed spawn

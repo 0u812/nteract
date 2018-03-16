@@ -62,7 +62,7 @@ export const extractNewKernel = (filename: string, notebook: ImmutableNotebook) 
   const kernelSpecName = notebook.getIn(
     ['metadata', 'kernelspec', 'name'], notebook.getIn(
       ['metadata', 'language_info', 'name'],
-        'tepython3'));
+        'python3'));
   return {
     cwd,
     kernelSpecName,
