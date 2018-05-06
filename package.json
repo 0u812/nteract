@@ -1,6 +1,6 @@
 {
   "name": "Tellurium",
-  "version": "2.0.17",
+  "version": "2.0.18",
   "description": "Biological Network Modeling Environment",
   "main": "./lib/main/index.js",
   "repository": {
@@ -156,7 +156,7 @@
     "normalize.css": "^5.0.0",
     "nteract-assets": "^2.1.0",
     "pretty-checkbox": "~3.0.3",
-    "plotly.js": "^1.19.2",
+    "plotly.js": "^1.37.1",
     "react": "^15.4.2",
     "react-codemirror": "^0.3.0",
     "react-dnd": "^2.1.4",
