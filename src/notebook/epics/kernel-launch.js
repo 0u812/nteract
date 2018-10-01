@@ -89,7 +89,7 @@ export function newKernelObservable(kernelSpec: KernelInfo, cwd: string) {
   const spec = kernelSpec.spec;
 
   return Rx.Observable.create((observer) => {
-    launchSpec(spec, { cwd: cwd, env: {IPYTHONDIR: path.join(app.getPath('userData'), 'telocal', 'ipython')} })
+    launchSpec(spec, { cwd: cwd, env: {IPYTHONDIR: path.join(app.getPath('userData'), 'telocal', 'ipython'), PROCESS_TRACE: 1} })
       .then((c) => {
         const { config, spawn, connectionFile } = c;
         const kernelSpecName = kernelSpec.name;

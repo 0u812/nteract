@@ -125,6 +125,10 @@ export const fileSubMenus = {
       {
         label: 'Subplots / Phase &Portraits (Novak)',
         click: launch.bind(null, path.join(exampleNotebooksDirectory, 'subplot.ipynb')),
+      },
+      {
+        label: 'SBML Comp (&Smith) ☆ New',
+        click: launch.bind(null, path.join(exampleNotebooksDirectory, 'comp.ipynb')),
       }
       // {
       //   label: '&Analyze nteract download metrics',
