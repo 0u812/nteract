@@ -41,6 +41,11 @@ CodeMirror.defineMode('omex', function() {
   return {
     startState: function() {return {inString: false};},
     token: function(stream, state) {
+      // Handle absolute URIs
+      if (stream.match(/^<http[^>]+>/)) {
+          return 'string';
+      }
+
       // Handle comments
       if (!state.inString && (stream.peek() == '#' || stream.match('//'))) {
         stream.skipToEnd();
