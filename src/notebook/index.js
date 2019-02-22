@@ -56,8 +56,6 @@ class App extends React.PureComponent {
     const notificationSystem = this.notificationSystem;
     const xhttp = new XMLHttpRequest();
     const receive = function() {
-      // if (this.readyState == 4 && this.status == 200) {
-      // }
       notificationSystem.addNotification({
         title: 'Update to Cellurium',
         level: 'info',
@@ -72,14 +70,10 @@ class App extends React.PureComponent {
       });
     };
     const error = function() {
-      // if (this.readyState == 4 && this.status == 200) {
-      // }
-      console.log('xhr error');
     };
     xhttp.addEventListener('load', receive);
     xhttp.addEventListener('error', error);
     xhttp.open("GET", "https://www.cellurium.com/teping", true);
-    // xhttp.open("GET", "https://www.google.com", true);
     xhttp.send();
   }
 
