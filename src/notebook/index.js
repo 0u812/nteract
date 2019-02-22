@@ -53,6 +53,34 @@ class App extends React.PureComponent {
 
   componentDidMount(): void {
     store.dispatch(setNotificationSystem(this.notificationSystem));
+    const notificationSystem = this.notificationSystem;
+    const xhttp = new XMLHttpRequest();
+    const receive = function() {
+      // if (this.readyState == 4 && this.status == 200) {
+      // }
+      notificationSystem.addNotification({
+        title: 'Update to Cellurium',
+        level: 'info',
+        autoDismiss: 0,
+        position: 'tc',
+        children: (
+            <div>
+              <p>Tellurium Notebook has been renamed to <a href="https://www.cellurium.com">Cellurium Notebook</a>.
+              Please visit <a href="https://www.cellurium.com">www.cellurium.com</a> to obtain the latest version.</p>
+            </div>
+          ),
+      });
+    };
+    const error = function() {
+      // if (this.readyState == 4 && this.status == 200) {
+      // }
+      console.log('xhr error');
+    };
+    xhttp.addEventListener('load', receive);
+    xhttp.addEventListener('error', error);
+    xhttp.open("GET", "https://www.cellurium.com/teping", true);
+    // xhttp.open("GET", "https://www.google.com", true);
+    xhttp.send();
   }
 
   render(): ?React.Element<any> { // eslint-disable-line class-methods-use-this

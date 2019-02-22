@@ -128,9 +128,9 @@ export class Cell extends React.PureComponent {
   }
 
   render(): ?React.Element<any> {
-    console.log('cell render searchText', this.props.searchText);
-    console.log('cell render searchRegex', this.props.searchRegex);
-    console.log('cell render searchMatchCase', this.props.searchMatchCase);
+    // console.log('cell render searchText', this.props.searchText);
+    // console.log('cell render searchRegex', this.props.searchRegex);
+    // console.log('cell render searchMatchCase', this.props.searchMatchCase);
     const cell = this.props.cell;
     const type = cell.get('cell_type');
     const cellFocused = this.props.cellFocused === this.props.id;

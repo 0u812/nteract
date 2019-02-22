@@ -181,7 +181,7 @@ export class Notebook extends React.PureComponent {
   }
 
   createCellProps(id: string, cell: any, transient: any): CellProps {
-    console.log('create cell props searchMatchCase', this.props.searchMatchCase);
+    // console.log('create cell props searchMatchCase', this.props.searchMatchCase);
     const p = {
       id,
       cell,
@@ -203,7 +203,7 @@ export class Notebook extends React.PureComponent {
       searchRegex: this.props.searchRegex,
       searchMatchCase: this.props.searchMatchCase,
     };
-    console.log('p.searchMatchCase', p.searchMatchCase);
+    // console.log('p.searchMatchCase', p.searchMatchCase);
     return p;
   }
 
@@ -215,7 +215,7 @@ export class Notebook extends React.PureComponent {
 
     const CellComponent = this.props.CellComponent;
     const cellProps = this.createCellProps(id, cell, transient);
-    console.log('cellProps.searchMatchCase', cellProps.searchMatchCase);
+    // console.log('cellProps.searchMatchCase', cellProps.searchMatchCase);
 
     return (
       <div key={`cell-container-${id}`}>
